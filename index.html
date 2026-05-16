@@ -213,7 +213,7 @@ select.fi option{background:#162d4a}.fr{margin-bottom:12px}.fr2{display:grid;gri
   <div class="info blue">📋 2 bölüm: Skolyoz (3 fotoğraf) + Hiperkifoz (2 fotoğraf). AI fotoğrafları analiz eder, siz onaylarsınız.</div>
   <div style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);border-radius:10px;padding:11px 13px;font-size:13px;line-height:1.5;color:#c4b5fd;margin-bottom:12px">⚠️ Bu test <strong style="color:#e9d5ff">6 yaş ve üzeri</strong> çocuklar için uygundur. Daha küçük çocuklarda şüpheli sonuç oluşturabilir.</div>
   <button class="btn bp" onclick="startScan()">Taramaya Başla →</button>
-  <button class="btn bs mt8" onclick="localStorage.removeItem('ss_ak');alert('API anahtarı temizlendi. Bir sonraki analizde yeniden sorulacak.');" style="margin-top:8px;font-size:12px;opacity:0.6">🔑 API Anahtarını Sıfırla</button>
+  
 </div>
 
 <!-- SCREEN 1: SKOLYOZ FOTOĞRAF -->
@@ -536,12 +536,7 @@ function getSTSRisk(score,gender){
 function getSTSMax(gender){return gender==='kiz'?15:13;}
 
 async function doAnalysis(){
-  // Always ask for key if not set this session
-  const existingKey = localStorage.getItem('ss_ak');
-  if(!existingKey){
-    document.getElementById('keyOverlay').classList.add('open');
-    return;
-  }
+  // API key handled by Netlify Function - no key needed from user
   ST.obs={a1:document.getElementById('o1').checked,a2:document.getElementById('o2').checked,
     a3:document.getElementById('o3').checked,a4:document.getElementById('o4').checked,
     a5:document.getElementById('o5').checked,a6:document.getElementById('o6').checked,
@@ -686,19 +681,10 @@ Sadece asagidaki JSON formatinda yanit ver, baska metin ekleme:
   try{
     const controller=new AbortController();
     const timeout=setTimeout(()=>controller.abort(),60000); // 60 saniye timeout
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{signal:controller.signal,
+    const resp=await fetch('/.netlify/functions/api',{signal:controller.signal,
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': localStorage.getItem('ss_ak') || '',
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-opus-4-5',
-        max_tokens:4000,
-        messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]
-      })});
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]})});
     clearTimeout(timeout);
     clearInterval(intv);
     if(!resp.ok){const errData=await resp.json().catch(()=>({}));throw new Error('API hata: '+(errData.error?.message||resp.status));}
