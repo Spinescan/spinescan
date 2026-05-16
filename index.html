@@ -519,7 +519,7 @@ function compImg(file,cb){
     const c=document.createElement('canvas'),MAX=1000;let[w,h]=[img.width,img.height];
     if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
     c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
-    const src=c.toDataURL('image/jpeg',.55);cb(src,src.split(',')[1]);
+    const src=c.toDataURL('image/jpeg',.45);cb(src,src.split(',')[1]);
   };img.src=e.target.result;};r.readAsDataURL(file);
 }
 function calcBaseSTS(){
@@ -680,11 +680,20 @@ Sadece asagidaki JSON formatinda yanit ver, baska metin ekleme:
 
   try{
     const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),60000); // 60 saniye timeout
-    const resp=await fetch('/.netlify/functions/api',{signal:controller.signal,
+    const timeout=setTimeout(()=>controller.abort(),55000); // 60 saniye timeout
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{signal:controller.signal,
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]})});
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': window.ANTHROPIC_KEY||localStorage.getItem('ss_ak')||'',
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-opus-4-5',
+        max_tokens:4000,
+        messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]
+      })});
     clearTimeout(timeout);
     clearInterval(intv);
     if(!resp.ok){const errData=await resp.json().catch(()=>({}));throw new Error('API hata: '+(errData.error?.message||resp.status));}
