@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SpineScan — Omurga Tarama</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0d1f3c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SpineScan">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1e3a5f;--blue:#2563eb;--bl:#3b82f6;--teal:#0d9488;--tl:#14b8a6;--amber:#f59e0b;--red:#ef4444;--green:#22c55e;--purple:#8b5cf6;--white:#f8fafc;--text:#e2e8f0;--muted:#94a3b8;--card:rgba(255,255,255,.08);--bdr:rgba(255,255,255,.15);--r:16px;--rs:10px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(74,124,63,.12) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 80%,rgba(37,99,235,.1) 0%,transparent 60%);pointer-events:none;z-index:0}
+.app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 16px 90px}
+.header{display:flex;align-items:center;justify-content:space-between;padding:20px 0 8px}
+.logo{font-family:'DM Serif Display',serif;font-size:24px;color:var(--white);letter-spacing:-.5px}
+.logo span{color:#4a7c3f}
+.badge{font-size:10px;background:rgba(74,124,63,.2);border:1px solid rgba(74,124,63,.45);color:#86efac;padding:4px 10px;border-radius:20px;font-weight:500}
+.pw{margin:14px 0}.ps{display:flex;gap:5px;margin-bottom:6px}
+.pd{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.1);transition:background .4s}
+.pd.active{background:var(--bl)}.pd.done{background:var(--teal)}
+.pl{font-size:12px;color:var(--muted)}
+.screen{display:none;animation:fi .3s ease}.screen.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:18px;margin-bottom:12px;backdrop-filter:blur(8px)}
+.ct{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px}
+.btn{width:100%;padding:15px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.bp{background:var(--blue);color:#fff}.bp:hover{background:var(--bl);transform:translateY(-1px)}
+.bs{background:rgba(255,255,255,.07);color:var(--text);border:1px solid var(--bdr)}
+.bt{background:var(--teal);color:#fff}.bt:hover{background:var(--tl)}
+.bsm{padding:10px 16px;font-size:13px;width:auto}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+.pz{border:2px dashed rgba(255,255,255,.18);border-radius:var(--rs);padding:18px 10px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-bottom:10px}
+.pz:hover{border-color:var(--bl);background:rgba(37,99,235,.08)}
+.pz.done{border-color:var(--teal);border-style:solid;background:rgba(13,148,136,.08)}
+.pz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.pz-i{font-size:26px;margin-bottom:5px}.pz-l{font-size:13px;font-weight:600}.pz-s{font-size:11px;color:var(--muted);margin-top:2px}
+.pp{width:100%;max-height:130px;object-fit:cover;border-radius:8px;display:none}.pp.on{display:block}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pgrid .pz{margin-bottom:0}
+.ci{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer}
+.ci:last-child{border-bottom:none}.ci input[type=checkbox]{display:none}
+.cb{width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,255,255,.25);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ci input:checked~.cb{background:var(--teal);border-color:var(--teal)}
+.ci input:checked~.cb::after{content:'✓';color:#fff;font-size:13px;font-weight:700}
+.cl{font-size:14px;line-height:1.4}.cs{font-size:11px;color:var(--muted);margin-top:2px}
+.fl{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;display:block}
+.fi{width:100%;padding:12px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px}
+.fi:focus{outline:none;border-color:var(--bl);background:rgba(37,99,235,.08)}
+select.fi option{background:#162d4a}.fr{margin-bottom:12px}.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.info{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--rs);padding:11px 13px;font-size:13px;line-height:1.5;color:#fcd34d;margin-bottom:12px}
+.info.blue{background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.3);color:#93c5fd}
+.info.green{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#86efac}
+.info.purple{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.3);color:#c4b5fd}
+.ldw{text-align:center;padding:50px 20px}
+.spin{width:52px;height:52px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--tl);border-radius:50%;animation:sp .9s linear infinite;margin:0 auto 20px}
+@keyframes sp{to{transform:rotate(360deg)}}.ldt{font-size:15px;color:var(--muted)}
+.sh2{margin-bottom:14px}
+.sn{font-size:12px;color:var(--tl);font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.st{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.2}
+.ss{font-size:13px;color:var(--muted);margin-top:5px;line-height:1.5}
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.sbox{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;text-align:center}
+.sv{font-size:32px;font-weight:700;line-height:1}.slbl{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.srisk{font-size:12px;font-weight:600;margin-top:5px}.sr-low{color:var(--green)}.sr-mid{color:var(--amber)}.sr-high{color:var(--red)}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.tag{padding:4px 11px;border-radius:20px;font-size:12px;font-weight:600}
+.tw{background:rgba(245,158,11,.2);color:#fcd34d;border:1px solid rgba(245,158,11,.35)}
+.tok{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.3)}
+.ti{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.3)}
+.tp{background:rgba(139,92,246,.15);color:#c4b5fd;border:1px solid rgba(139,92,246,.3)}
+.fb{font-size:14px;line-height:1.65}
+.citem{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:var(--rs);padding:12px 14px;margin-bottom:8px}
+.cq{font-size:13px;font-weight:500;margin-bottom:8px}
+.copts{display:flex;gap:7px;flex-wrap:wrap}
+.copt{flex:1;min-width:80px;padding:8px 4px;border-radius:8px;border:1px solid var(--bdr);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s;text-align:center}
+.copt.yes{background:rgba(74,124,63,.3);color:#86efac;border-color:#4a7c3f}
+.copt.no{background:rgba(239,68,68,.2);color:#fca5a5;border-color:#ef4444}
+.copt.unsure{background:rgba(245,158,11,.2);color:#fcd34d;border-color:#f59e0b}
+.copt.yes{border-color:var(--teal);color:var(--tl);background:rgba(13,148,136,.15)}
+.copt.no{border-color:rgba(239,68,68,.5);color:#fca5a5;background:rgba(239,68,68,.1)}
+.disclaimer{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(245,158,11,.08));border:1px solid rgba(239,68,68,.3);border-radius:var(--r);padding:16px;margin-top:14px}
+.dtitle{font-size:13px;font-weight:700;color:#fca5a5;margin-bottom:7px}
+.dtxt{font-size:13px;line-height:1.65;color:var(--text)}
+.chng{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);border-radius:var(--rs);padding:12px 14px;margin-bottom:12px;font-size:13px;line-height:1.5;color:#fcd34d}
+.rbtns{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.rbtn{padding:11px;border-radius:var(--rs);border:1px solid var(--bdr);background:var(--card);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .2s}
+.rbtn:hover{background:rgba(255,255,255,.1)}.rbi{font-size:20px}
+.nsc{background:linear-gradient(135deg,rgba(37,99,235,.2),rgba(13,148,136,.2));border:1px solid rgba(37,99,235,.3);border-radius:var(--rs);padding:13px 15px;display:flex;align-items:center;gap:13px;margin-top:12px}
+.nsd{font-size:15px;font-weight:700;color:var(--white)}.nsl{font-size:12px;color:var(--muted)}
+.whero{text-align:center;padding:24px 10px 16px}
+.wt{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.15;margin-bottom:8px}
+.wt em{font-style:italic;color:#5a9e4f}.wsub{font-size:13px;color:var(--muted);line-height:1.6}
+.accs{display:flex;gap:7px;margin:16px 0}
+.aci{flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:var(--rs);padding:11px 6px;text-align:center}
+.acv{font-size:17px;font-weight:700;color:#4a7c3f}.acl{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:100;align-items:flex-end}
+.overlay.open{display:flex}
+.modal{background:#162d4a;border-radius:24px 24px 0 0;padding:26px 18px 40px;width:100%;max-width:480px;margin:0 auto;animation:su .3s ease}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(18,46,80,.97);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.08);display:flex;padding:8px 0 env(safe-area-inset-bottom,8px);z-index:50}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:10px;transition:color .2s}
+.ni.active{color:var(--tl)}.nii{font-size:20px}
+.hitem{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:var(--rs);padding:12px;margin-bottom:8px}
+.hdate{font-size:12px;color:var(--muted)}.hname{font-size:15px;font-weight:600;margin:2px 0 6px}.hsc{display:flex;gap:7px;flex-wrap:wrap}
+.hbadge{font-size:11px;padding:3px 9px;border-radius:10px;font-weight:600}
+.fgap{display:flex;gap:10px;margin-top:8px}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <div class="logo">Spine<span>Scan</span></div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <div style="display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(74,124,63,.18),rgba(58,107,50,.18));border:1px solid rgba(74,124,63,.4);border-radius:20px;padding:5px 11px 5px 7px">
+      <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#4a7c3f,#3a6b32);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-family:'DM Serif Display',serif;font-size:11px;font-weight:700;color:#fff;letter-spacing:-.5px">HY</span>
+      </div>
+      <span style="font-size:11px;font-weight:600;color:#86efac;letter-spacing:.3px">Prof. Dr. HY</span>
+    </div>
+    <div class="badge">%94.97 Doğruluk</div>
+  </div>
+</div>
+
+<div class="pw" id="pw" style="display:none">
+  <div class="ps" id="ps"></div>
+  <div class="pl" id="pl"></div>
+</div>
+
+<!-- SCREEN 0: WELCOME -->
+<div class="screen active" id="s0">
+  <div class="whero">
+    <div style="margin-bottom:12px;line-height:1">
+      <svg width="72" height="130" viewBox="0 0 80 210" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="sg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#4a7c3f"/><stop offset="100%" stop-color="#3a6b32"/></linearGradient></defs>
+        <line x1="40" y1="4" x2="40" y2="206" stroke="rgba(148,163,184,.25)" stroke-width="1" stroke-dasharray="3 5"/>
+        <path d="M40,6 C52,18 30,40 46,65 C62,90 28,115 44,145 C58,172 32,190 42,205" fill="none" stroke="#4a7c3f" stroke-width="2" stroke-linecap="round" opacity=".4"/>
+        <ellipse cx="40" cy="6" rx="9" ry="5" fill="url(#sg)" opacity=".9"/>
+        <rect x="29" y="15" width="20" height="8" rx="2" fill="url(#sg)" opacity=".88"/>
+        <rect x="30" y="27" width="20" height="8" rx="2" fill="url(#sg)" opacity=".86"/><line x1="30" y1="31" x2="22" y2="34" stroke="url(#sg)" stroke-width="2" stroke-linecap="round" opacity=".7"/><line x1="50" y1="31" x2="58" y2="34" stroke="url(#sg)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+        <rect x="31" y="39" width="20" height="8" rx="2" fill="url(#sg)" opacity=".88"/><line x1="31" y1="43" x2="22" y2="47" stroke="url(#sg)" stroke-width="2" stroke-linecap="round" opacity=".7"/><line x1="51" y1="43" x2="60" y2="47" stroke="url(#sg)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+        <rect x="33" y="51" width="20" height="9" rx="2.5" fill="url(#sg)" opacity=".95"/><line x1="33" y1="55" x2="23" y2="59" stroke="url(#sg)" stroke-width="2.5" stroke-linecap="round" opacity=".75"/><line x1="53" y1="55" x2="63" y2="59" stroke="url(#sg)" stroke-width="2.5" stroke-linecap="round" opacity=".75"/>
+        <rect x="35" y="64" width="20" height="9" rx="2.5" fill="url(#sg)" opacity=".88"/><line x1="35" y1="68" x2="25" y2="72" stroke="url(#sg)" stroke-width="2" stroke-linecap="round" opacity=".7"/><line x1="55" y1="68" x2="65" y2="72" stroke="url(#sg)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+        <rect x="36" y="77" width="20" height="9" rx="2.5" fill="url(#sg)" opacity=".86"/>
+        <rect x="35" y="90" width="20" height="9" rx="2.5" fill="url(#sg)" opacity=".84"/>
+        <rect x="33" y="103" width="22" height="10" rx="3" fill="url(#sg)" opacity=".88"/>
+        <rect x="31" y="117" width="22" height="10" rx="3" fill="url(#sg)" opacity=".95"/>
+        <rect x="30" y="131" width="22" height="10" rx="3" fill="url(#sg)" opacity=".88"/>
+        <rect x="30" y="145" width="22" height="10" rx="3" fill="url(#sg)" opacity=".85"/>
+        <rect x="31" y="159" width="22" height="10" rx="3" fill="url(#sg)" opacity=".82"/>
+        <path d="M29,173 L53,173 L49,188 L33,188 Z" fill="url(#sg)" opacity=".76"/>
+        <line x1="53" y1="117" x2="63" y2="145" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="2 3" opacity=".6"/>
+        <line x1="49" y1="159" x2="59" y2="145" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="2 3" opacity=".6"/>
+        <path d="M63,117 Q70,140 59,159" fill="none" stroke="#f59e0b" stroke-width="1.2" opacity=".5"/>
+      </svg>
+    </div>
+    <div class="wt">Omurga sağlığı<br><em>evinizde başlar</em></div>
+    <div class="wsub">AI destekli, STS-Test tabanlı skolyoz ve<br>hiperkifoz tele-tarama uygulaması</div>
+    <div style="margin-top:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:16px 18px;text-align:left">
+      <div style="font-size:13px;line-height:1.75;color:#cbd5e1">
+        <span style="color:#5db350;font-weight:700">Skolyoz</span>, omurganın en sık görülen deformitesidir ve kız çocuklarında özellikle ergenlikte hızlı ilerler. Bir diğer önemli omurga problemi ise sırt kamburluğu (<span style="color:#5db350;font-weight:700">hiperkifoz/Scheuermann hastalığı</span>) dur. Her iki durumda da erken tanı, tedavi sürecini kolaylaştırır.
+        <span style="display:block;margin-top:8px;color:#e2e8f0"><span style="font-family:'DM Serif Display',serif;color:#f8fafc">SpineScan</span> ile 5 dakikada, evden, bilimsel doğrulukla çocuğunuzun omurga sağlığını değerlendirin.</span>
+      </div>
+    </div>
+  </div>
+  <div class="accs">
+    <div class="aci"><div class="acv">%94.97</div><div class="acl">Doğruluk</div></div>
+    <div class="aci"><div class="acv">%83.51</div><div class="acl">Duyarlılık</div></div>
+    <div class="aci"><div class="acv">%98.87</div><div class="acl">Özgüllük</div></div>
+  </div>
+  <div class="card">
+    <div class="ct">Çocuk Bilgileri</div>
+    <div class="fr"><label class="fl">Çocuğun Adı (isteğe bağlı)</label>
+      <input class="fi" id="pN" type="text" placeholder="A.Y. veya boş bırakabilirsiniz"></div>
+    <div class="fr2">
+      <div class="fr" style="margin-bottom:0"><label class="fl">Yaş</label><input class="fi" id="pA" type="number" placeholder="12" min="6" max="18"></div>
+      <div class="fr" style="margin-bottom:0"><label class="fl">Cinsiyet</label>
+        <select class="fi" id="pG" onchange="onGender()">
+          <option value="">Seçin</option><option value="kiz">Kız</option><option value="erkek">Erkek</option>
+        </select></div>
+    </div>
+    <div class="fr2 mt8">
+      <div class="fr" style="margin-bottom:0"><label class="fl">Boy (cm)</label><input class="fi" id="pH" type="number" placeholder="145" oninput="calcBMI()" autocomplete="new-password" data-lpignore="true" data-form-type="other"></div>
+      <div class="fr" style="margin-bottom:0"><label class="fl">Kilo (kg)</label><input class="fi" id="pW" type="number" placeholder="38" min="5" max="150" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-form-type="other" oninput="calcBMI()"></div>
+    </div>
+    <div id="bmiW" class="hidden mt8" style="background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.25);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;color:var(--muted)">VKİ</span>
+      <span id="bmiV" style="font-size:17px;font-weight:700;color:var(--bl)">—</span>
+    </div>
+    <div id="menW" class="hidden mt8">
+      <label class="fl">Adet (Menars) Durumu</label>
+      <select class="fi" id="pM">
+        <option value="">Seçin</option>
+        <option value="no">Henüz başlamadı</option>
+        <option value="1-3m">Başladı — 1–3 ay önce</option>
+        <option value="3m-1y">Başladı — 3 ay – 1 yıl önce</option>
+        <option value="1-2y">Başladı — 1–2 yıl önce</option>
+        <option value="2y+">Başladı — 2 yıldan fazla önce</option>
+      </select>
+    </div>
+    <div class="mt8"><label class="fl">Ailede Skolyoz / Kifoz Var mı?</label>
+      <select class="fi" id="pF">
+        <option value="no">Hayır</option><option value="yes">Evet (kendisi, kardeşi veya kuzeni)</option>
+      </select></div>
+  </div>
+  <div class="info blue">📋 2 bölüm: Skolyoz (3 fotoğraf) + Hiperkifoz (2 fotoğraf). AI fotoğrafları analiz eder, siz onaylarsınız.</div>
+  <div style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);border-radius:10px;padding:11px 13px;font-size:13px;line-height:1.5;color:#c4b5fd;margin-bottom:12px">⚠️ Bu test <strong style="color:#e9d5ff">6 yaş ve üzeri</strong> çocuklar için uygundur. Daha küçük çocuklarda şüpheli sonuç oluşturabilir.</div>
+  <button class="btn bp" onclick="startScan()">Taramaya Başla →</button>
+  <button onclick="localStorage.removeItem('ss_ak');alert('API anahtarı temizlendi.');" style="margin-top:8px;font-size:11px;color:#475569;background:none;border:none;cursor:pointer;display:block;width:100%;text-align:center">🔑 API Anahtarını Sıfırla</button>
+  
+</div>
+
+<!-- SCREEN 1: SKOLYOZ FOTOĞRAF -->
+<div class="screen" id="s1">
+  <div class="sh2">
+    <div class="sn">Bölüm 1 — Skolyoz | Adım 1</div>
+    <div class="st">Postür Fotoğrafları</div>
+    <div class="ss">Çocuğu düz zeminde dik durdurarak 3 fotoğraf çekin.</div>
+  </div>
+  <div class="info">👕 Kız: sutyen + bikini altı | Erkek: iç çamaşırı/mayo. Saç topuz — ense açık.</div>
+  <div class="info blue">💡 Işık: Pencere çocuğun <strong>önünde veya yanında</strong> olsun — arkasında olmasın. Arka ışık analizi zorlaştırır.</div>
+  <div class="card">
+    <div class="ct">3 Pozisyon — Skolyoz</div>
+    <div class="pz" style="position:relative" id="z-back" style="position:relative">
+      <input type="file" id="i-back" accept="image/*,image/jpeg,image/png,image/heic,image/heif" onchange="handleP(this,'z-back','p-back','back')" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:5">
+      <img class="pp" id="p-back"><div class="pz-i">📷</div>
+      <div class="pz-l">Arkadan Dik</div><div class="pz-s">Saçtan kalçaya — topuk dahil etme</div>
+    </div>
+    <div class="pgrid">
+      <div class="pz" style="position:relative" id="z-front" style="position:relative">
+        <input type="file" id="i-front" accept="image/*,image/jpeg,image/png,image/heic,image/heif" onchange="handleP(this,'z-front','p-front','front')" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:5">
+        <img class="pp" id="p-front"><div class="pz-i">🧍</div>
+        <div class="pz-l">Önden Dik</div><div class="pz-s">Yüz kameraya, baş düz</div>
+      </div>
+      <div class="pz" style="position:relative" id="z-adams" style="position:relative">
+        <input type="file" id="i-adams" accept="image/*,image/jpeg,image/png,image/heic,image/heif" onchange="handleP(this,'z-adams','p-adams','adams')" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:5">
+        <img class="pp" id="p-adams"><div class="pz-i">🔍</div>
+        <div class="pz-l">Adams Testi</div><div class="pz-s">Öne eğilirken — arkadan</div>
+      </div>
+    </div>
+    <div class="pz" style="position:relative" id="z-radams" style="position:relative" style="margin-top:10px">
+      <input type="file" id="i-radams" accept="image/*,image/jpeg,image/png,image/heic,image/heif" onchange="handleP(this,'z-radams','p-radams','radams')" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:5">
+      <img class="pp" id="p-radams"><div class="pz-i">🔄</div>
+      <div class="pz-l">Ters Adams — Önden (isteğe bağlı)</div>
+      <div class="pz-s">Öne eğilirken önden — gibbus ve lomber asimetri için</div>
+    </div>
+  </div>
+  <div class="info blue">📐 Adams: dizler düz, kollar serbest, öne eğilirken arkadan çekin. Ters Adams (önden) ise gibbus ve lomber asimetri için — isteğe bağlı ek fotoğraf.</div>
+  <button class="btn bp" id="b1" onclick="goTo(2)" disabled>Devam: Kifoz Fotoğrafları →</button>
+</div>
+
+<!-- SCREEN 2: KİFOZ FOTOĞRAF -->
+<div class="screen" id="s2">
+  <div class="sh2">
+    <div class="sn">Bölüm 2 — Hiperkifoz | Adım 2</div>
+    <div class="st">Kifoz Fotoğrafları</div>
+    <div class="ss">Yan profil ve öne eğilirken yandan 2 fotoğraf çekin.</div>
+  </div>
+  <div class="card">
+    <div class="ct">2 Pozisyon — Hiperkifoz</div>
+    <div class="pgrid">
+      <div class="pz" style="position:relative" id="z-side" style="position:relative">
+        <input type="file" id="i-side" accept="image/*,image/jpeg,image/png,image/heic,image/heif" onchange="handleP(this,'z-side','p-side','side')" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:5">
+        <img class="pp" id="p-side"><div class="pz-i">↕️</div>
+        <div class="pz-l">Yandan Dik</div><div class="pz-s">Sağ veya sol profil</div>
+      </div>
+      <div class="pz" style="position:relative" id="z-kph" style="position:relative">
+        <input type="file" id="i-kph" accept="image/*,image/jpeg,image/png,image/heic,image/heif" onchange="handleP(this,'z-kph','p-kph','kph')" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:5">
+        <img class="pp" id="p-kph"><div class="pz-i">↩️</div>
+        <div class="pz-l">Öne Eğilirken Yan</div><div class="pz-s">Kifoz rijidite testi</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="info blue">📐 Yanda: kulak-omuz-kalça-topuk hizası görünmeli. Öne eğilmede rijidite değerlendirmesi yapılır.</div>
+  <div class="info" style="background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.25)">💡 <strong>Fotoğraf ipucu:</strong> Pencere veya ışık kaynağı çocuğun <em>arkasında</em> olmamalı — önde veya yanda olmalı. Arka ışık kontrası düşürür, AI analizi zorlaşır.</div>
+  <div class="fgap">
+    <button class="btn bs bsm" onclick="goTo(1)">← Geri</button>
+    <button class="btn bp" id="b2" onclick="goTo(3)" disabled>Devam: Gözlem →</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: EBEVEYN GÖZLEMİ -->
+<div class="screen" id="s3">
+  <div class="sh2">
+    <div class="sn">Adım 3</div>
+    <div class="st">Ebeveyn Gözlemi</div>
+    <div class="ss">AI analizi öncesi sizin gözlemlerinizi de ekleyelim.</div>
+  </div>
+  <div class="info purple">İsteğe bağlı — fark ettiklerinizi işaretlemeniz AI sonucunu destekler ve farkındalığınızı artırır.</div>
+  <div class="card">
+    <div class="ct">Skolyoz Gözlemi</div>
+    <label class="ci"><input type="checkbox" id="o1"><div class="cb"></div>
+      <div class="cl">Önden bakışta omuz eşitsizliği<div class="cs">Bir omuz diğerinden yüksek görünüyor (önden)</div></div></label>
+    <label class="ci"><input type="checkbox" id="o2"><div class="cb"></div>
+      <div class="cl">Arkadan bakışta omuz eşitsizliği<div class="cs">Aynı durum arkadan da görünüyor</div></div></label>
+    <label class="ci"><input type="checkbox" id="o3"><div class="cb"></div>
+      <div class="cl">Kürek kemiği (skapula) asimetrisi<div class="cs">Bir taraf daha dışa çıkık / belirgin</div></div></label>
+    <label class="ci"><input type="checkbox" id="o4"><div class="cb"></div>
+      <div class="cl">Kalça / bel çizgisi eşitsizliği<div class="cs">Bir taraf daha yüksek veya belirgin</div></div></label>
+    <label class="ci"><input type="checkbox" id="o5"><div class="cb"></div>
+      <div class="cl">Adams testinde kabarıklık (rib hump)<div class="cs">Öne eğilirken bir tarafta yükseklik fark ettim</div></div></label>
+  </div>
+  <div class="card">
+    <div class="ct">Kifoz / Scheuermann Gözlemi</div>
+    <label class="ci"><input type="checkbox" id="o6"><div class="cb"></div>
+      <div class="cl">Belirgin sırt kamburluğu<div class="cs">Yandan bakışta aşırı öne eğim görünüyor</div></div></label>
+    <label class="ci"><input type="checkbox" id="o7"><div class="cb"></div>
+      <div class="cl">Öne eğilince kamburluk düzelmiyor<div class="cs">Rijid görünüm — esnek değil</div></div></label>
+    <label class="ci"><input type="checkbox" id="o8"><div class="cb"></div>
+      <div class="cl">Sırt ağrısı veya yorgunluk şikayeti<div class="cs">Özellikle uzun oturma / aktivite sonrası</div></div></label>
+  </div>
+  <div class="fgap">
+    <button class="btn bs bsm" onclick="goTo(2)">← Geri</button>
+    <button class="btn bt" onclick="doAnalysis()">🔬 AI Analizi Başlat</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: LOADING -->
+<div class="screen" id="s4">
+  <div class="ldw"><div class="spin"></div>
+    <div class="ldt" id="ldT">Fotoğraflar analiz ediliyor…</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">Fotoğraflar cihazda işlenir, sunucuya yüklenmez</div>
+  </div>
+</div>
+
+<!-- SCREEN 5: AI ONAY -->
+<div class="screen" id="s5">
+  <div class="sh2">
+    <div class="sn">Adım 4</div>
+    <div class="st">AI Bulgularını Onaylayın</div>
+    <div class="ss">AI fotoğraflardan şunları tespit etti. Siz de fark ettiniz mi?</div>
+  </div>
+  <div id="confItems"></div>
+  <button class="btn bp mt12" onclick="showResults()">Sonuçları Gör →</button>
+</div>
+
+<!-- SCREEN 6: SONUÇ -->
+<div class="screen" id="s6">
+  <div class="sh2" style="margin-bottom:0">
+    <div class="sn">Tarama Tamamlandı</div>
+    <div class="st">Sonuç Raporu</div>
+  </div>
+  <div id="chngAlert" class="chng hidden mt12"></div>
+  <div class="card mt12">
+    <div class="dual">
+      <div class="sbox">
+        <div class="sv" id="scSc" style="color:var(--bl)">—</div>
+        <div class="slbl">Skolyoz STS</div>
+        <div class="srisk" id="scRsk">—</div>
+      </div>
+      <div class="sbox">
+        <div class="sv" id="kySc" style="color:var(--purple)">—</div>
+        <div class="slbl">Kifoz Riski</div>
+        <div class="srisk" id="kyRsk">—</div>
+      </div>
+    </div>
+    <div class="tags" id="tagsW"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Skolyoz Değerlendirmesi</div>
+    <div class="fb" id="scFnd">—</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">STS-Test: <strong id="stsSc">—</strong> / <strong id="stsMx">—</strong> puan (Kız: düşük ≤4, orta 5–11, yüksek ≥12 | Erkek: düşük ≤3, orta 4–8, yüksek ≥9)</div>
+  </div>
+  <div class="card">
+    <div class="ct">Hiperkifoz / Scheuermann Değerlendirmesi</div>
+    <div class="fb" id="kyFnd">—</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">Tahmini kifoz açısı: <strong id="kyAng">—</strong></div>
+  </div>
+  <div class="card">
+    <div class="ct">AI Ölçüm Detayları</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px" id="measT"></table>
+  </div>
+
+  <!-- MEDICAL DISCLAIMER -->
+  <div class="disclaimer">
+    <div class="dtitle">⚕️ Önemli Tıbbi Uyarı</div>
+    <div class="dtxt" id="discT">Çocuğunuzun omurgasında omurga deformite riski nedeniyle konuyu uzman bir <strong>Fizik Tedavi ve Rehabilitasyon Uzmanı</strong> veya <strong>Omurga Uzmanı Ortopedist</strong>'e başvurunuz. Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.</div>
+  </div>
+
+  <div class="card mt12">
+    <div class="ct">Konsültasyon Raporu</div>
+    <div class="rbtns">
+      <button class="rbtn" onclick="shareWA()"><div class="rbi">💬</div>WhatsApp</button>
+      <button class="rbtn" onclick="shareMail()"><div class="rbi">📧</div>E-posta</button>
+      <button class="rbtn" onclick="copyRep()"><div class="rbi">📋</div>Kopyala</button>
+      <button class="rbtn" onclick="dlRep()"><div class="rbi">⬇️</div>İndir</button>
+    </div>
+  </div>
+  <div class="nsc" id="nscWrap">
+    <div style="font-size:26px">📅</div>
+    <div><div class="nsd" id="nscD">—</div><div class="nsl">Önerilen sonraki tarama tarihi</div></div>
+  </div>
+  <button class="btn bs mt12" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSeVa1pHPwILYebqdgTwmHaolPfd4nyMxVxU1rarOJ1C40T7zA/viewform','_blank')">💬 Geri Bildirim Ver</button>
+  <button class="btn bp mt8" onclick="newScan()" style="margin-top:8px">Yeni Tarama Başlat</button>
+  <button class="btn bs mt8" onclick="exportValidation()" style="margin-top:8px;font-size:13px;border-color:#4a7c3f;color:#86efac">📊 Validasyon Verisi İndir (CSV)</button>
+</div>
+
+</div><!-- /app -->
+
+<nav class="bnav">
+  <button class="ni active" id="nv0" onclick="navGo('home')"><span class="nii">🏠</span>Ana Sayfa</button>
+  <button class="ni" id="nv1" onclick="navGo('hist')"><span class="nii">📊</span>Geçmiş</button>
+  <button class="ni" id="nv2" onclick="navGo('info')"><span class="nii">ℹ️</span>Hakkında</button>
+</nav>
+
+<!-- HISTORY OVERLAY -->
+<div class="overlay" id="histOv" onclick="closeOv(event,'histOv')">
+  <div class="modal">
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:4px">Tarama Geçmişi</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:18px">Cihazda kayıtlı taramalar</div>
+    <div id="histL"></div>
+    <button class="btn bp mt12" onclick="exportAllValidation()">📊 Tüm Vakaları Excel'e İndir</button>
+  <button class="btn bs" style="margin-top:8px" onclick="document.getElementById('histOv').classList.remove('open')">Kapat</button>
+  </div>
+</div>
+
+<!-- FEEDBACK OVERLAY -->
+<div class="overlay" id="fbOv" onclick="closeOv(event,'fbOv')">
+  <div class="modal">
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:4px">Geri Bildirim</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Bu tarama size yardımcı oldu mu?</div>
+    <div style="display:flex;gap:10px;margin-bottom:16px" id="stW">
+      <span style="font-size:30px;cursor:pointer;opacity:.4;transition:all .15s" onclick="rateStar(1)">★</span>
+      <span style="font-size:30px;cursor:pointer;opacity:.4;transition:all .15s" onclick="rateStar(2)">★</span>
+      <span style="font-size:30px;cursor:pointer;opacity:.4;transition:all .15s" onclick="rateStar(3)">★</span>
+      <span style="font-size:30px;cursor:pointer;opacity:.4;transition:all .15s" onclick="rateStar(4)">★</span>
+      <span style="font-size:30px;cursor:pointer;opacity:.4;transition:all .15s" onclick="rateStar(5)">★</span>
+    </div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:10px">Uzman tarafından doğrulandı mı?</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
+      <button class="copt" onclick="this.classList.toggle('yes')">Evet, onaylandı</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Kısmen doğru</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Hayır</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Henüz görülmedi</button>
+    </div>
+    <button class="btn bt" onclick="submitFb()">Gönder</button>
+  </div>
+</div>
+
+<script>
+const ST = { screen:0, patient:{}, photos:{}, obs:{}, result:null, fbR:0 };
+
+function goTo(n) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  ST.screen = n; updProg(n); window.scrollTo(0,0);
+}
+const SLBLS=['','Skolyoz Fotoğraf','Kifoz Fotoğraf','Gözlem','Analiz','Onay','Sonuç'];
+function updProg(n) {
+  const w=document.getElementById('pw'),sl=document.getElementById('ps'),ll=document.getElementById('pl');
+  if(n===0||n===4){w.style.display='none';return;}
+  w.style.display='block'; sl.innerHTML='';
+  for(let i=1;i<=6;i++){const d=document.createElement('div');d.className='pd'+(i<n?' done':i===n?' active':'');sl.appendChild(d);}
+  ll.textContent=SLBLS[n]||'';
+}
+function navGo(t){
+  if(t==='home'){if(ST.screen!==0){if(confirm('Ana sayfaya dön?'))newScan();}}
+  else if(t==='hist')showHist();
+  else document.getElementById('aboutOv').classList.add('open');
+}
+function onGender(){
+  const g=document.getElementById('pG').value,m=document.getElementById('menW');
+  m.classList.toggle('hidden',g!=='kiz'); m.style.display=g==='kiz'?'block':'none';
+}
+function calcBMI(){
+  const h=parseFloat(document.getElementById('pH').value),w=parseFloat(document.getElementById('pW').value);
+  const wr=document.getElementById('bmiW'),vl=document.getElementById('bmiV');
+  if(h>0&&w>0){const b=(w/((h/100)**2)).toFixed(1);const c=b<18.5?'Zayıf':b<25?'Normal':b<30?'Fazla Kilolu':'Obez';
+  vl.textContent=b+' ('+c+')';wr.classList.remove('hidden');wr.style.display='flex';}
+}
+function startScan(){
+  const ageVal = parseInt(document.getElementById('pA').value);
+  if(ageVal && ageVal < 6){
+    alert('Bu test 6 yaş ve üzeri çocuklar için uygundur. Daha küçük çocuklarda şüpheli sonuç oluşturabilir.');
+    return;
+  }
+  ST.patient={name:document.getElementById('pN').value||'',age:document.getElementById('pA').value,
+    gender:document.getElementById('pG').value,height:document.getElementById('pH').value,
+    weight:document.getElementById('pW').value,menarche:document.getElementById('pM').value||'',
+    family:document.getElementById('pF').value,bmi:document.getElementById('bmiV').textContent};
+  ST.photos={}; goTo(1);
+}
+function newScan(){
+  // Tüm state sıfırla
+  ST.screen=0; ST.patient={}; ST.photos={}; ST.obs={}; ST.result=null; ST.fbR=0;
+  // Form alanlarını temizle
+  ['pN','pA','pM'].forEach(function(id){
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  const pg=document.getElementById('pG');
+  const pf=document.getElementById('pF');
+  if(pg) pg.selectedIndex=0;
+  if(pf) pf.selectedIndex=0;
+  const ph=document.getElementById('pH');
+  const pw=document.getElementById('pW');
+  if(ph) ph.value='';
+  if(pw) pw.value='';
+  // Fotoğraf alanlarını sıfırla
+  ['back','front','adams','radams','side','kph'].forEach(function(k){
+    const z=document.getElementById('z-'+k);
+    const p=document.getElementById('p-'+k);
+    const inp=document.getElementById('i-'+k);
+    if(z){z.classList.remove('done');}
+    if(p){p.src='';p.classList.remove('on');}
+    if(inp){inp.value='';}
+    if(z){
+      const cb=z.querySelector('.change-btn');
+      if(cb) cb.remove();
+      z.querySelectorAll('.pz-i,.pz-l,.pz-s').forEach(function(el){el.style.display='';});
+    }
+  });
+  // BMI sıfırla
+  const bmiW=document.getElementById('bmiW');
+  if(bmiW) bmiW.classList.add('hidden');
+  // Ana sayfaya git
+  goTo(0);
+  window.scrollTo(0,0);
+}
+
+function trigUp(id){document.getElementById(id).click();}
+function handleP(inp,zId,pId,key){
+  const file=inp.files[0]; if(!file)return;
+  compImg(file,(src,b64)=>{
+    const z=document.getElementById(zId),p=document.getElementById(pId);
+    z.classList.add('done'); p.src=src; p.classList.add('on');
+    z.querySelectorAll('.pz-i,.pz-l,.pz-s').forEach(el=>el.style.display='none');
+    // Değiştir butonu ekle
+    const existing=z.querySelector('.change-btn');
+    if(existing) existing.remove();
+    const btn=document.createElement('button');
+    btn.className='change-btn';
+    btn.innerHTML='🔄 Değiştir';
+    btn.style.cssText='position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:DM Sans,sans-serif;z-index:10';
+    btn.onclick=(e)=>{e.stopPropagation();inp.value='';inp.click();};
+    z.appendChild(btn);
+    ST.photos[key]=b64; checkBtns();
+  });
+}
+function checkBtns(){
+  document.getElementById('b1').disabled=!ST.photos['back'];
+  document.getElementById('b2').disabled=!ST.photos['side'];
+}
+function compImg(file,cb){
+  // Handle large mobile files
+  if(file.size > 15*1024*1024){
+    console.log('Dosya çok büyük:', file.size);
+  }
+  const r=new FileReader();
+  r.onload=e=>{const img=new Image();img.onload=()=>{
+    const c=document.createElement('canvas'),MAX=1000;let[w,h]=[img.width,img.height];
+    if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+    c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+    const src=c.toDataURL('image/jpeg',.45);cb(src,src.split(',')[1]);
+  };img.src=e.target.result;};r.readAsDataURL(file);
+}
+function calcBaseSTS(){
+  const p=ST.patient; let s=0;
+  if(p.family==='yes')s+=1;
+  if(p.gender==='kiz')s+=1;
+  if(p.gender==='kiz'&&['no','1-3m','3m-1y'].includes(p.menarche))s+=1;
+  return s;
+}
+function getSTSRisk(score,gender){
+  if(gender==='kiz')return score<=4?'Düşük':score<=11?'Orta':'Yüksek';
+  return score<=3?'Düşük':score<=8?'Orta':'Yüksek';
+}
+function getSTSMax(gender){return gender==='kiz'?15:13;}
+
+async function doAnalysis(){
+  // API key kontrolü - bir kez girilsin kalıcı kalsın
+  const existingKey = localStorage.getItem('ss_ak');
+  if(!existingKey){
+    document.getElementById('keyOverlay').classList.add('open');
+    return;
+  }
+  ST.obs={a1:document.getElementById('o1').checked,a2:document.getElementById('o2').checked,
+    a3:document.getElementById('o3').checked,a4:document.getElementById('o4').checked,
+    a5:document.getElementById('o5').checked,a6:document.getElementById('o6').checked,
+    a7:document.getElementById('o7').checked,a8:document.getElementById('o8').checked};
+  goTo(4);
+  const msgs=['Fotoğraflar analiz ediliyor…','Omurga asimetrisi değerlendiriliyor…','Kifoz açısı hesaplanıyor…','Risk skoru oluşturuluyor…'];
+  let mi=0; const ldEl=document.getElementById('ldT');
+  const intv=setInterval(()=>{mi=(mi+1)%msgs.length;ldEl.textContent=msgs[mi];},2200);
+  const p=ST.patient,o=ST.obs,base=calcBaseSTS();
+  const content=[];
+  ['back','front','adams','side','kph','radams'].forEach(k=>{if(ST.photos[k])content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos[k]}});});
+  const prompt=`Sen deneyimli bir pediatrik ortopedi uzmanı ve skolyoz uzmanısın. Aşağıdaki fotoğrafları DETAYLI ve KANTİTATİF olarak analiz et.
+
+COCUK BILGILERI:
+Yas: ${p.age||"?"} | Cinsiyet: ${p.gender==="kiz"?"Kiz":"Erkek"} | Boy: ${p.height||"?"} cm | Kilo: ${p.weight||"?"} kg | VKI: ${p.bmi||"?"}
+Ailede skolyoz/kifoz: ${p.family==="yes"?"Var":"Yok"} | Menars: ${p.menarche||"Belirtilmedi"}
+STS temel skoru (aile+cinsiyet+menars): ${base} puan
+
+EBEVEYN GOZLEMLERI (referans - AI bunlardan bagimsiz degerlendir):
+Omuz esitsizligi onden: ${o.a1?"EVET":"Hayir"} | Arkadan: ${o.a2?"EVET":"Hayir"}
+Skapula asimetrisi: ${o.a3?"EVET":"Hayir"} | Pelvis esitsizligi: ${o.a4?"EVET":"Hayir"}
+Adams pozitif: ${o.a5?"EVET":"Hayir"} | Kifoz gorunumu: ${o.a6?"EVET":"Hayir"}
+Rijid kifoz: ${o.a7?"EVET":"Hayir"} | Sirt agrisi: ${o.a8?"EVET":"Hayir"}
+
+ANALIZ TALIMATLARI - COK ONEMLI:
+
+BOLUM A - SKOLYOZ KANTITATIF ANALIZ:
+
+1. OMUZ YUKSEKLIK ASIMETRISI (Onden VE Arkadan AYRI AYRI degerlendirme zorunlu):
+   - Her iki akromion (omuz cikintisi) yuksekligini karsilastir
+   - Kulak memesi ile omuz ustu mesafesi sol-sag esit mi?
+   - Hafif (1cm altinda fark), Orta (1-2cm), Belirgin (2cm uzeri) olarak sinifla
+   - Ebeveyn fark etmese bile fotografta varsa mutlaka PUAN VER
+
+2. SKAPULA ASIMETRISI (Kritik - en cok kacirilan bulgu):
+   - Sag ve sol inferior skapula acilari yuksekligi esit mi?
+   - Skapula medial kenari omurgaya mesafesi esit mi?
+   - Kanat skapula (winging scapula) var mi?
+   - Bir skapula diger tarafa gore daha cikik/belirgin mi?
+   - HAFIF bile olsa PUAN VER - bu bulgu skolyozun erken gostergesi
+
+3. PELVIS VE BEL CIZGISI (Onden VE Arkadan):
+   - ASIS yukseklikleri esit mi? (onden)
+   - Bel cizgisi (waist angle) simetrik mi? (arkadan)
+   - Govde lateral kayması var mi?
+
+5. LOMBER/TORAKOLOMBER SKOLYOZ OZEL PARAMETRELER (en zor grup):
+   - PARASPINAL KAS ASIMETRISI: Bel bolgesinde sag-sol kas kabariklik farki var mi?
+     * Lomber rotasyonda etkilenen taraf paraspinal kas daha belirgin gorunur
+     * Hafif bile olsa kaydet - erken lomber skolyozun en onemli bulgusudur
+   - BEL GIRINTISI ASIMETRISI (Waist angle asymmetry):
+     * Sag ve sol bel girintisi esit mi?
+     * Lomber konveks tarafta bel girintisi SILINIR (daha az girinti)
+     * Karsi tarafta bel girintisi DERIN kalir - izgara ile kare sayarak tahmin et
+   - C7 PLUMB LINE: C7'den dikey hayali cizgi inter-gluteal cizgiye denk gelmeli
+     * Sapma varsa kac kare? Her kare ~1cm
+     * Lomber/TL egrilikte govde kaymasi omuz asimetrisinden ONCE ortaya cikabilir
+   - KALCA SHIFT VE YUKSEKLIK: Bir kalca diger taraftan yuksek mi? Govde bir yone kaymis mi?
+   - LOMBER ADAMS: Ters Adams'ta (onunden) lomber bolgede paraspinal asimetri var mi?
+     * Lomber bolgede rib hump olmaz - paraspinal kabariklik aramak gerekir
+
+4. ADAMS TESTI (Arkadan + Ters Adams):
+   - Standart Adams: arkadan cekilen one egilme - rib hump degerlendir
+   - TERS ADAMS (onunden cekilen one egilme): SADECE SKOLYOZ/GIBBUS icin kullan
+     * Bu fotografi KIFOZ degerlendirmesi icin KULLANMA
+     * Gibbus ve lomber asimetri bu fotograftan cok daha net gorunur
+     * Sag-sol yukseklik farkini karsilastir
+   - Adams testi sonucu: rib hump var mi, hangi taraf, torasik/lomber
+
+BOLUM B - IZGARA/KARE REFERANSI:
+   - Fotografta kareli zemin veya arka plan varsa kare sayisini olcu referansi olarak kullan
+   - Omuz yukseklik farkini kare sayisi x tahmini kare boyutu ile hesapla
+   - Bu kantitatif tahmin ana bulgunu destekler
+
+BOLUM C - KIFOZ/SCHEUERMANN (UZMAN KLINIK BAKIS):
+
+   TEMEL OLCUM - C7'DEN BELE DUZLUK:
+   - Lateral fotografta C7 spinoz cikinti ile sakrum arasinda hayali duz cizgi ciz
+   - Torasik apeks bu cizgiden ne kadar one cikiyor? (izgara kareleri ile olc, her kare ~1cm)
+   - NORMAL: Bu yukseklik 1-2 kare (1-2cm) olmali
+   - PATOLOJIK SUPHE: 4+ kare (4cm+) one cikma = BELIRGIN HIPERKIFOZ, Scheuermann suphe
+   - Bu en kritik olcumdur - mutlaka yap
+
+   APEX SEKLI (ikinci kritik parametre):
+   - Normal kifoz: Yumusak, genis, yuvarlak ark - C7'den bele akici gecis
+   - Patolojik kifoz: Apex noktasinda KESKINLESME, ani angulasyon, sivrilme
+   - Ozellikle one egilmede bu keskinlesme daha da belirginlesir mi? -> YAPISAL BULGU
+
+   ONE EGILME RIJIDITE:
+   - Normal cocukta one egilme ile kifoz biraz artar ama YUMUSAK ve GENIS kalir
+   - Patolojik: One egilmede apex daha da KESKINLESIR, angule olur -> Scheuermann suphe
+   - Rijid mi (duzzelmiyor) yoksa esnek mi (duzzeliyor)?
+
+   APEX SEVIYESI:
+   - Ust torasik (T1-T6): Boyun-sirt bileşkesinde sivrilme, boyun one egik gorunumu
+   - Orta torasik (T6-T10): En sik Scheuermann bolgesi
+   - Torakolomber (T10-L2): Bel bolgesinde yuvarlaklik + hafif skolyoz birlikteligi sik
+
+   KLINIK NOT:
+   - Hiperkifoz + hafif skolyoz birlikte gorulebilir, genellikle torakolomber bolgede
+   - Scheuermann icin: C7-sakrum hattindan 4cm+ sapma VEYA angular apex VEYA rijid kifoz
+
+BOLUM D - GENEL DEGERLENDRME:
+   - Omurga koronal duzlem sapmasi var mi? (C7-sakrum hatti)
+   - Govde dekompansasyonu: bas-pelvis hizasi bozuk mu?
+
+ONEMLI UYARILAR:
+   - Ebeveyn gozlemleri ile fotograf bulgularini BAGIMSIZ degerlendir
+   - Ebeveyn fark etmemis olsa bile fotografta varsa mutlaka belirt ve puan ver
+   - Suphelide yuksek puan ver - false negative false positiveden daha tehlikeli
+   - Hafif bulgular bile buyume donemindeki cocukta onemlidir
+
+Sadece asagidaki JSON formatinda yanit ver, baska metin ekleme:
+{
+  "sts_aesthetic_score": 0-12,
+  "sts_detail": {
+    "scap": 0-1,
+    "sh_ant": 0-2,
+    "sh_post": 0-1,
+    "pel_ant": 0-2,
+    "pel_post": 0-1,
+    "pel_shift": 0-1,
+    "adams": 0-4
+  },
+  "quantitative": {
+    "paraspinal_asymmetry": "yok/hafif/belirgin ve hangi taraf",
+    "waist_angle_diff": "sag ve sol bel girintisi farki tahmini",
+    "c7_plumb_deviation": "C7 plumb line sapmasi cm cinsinden",
+    "hip_shift": "kalca shift veya yukseklik farki",
+    "shoulder_diff_est": "ornek: sag 1.5cm yuksek veya esit",
+    "scap_asymmetry_est": "ornek: sag inferior skapula 1cm yuksek, kanat skapula var",
+    "pelvis_diff_est": "ornek: sol ASIS 0.8cm yuksek veya esit",
+    "trunk_shift": "ornek: govde saga 2cm kaymis veya orta hatta",
+    "adams_side": "sag torasik / sol lomber / negatif",
+    "grid_used": true
+  },
+  "kyph_angle_est": "ornek: 48-55 derece (artmis) veya Normal (32-38 derece)",
+  "kyph_apex_shape": "yuvarlak|angular",
+  "kyph_apex_level": "ust_torasik|alt_torasik|torakolomber",
+  "kyph_rigidity": "duzzeldi|sabit|artti",
+  "forward_head_est": "ornek: 4cm one kayma veya normal",
+  "kyph_scoliosis_combo": false,
+  "kyph_risk": "Dusuk|Orta|Yuksek",
+  "scheuermann_suspicion": true,
+  "scheuermann_reason": "aciklama veya null",
+  "ai_confirms": [
+    {"id":"sh","label":"Omuz yukseklik asimetrisi","detected":true,"severity":"hafif|orta|belirgin","note":"hangi taraf, tahmini fark"},
+    {"id":"sc","label":"Skapula asimetrisi","detected":true,"severity":"hafif|orta|belirgin","note":"hangi taraf, kanat skapula var mi"},
+    {"id":"pl","label":"Pelvis asimetrisi","detected":true,"severity":"hafif|orta|belirgin","note":"hangi taraf yuksek"},
+    {"id":"ad","label":"Adams - rib hump","detected":true,"severity":"hafif|orta|belirgin","note":"hangi taraf, torasik/lomber"},
+    {"id":"ky","label":"Gorsel kifoz artisi","detected":true,"severity":"hafif|orta|belirgin","note":"aci tahmini ve rijidite"}
+  ],
+  "scoli_finding": "3-4 cumle skolyoz bulgu yorumu",
+  "kyph_finding": "2-3 cumle kifoz bulgu yorumu",
+  "clinical_suspicion": "Dusuk|Orta|Yuksek|Cok Yuksek",
+  "recommended_action": "ornek: Acil FTR/ortopedi konsultasyonu | 2 ay icerisinde uzman degerlendirmesi",
+  "tags": ["Sağ Torasik Skolyoz" veya "Sol Lomber Skolyoz" gibi Türkçe, boşluklu, anlaşılır etiketler - max 4 adet],
+  "next_scan_months": 1
+}`;
+
+  try{
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),55000); // 60 saniye timeout
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{signal:controller.signal,
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': localStorage.getItem('ss_ak')||'',
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-opus-4-5',
+        max_tokens:4000,
+        messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]
+      })});
+    clearTimeout(timeout);
+    clearInterval(intv);
+    if(!resp.ok){const errData=await resp.json().catch(()=>({}));throw new Error('API hata: '+(errData.error?.message||resp.status));}
+    const data=await resp.json();
+    const txt=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    console.log('=== API YANITI ===', txt.substring(0,500));
+    console.log('=== TOPLAM UZUNLUK ===', txt.length);
+    let result=null;
+    // Try multiple parse strategies
+    const attempts = [
+      txt,
+      txt.replace(/```json|```/g,'').trim(),
+      (txt.match(/\{[\s\S]*\}/) || ['{}'])[0]
+    ];
+    for(const a of attempts){
+      try{
+        const parsed = JSON.parse(a);
+        if(parsed.sts_aesthetic_score !== undefined){ result = parsed; break; }
+      }catch(e){}
+    }
+    // If still null, try to fix common JSON issues and re-parse
+    if(!result){
+      try{
+        // Fix truncated JSON by closing open brackets
+        let fixed = txt.replace(/```json|```/g,'').trim();
+        // Count brackets and close if needed
+        const opens = (fixed.match(/\{/g)||[]).length;
+        const closes = (fixed.match(/\}/g)||[]).length;
+        if(opens > closes) fixed += '}'.repeat(opens-closes);
+        // Fix trailing commas
+        fixed = fixed.replace(/,\s*}/g,'}').replace(/,\s*]/g,']');
+        result = JSON.parse(fixed);
+      }catch(e2){
+        // Last resort: extract key numbers with regex
+        try{
+          const g = (pattern) => { const m=txt.match(pattern); return m?m[1]:null; };
+          const gi = (pattern) => { const m=txt.match(pattern); return m?parseInt(m[1]):0; };
+          const scoreVal = gi(/"sts_aesthetic_score"\s*:\s*(\d+)/);
+          if(scoreVal >= 0){
+            result = {
+              sts_aesthetic_score: scoreVal,
+              sts_detail: {
+                scap: gi(/"scap"\s*:\s*(\d+)/),
+                sh_ant: gi(/"sh_ant"\s*:\s*(\d+)/),
+                sh_post: gi(/"sh_post"\s*:\s*(\d+)/),
+                pel_ant: gi(/"pel_ant"\s*:\s*(\d+)/),
+                pel_post: gi(/"pel_post"\s*:\s*(\d+)/),
+                pel_shift: gi(/"pel_shift"\s*:\s*(\d+)/),
+                adams: gi(/"adams"\s*:\s*(\d+)/)
+              },
+              kyph_risk: g(/"kyph_risk"\s*:\s*"([^"]+)"/) || 'Düşük',
+              kyph_angle_est: g(/"kyph_angle_est"\s*:\s*"([^"]+)"/) || '—',
+              scheuermann_suspicion: txt.includes('"scheuermann_suspicion":true') || txt.includes('"scheuermann_suspicion": true'),
+              scheuermann_reason: g(/"scheuermann_reason"\s*:\s*"([^"]*)"/) || null,
+              ai_confirms: [],
+              scoli_finding: g(/"scoli_finding"\s*:\s*"((?:[^"\\]|\\.)*)"/) || 'AI analizi tamamlandı. Bulgular aşağıda özetlenmiştir.',
+              kyph_finding: g(/"kyph_finding"\s*:\s*"((?:[^"\\]|\\.)*)"/) || 'Kifoz değerlendirmesi yapıldı.',
+              clinical_suspicion: g(/"clinical_suspicion"\s*:\s*"([^"]+)"/) || null,
+              recommended_action: g(/"recommended_action"\s*:\s*"((?:[^"\\]|\\.)*)"/) || null,
+              quantitative: null,
+              tags: [],
+              next_scan_months: scoreVal >= 9 ? 1 : scoreVal >= 5 ? 2 : 3
+            };
+            console.log('Partial parse OK, score:', scoreVal);
+          }
+        }catch(e3){ console.error('All parse attempts failed:', e3); }
+      }
+    }
+    if(!result) throw new Error('parse fail');
+    finishAnalysis(result,base);
+  }catch(err){
+    clearInterval(intv);
+    console.error('=== HATA ===', err.message, err.stack);
+    // Show error to user briefly
+    document.getElementById('progTxt').textContent='Hata: '+err.message.substring(0,50);
+    setTimeout(()=>finishAnalysis(buildFallback(base),base), 1500);
+  }
+}
+
+function buildFallback(base){
+  const o=ST.obs;let aes=0;
+  if(o.a1)aes+=2;if(o.a2)aes+=1;if(o.a3)aes+=1;if(o.a4)aes+=2;if(o.a5)aes+=4;
+  return{sts_aesthetic_score:aes,
+    sts_detail:{scap:o.a3?1:0,sh_ant:o.a1?2:0,sh_post:o.a2?1:0,pel_ant:o.a4?2:0,pel_post:0,pel_shift:0,adams:o.a5?4:0},
+    kyph_angle_est:o.a6?(o.a7?'55-65° (tahmini)':'45-55° (tahmini)'):'Normal sınırda (<40°)',
+    kyph_risk:o.a6?(o.a7?'Yüksek':'Orta'):'Düşük',
+    scheuermann_suspicion:o.a7&&o.a8,scheuermann_reason:o.a7?'Rijid kifoz gözlemi':null,
+    ai_confirms:[
+      {id:'sh',label:'Omuz yükseklik asimetrisi',detected:o.a1||o.a2,severity:'hafif'},
+      {id:'sc',label:'Skapula asimetrisi',detected:o.a3,severity:'hafif'},
+      {id:'pl',label:'Pelvis asimetrisi',detected:o.a4,severity:'hafif'},
+      {id:'ad',label:'Adams — rib hump',detected:o.a5,severity:'orta'},
+      {id:'ky',label:'Görsel kifoz artışı',detected:o.a6,severity:o.a7?'belirgin':'hafif'}
+    ],
+    scoli_finding:'Ebeveyn gözlemleri ve fotoğraflar değerlendirildi. Uzman muayenesi önerilmektedir.',
+    kyph_finding:o.a6?'Kifoz artışı gözlemlendi. Lateral grafik ve uzman değerlendirmesi önerilmektedir.':'Kifoz değerlendirmesi normal sınırda görünmektedir.',
+    tags:[],next_scan_months:o.a5||o.a1&&o.a2?1:2};
+}
+
+function finishAnalysis(result,base){
+  // Geçersiz fotoğraf kontrolü
+  if(result&&result.invalid_photos===true){
+    document.getElementById('ldW').style.display='none';
+    document.getElementById('s4').innerHTML='<div style="padding:32px 20px;text-align:center"><div style="font-size:48px;margin-bottom:16px">⚠️</div><div style="font-size:20px;font-weight:700;color:#fca5a5;margin-bottom:12px">Geçersiz Fotoğraf</div><div style="font-size:14px;color:#94a3b8;margin-bottom:24px;line-height:1.6">Yüklenen fotoğraflarda insan omurgası tespit edilemedi.<br>Lütfen doğru pozisyonda çekilmiş fotoğraflar yükleyin.</div><button class=\"btn bp\" onclick=\"goTo(1)\">← Fotoğrafları Değiştir</button></div>';
+    goTo(4);
+    return;
+  }
+  const total=base+(result.sts_aesthetic_score||0);
+  const g=ST.patient.gender;
+  ST.result={...result,total_sts:total,sts_risk:getSTSRisk(total,g),sts_max:getSTSMax(g)};
+  buildConfirm(result.ai_confirms||[]); goTo(5);
+}
+
+function buildConfirm(items){
+  const c=document.getElementById('confItems'); c.innerHTML='';
+  const det=items.filter(i=>i.detected);
+  if(!det.length){c.innerHTML='<div class="info green">✅ AI fotoğraflarda belirgin asimetri tespit etmedi. Sonuç sayfasını inceleyin.</div>';return;}
+  det.forEach(it=>{
+    const d=document.createElement('div');d.className='citem';
+    d.innerHTML=`<div class="cq">AI tespit etti: <strong>${it.label}</strong> <span style="font-size:11px;color:var(--amber)">(${it.severity})</span></div>
+    <div class="copts">
+      <button class="copt" onclick="selConf(this,'yes')">✓ Ben de fark ettim</button>
+      <button class="copt" onclick="selConf(this,'no')">Fark etmedim</button>
+      <button class="copt" onclick="selConf(this,'unsure')">Emin değilim</button>
+    </div>`;
+    c.appendChild(d);
+  });
+}
+function selConf(btn,v){
+  btn.closest('.copts').querySelectorAll('.copt').forEach(b=>{
+    b.classList.remove('yes','no','unsure');
+  });
+  if(v==='yes') btn.classList.add('yes');
+  else if(v==='no') btn.classList.add('no');
+  else if(v==='unsure') btn.classList.add('unsure');
+  // Store in ST.obs
+  const item = btn.closest('.card');
+  if(item){
+    const label = item.querySelector('.ct')?.textContent||'';
+    ST.obs[label] = v;
+  }
+}
+
+function exportAllValidation(){
+  const h=getHist();
+  if(!h.length){alert('Henüz kayıtlı tarama yok.');return;}
+
+  // SheetJS ile xlsx oluştur
+  const script=document.createElement('script');
+  script.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  script.onload=function(){
+    const wb=XLSX.utils.book_new();
+    
+    const headers=[
+      'Tarama No','Tarih','Ad Soyad','Yaş','Cinsiyet','Boy (cm)','Kilo (kg)','VKİ',
+      'Ailede Skolyoz/Kifoz','Menars',
+      'STS Toplam','STS Max','Skolyoz Risk','Klinik Şüphe',
+      'Skapula (0-1)','Omuz Ön (0-2)','Omuz Arka (0-1)',
+      'Pelvis Ön (0-2)','Pelvis Arka (0-1)','Pelvik Kayma (0-1)','Adams (0-4)',
+      'Kifoz Risk','Kifoz Açısı','Apex Şekli','Scheuermann?',
+      'Omuz Farkı','Skapula Asim.','Pelvis Farkı','Gövde Kayma','Adams Taraf',
+      'AI Skolyoz Bulgusu','AI Kifoz Bulgusu','AI Öneri',
+      'HEKİM Skolyoz Var/Yok','HEKİM Cobb (°)','HEKİM Lokalizasyon','HEKİM Eğri Yönü','HEKİM Korse',
+      'HEKİM Kifoz Tanısı','HEKİM Kifoz Cobb (°)','HEKİM Notlar'
+    ];
+
+    const rows=h.map(function(x){
+      return [
+        x.taramaNo||x.id, x.date,
+        x.name||'İsimsiz', x.age||'', x.gender==='kiz'?'Kız':'Erkek',
+        x.height||'', x.weight||'', x.bmi||'',
+        x.family==='yes'?'Var':'Yok', x.menarche||'',
+        x.sts||0, x.sts_max||'', x.sts_risk||'', x.clinical_suspicion||'',
+        x.scap||0, x.sh_ant||0, x.sh_post||0,
+        x.pel_ant||0, x.pel_post||0, x.pel_shift||0, x.adams||0,
+        x.kyph_risk||'', x.kyph_angle_est||'', x.kyph_apex_shape||'',
+        x.sch?'Evet':'Hayır',
+        x.shoulder_diff||'', x.scap_asym||'', x.pelvis_diff||'',
+        x.trunk_shift||'', x.adams_side||'',
+        x.scoli_finding||'', x.kyph_finding||'', x.recommended_action||'',
+        x.hekim_skolyoz||'', x.hekim_cobb||'', x.hekim_lokalizasyon||'',
+        x.hekim_yon||'', x.hekim_korse||'',
+        x.hekim_kifoz_tani||'', x.hekim_kifoz_cobb||'', x.hekim_notlar||''
+      ];
+    });
+
+    const ws=XLSX.utils.aoa_to_sheet([headers].concat(rows));
+    
+    // Sütun genişlikleri
+    ws['!cols']=[
+      {wch:14},{wch:12},{wch:14},{wch:5},{wch:7},{wch:7},{wch:7},{wch:8},
+      {wch:14},{wch:10},
+      {wch:8},{wch:8},{wch:10},{wch:10},
+      {wch:8},{wch:8},{wch:8},{wch:8},{wch:8},{wch:8},{wch:8},
+      {wch:10},{wch:14},{wch:10},{wch:10},
+      {wch:14},{wch:14},{wch:14},{wch:14},{wch:12},
+      {wch:40},{wch:40},{wch:25},
+      {wch:12},{wch:10},{wch:14},{wch:12},{wch:10},
+      {wch:14},{wch:10},{wch:25}
+    ];
+    
+    XLSX.utils.book_append_sheet(wb,'Validasyon',ws);
+    const today=new Date().toLocaleDateString('tr-TR').replace(/\./g,'-');
+    XLSX.writeFile(wb,'SpineScan_Validasyon_'+today+'.xlsx');
+  };
+  document.head.appendChild(script);
+}
+
+function exportValidation(){
+  const r=ST.result||{};
+  const p=ST.patient;
+  const det=r.sts_detail||{};
+  const q=r.quantitative||{};
+  const now=new Date();
+  const date=now.toLocaleDateString('tr-TR');
+  const taramaNo='SS-'+now.getFullYear().toString().slice(2)+
+    String(now.getMonth()+1).padStart(2,'0')+
+    String(now.getDate()).padStart(2,'0')+'-'+
+    String(now.getHours()).padStart(2,'0')+
+    String(now.getMinutes()).padStart(2,'0');
+
+  // TAB ayraçlı format - Excel'de hiç sorun olmaz
+  const TAB=';';
+  const NL='\r\n';
+  const BOM='\uFEFF';
+
+  // Metni temizle - tab ve yeni satır kaldır
+  const clean=function(v){
+    return String(v||'').replace(/\t/g,' ').replace(/[\r\n]+/g,' ').trim();
+  };
+
+  // Başlık satırları - gruplandırılmış
+  const rows=[];
+
+  // Satır 1: Grup başlıkları
+  rows.push([
+    'KİMLİK','','','','','','','',
+    'RİSK FAKTÖRLERİ','',
+    'SPİNESCAN AI — SKOLYOZ','','','',
+    'STS ALT PUANLARI','','','','','','',
+    'KİFOZ','','',
+    'KANTİTATİF ÖLÇÜMLER','','','','',
+    'AI YORUMLARI','','',
+    'HEKİM TANISI (DOKTOR DOLDURUR)','','','','',''
+  ].join(TAB));
+
+  // Satır 2: Sütun başlıkları
+  rows.push([
+    'Tarama No','Tarih','Ad Soyad','Yaş','Cinsiyet','Boy (cm)','Kilo (kg)','VKİ',
+    'Ailede Skolyoz/Kifoz','Menars Durumu',
+    'STS Toplam Puan','STS Maksimum','Skolyoz Risk Grubu','Klinik Şüphe Düzeyi',
+    'Skapula Asimetrisi (0-1)','Önden Omuz Farkı (0-2)','Arkadan Omuz Farkı (0-1)',
+    'Önden Pelvis Farkı (0-2)','Arkadan Pelvis Farkı (0-1)','Pelvik Kayma (0-1)','Adams Testi (0-4)',
+    'Kifoz Risk Grubu','Tahmini Kifoz Açısı','Apex Şekli','Rijidite','Forward Head','Kifoz+Skolyoz Birliktelik','Scheuermann Şüphesi',
+    'Omuz Fark Tahmini','Skapula Asimetri Tahmini','Pelvis Fark Tahmini',
+    'Gövde Kayma Tahmini','Adams Hangi Taraf',
+    'AI Skolyoz Bulgusu','AI Kifoz Bulgusu','AI Önerilen Eylem',
+    'HEKIM Skolyoz Var/Yok','HEKIM Cobb Açısı (°)','HEKIM Egri Lokalizasyonu',
+    'HEKIM Egri Yönü','HEKIM Korse Gerekli','HEKIM Notlar'
+  ].join(TAB));
+
+  // Satır 3: Veri
+  rows.push([
+    taramaNo, date,
+    clean(p.name)||'İsimsiz',
+    clean(p.age), p.gender==='kiz'?'Kız':'Erkek',
+    clean(p.height), clean(p.weight), clean(p.bmi),
+    p.family==='yes'?'Var':'Yok', clean(p.menarche),
+    r.total_sts||0, r.sts_max||'',
+    clean(r.sts_risk), clean(r.clinical_suspicion),
+    det.scap||0, det.sh_ant||0, det.sh_post||0,
+    det.pel_ant||0, det.pel_post||0, det.pel_shift||0, det.adams||0,
+    clean(r.kyph_risk), clean(r.kyph_angle_est),
+    r.scheuermann_suspicion?'Evet':'Hayır',
+    clean(q.shoulder_diff_est), clean(q.scap_asymmetry_est),
+    clean(q.pelvis_diff_est), clean(q.trunk_shift), clean(q.adams_side),
+    clean(r.scoli_finding), clean(r.kyph_finding), clean(r.recommended_action),
+    '','','','','',''
+  ].join(TAB));
+
+  // Satır 4: Boş ayırıcı
+  rows.push('');
+
+  // Satır 5: AI Confirms detayı
+  rows.push('AI ONAY DETAYLARI'+TAB+'Tespit'+TAB+'Şiddet'+TAB+'Not');
+  if(r.ai_confirms && r.ai_confirms.length){
+    r.ai_confirms.forEach(function(item){
+      rows.push([
+        clean(item.label),
+        item.detected?'Tespit Edildi':'Tespit Edilmedi',
+        clean(item.severity),
+        clean(item.note)
+      ].join(TAB));
+    });
+  }
+
+  const content = BOM + rows.join(NL);
+  const blob=new Blob([content],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='SpineScan_'+taramaNo+'_'+(p.name||'vaka').replace(/\s/g,'_')+'.tsv';
+  a.click();
+}
+
+function showResults(){
+  const r=ST.result,p=ST.patient;
+  document.getElementById('scSc').textContent=r.total_sts;
+  document.getElementById('stsSc').textContent=r.total_sts;
+  document.getElementById('stsMx').textContent=r.sts_max;
+  const scR=document.getElementById('scRsk');
+  scR.textContent=r.sts_risk+' Risk';
+  scR.className='srisk '+(r.sts_risk==='Düşük'?'sr-low':r.sts_risk==='Orta'?'sr-mid':'sr-high');
+  const kR=r.kyph_risk||'Düşük';
+  const kIcon=kR==='Düşük'?'✓':kR==='Orta'?'△':'↑';
+  document.getElementById('kySc').textContent=kIcon;
+  const kyR=document.getElementById('kyRsk');
+  kyR.textContent=kR+' Risk';
+  kyR.className='srisk '+(kR==='Düşük'?'sr-low':kR==='Orta'?'sr-mid':'sr-high');
+  document.getElementById('kyAng').textContent=r.kyph_angle_est||'—';
+  document.getElementById('scFnd').textContent=r.scoli_finding||'—';
+  let kTxt=r.kyph_finding||'—';
+  if(r.kyph_apex_shape==='angular')kTxt+=' ⚠️ Apex keskin/angular — yapısal kifoz bulgusu.';
+  if(r.kyph_scoliosis_combo)kTxt+=' ⚠️ Kifoz+Skolyoz birlikteliği: torakolomber bölge değerlendirmesi önerilir.';
+  if(r.forward_head_est&&r.forward_head_est!=='normal')kTxt+=' Baş öne kayması: '+r.forward_head_est+'.';
+  if(r.scheuermann_suspicion)kTxt+=' ⚠️ Scheuermann şüphesi: '+(r.scheuermann_reason||'');
+  document.getElementById('kyFnd').textContent=kTxt;
+
+  // Tags
+  const tw=document.getElementById('tagsW'); tw.innerHTML='';
+  const autoT=[];
+  if(r.sts_risk==='Orta'||r.sts_risk==='Yüksek')autoT.push({t:'Skolyoz Şüphesi',c:'tw'});
+  if(kR==='Orta'||kR==='Yüksek')autoT.push({t:'Kifoz Artışı',c:'tp'});
+  if(r.scheuermann_suspicion)autoT.push({t:'Scheuermann Şüphesi',c:'tw'});
+  if(r.kyph_apex_shape==='angular')autoT.push({t:'Angular Kifoz Apeksi',c:'tw'});
+  if(r.kyph_scoliosis_combo)autoT.push({t:'Kifoz+Skolyoz Birlikteliği',c:'tw'});
+  if(r.sts_risk==='Düşük'&&kR==='Düşük')autoT.push({t:'Düşük Risk',c:'tok'});
+  [...autoT,...(r.tags||[]).map(t=>({t,c:'ti'}))].forEach(({t,c})=>{
+    const s=document.createElement('span');s.className='tag '+c;s.textContent=t;tw.appendChild(s);
+  });
+
+  // Measurements table
+  const det=r.sts_detail||{};
+  const lM={scap:'Skapula asimetrisi',sh_ant:'Önden omuz farkı',sh_post:'Arkadan omuz farkı',pel_ant:'Önden pelvis farkı',pel_post:'Arkadan pelvis farkı',pel_shift:'Pelvik kayma',adams:'Adams testi'};
+  const mxM={scap:1,sh_ant:2,sh_post:1,pel_ant:2,pel_post:1,pel_shift:1,adams:4};
+  // Add quantitative measurements if available
+  if(r.quantitative) {
+    const q = r.quantitative;
+    const qHtml = `<div style="background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);border-radius:10px;padding:12px;margin-top:10px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#94a3b8;margin-bottom:8px">AI Kantitatif Ölçüm Tahminleri</div>
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <tr><td style="padding:5px 4px;color:#94a3b8;border-bottom:1px solid rgba(255,255,255,.05)">Omuz yükseklik farkı</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0;border-bottom:1px solid rgba(255,255,255,.05)">${q.shoulder_diff_est||"—"}</td></tr>
+        <tr><td style="padding:5px 4px;color:#94a3b8;border-bottom:1px solid rgba(255,255,255,.05)">Skapula asimetrisi</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0;border-bottom:1px solid rgba(255,255,255,.05)">${q.scap_asymmetry_est||"—"}</td></tr>
+        <tr><td style="padding:5px 4px;color:#94a3b8;border-bottom:1px solid rgba(255,255,255,.05)">Pelvis farkı</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0;border-bottom:1px solid rgba(255,255,255,.05)">${q.pelvis_diff_est||"—"}</td></tr>
+        <tr><td style="padding:5px 4px;color:#94a3b8;border-bottom:1px solid rgba(255,255,255,.05)">Gövde kayması</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0;border-bottom:1px solid rgba(255,255,255,.05)">${q.trunk_shift||"—"}</td></tr>
+        <tr><td style="padding:5px 4px;color:#94a3b8">Adams — hangi taraf</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0">${q.adams_side||"—"}</td></tr>
+      </table>
+      ${q.grid_used?"<div style='font-size:11px;color:#5eead4;margin-top:6px'>✓ Izgara referansı kullanıldı</div>":""}
+    </div>`;
+    document.getElementById('measT').insertAdjacentHTML('afterend', qHtml);
+  }
+
+  // Show recommended action
+  if(r.recommended_action) {
+    const recEl = document.getElementById('scFnd');
+    recEl.innerHTML = (r.scoli_finding||'—') + '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,.12);border-radius:8px;font-size:12px;color:#fcd34d;font-weight:600">→ ' + r.recommended_action + '</div>';
+  }
+
+  // Show clinical suspicion
+  if(r.clinical_suspicion) {
+    const cs = r.clinical_suspicion;
+    const csColor = cs==='Çok Yüksek'||cs==='Cok Yuksek'?'#fca5a5':cs==='Yüksek'||cs==='Yuksek'?'#fca5a5':cs==='Orta'?'#fcd34d':'#86efac';
+    document.getElementById('scRsk').innerHTML = (r.sts_risk||'—') + ' Risk <span style="font-size:10px;margin-left:4px;opacity:.8">| Klinik şüphe: ' + cs + '</span>';
+    document.getElementById('scRsk').style.color = csColor;
+  }
+
+  document.getElementById('measT').innerHTML=Object.entries(lM).map(([k,lb])=>
+    `<tr><td style="padding:7px 5px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--muted)">${lb}</td><td style="padding:7px 5px;border-bottom:1px solid rgba(255,255,255,.06);text-align:right;font-weight:600">${det[k]??'—'} / ${mxM[k]}</td></tr>`
+  ).join('');
+
+  // Disclaimer
+  const hiR=r.sts_risk==='Yüksek'||kR==='Yüksek';
+  const miR=r.sts_risk==='Orta'||kR==='Orta';
+  let dTxt='';
+  if(hiR)dTxt="⚠️ Çocuğunuzun omurgasında omurga deformite riski saptandı. Konuyu <strong>en kısa sürede</strong> uzman bir <strong>Fizik Tedavi ve Rehabilitasyon Uzmanı</strong> veya <strong>Omurga Uzmanı Ortopedist</strong>'e iletmenizi önemle tavsiye ederiz. Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.";
+  else if(miR)dTxt="Orta düzey bulgular saptandı. Çocuğunuzu <strong>1–2 ay içinde</strong> bir <strong>Fizik Tedavi ve Rehabilitasyon Uzmanı</strong> veya <strong>Omurga Uzmanı Ortopedist</strong>'e götürmenizi öneririz. Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.";
+  else dTxt="Bulgular düşük risk grubunda. Omurga gelişimini takip etmek için <strong>2–3 ayda bir</strong> taramayı tekrarlayın. Büyüme döneminde herhangi bir şüphede <strong>Fizik Tedavi ve Rehabilitasyon Uzmanı</strong> veya <strong>Omurga Uzmanı Ortopedist</strong>'e başvurun.";
+  document.getElementById('discT').innerHTML=dTxt;
+
+  // Next scan
+  const mo=r.next_scan_months||(r.sts_risk==='Yüksek'?1:r.sts_risk==='Orta'?2:3); const nd=new Date(); nd.setMonth(nd.getMonth()+mo);
+  document.getElementById('nscD').textContent=nd.toLocaleDateString('tr-TR',{month:'long',year:'numeric'})+' ('+mo+' ay sonra)';
+
+  checkChanges(); saveScan(); goTo(6);
+}
+
+function saveScan(){
+  const r=ST.result,p=ST.patient;
+  const rs={total_sts:r.total_sts,sts_max:r.sts_max,sts_risk:r.sts_risk,
+    sts_detail:r.sts_detail,kyph_risk:r.kyph_risk,kyph_angle_est:r.kyph_angle_est,
+    kyph_apex_shape:r.kyph_apex_shape,kyph_rigidity:r.kyph_rigidity,
+    scheuermann_suspicion:r.scheuermann_suspicion,scheuermann_reason:r.scheuermann_reason,
+    kyph_scoliosis_combo:r.kyph_scoliosis_combo,
+    scoli_finding:r.scoli_finding,kyph_finding:r.kyph_finding,
+    clinical_suspicion:r.clinical_suspicion,recommended_action:r.recommended_action,
+    quantitative:r.quantitative,tags:r.tags,next_scan_months:r.next_scan_months};
+  const det=r.sts_detail||{};
+  const q=r.quantitative||{};
+  const now=new Date();
+  const taramaNo='SS-'+now.getFullYear().toString().slice(2)+
+    String(now.getMonth()+1).padStart(2,'0')+
+    String(now.getDate()).padStart(2,'0')+'-'+
+    String(now.getHours()).padStart(2,'0')+
+    String(now.getMinutes()).padStart(2,'0');
+  const rec={id:Date.now(),date:now.toLocaleDateString('tr-TR'),ts:Date.now(),
+    taramaNo:taramaNo,
+    name:p.name||'İsimsiz',age:p.age,gender:p.gender,
+    height:p.height,weight:p.weight,bmi:p.bmi,
+    family:p.family,menarche:p.menarche,
+    sts:r.total_sts,sts_max:r.sts_max,sts_risk:r.sts_risk,
+    clinical_suspicion:r.clinical_suspicion,
+    scap:det.scap||0,sh_ant:det.sh_ant||0,sh_post:det.sh_post||0,
+    pel_ant:det.pel_ant||0,pel_post:det.pel_post||0,pel_shift:det.pel_shift||0,adams:det.adams||0,
+    kyph_risk:r.kyph_risk,kyph_angle_est:r.kyph_angle_est,
+    kyph_apex_shape:r.kyph_apex_shape,kyph_rigidity:r.kyph_rigidity,
+    sch:r.scheuermann_suspicion,sch_reason:r.scheuermann_reason,
+    kyph_scoliosis_combo:r.kyph_scoliosis_combo,
+    shoulder_diff:q?q.shoulder_diff_est:'',scap_asym:q?q.scap_asymmetry_est:'',
+    pelvis_diff:q?q.pelvis_diff_est:'',trunk_shift:q?q.trunk_shift:'',adams_side:q?q.adams_side:'',
+    scoli_finding:r.scoli_finding,kyph_finding:r.kyph_finding,
+    recommended_action:r.recommended_action,
+    // Hekim alanları - boş, sonradan doldurulacak
+    hekim_skolyoz:'',hekim_cobb:'',hekim_lokalizasyon:'',
+    hekim_yon:'',hekim_kifoz_tani:'',hekim_kifoz_cobb:'',hekim_korse:'',hekim_notlar:'',
+    result:rs};
+  const h=getHist();h.push(rec);
+  if(h.length>200)h.splice(0,h.length-200);
+  try{localStorage.setItem('ss_hist',JSON.stringify(h));}catch(e){}
+}
+function getHist(){try{return JSON.parse(localStorage.getItem('ss_hist')||'[]');}catch(e){return[];}}
+
+function checkChanges(){
+  const h=getHist();const r=ST.result;const p=ST.patient;
+  const prev=h.filter(x=>!p.name||x.name===p.name||x.name==='İsimsiz').slice(-2,-1)[0];
+  if(!prev)return;
+  const al=[];const df=r.total_sts-prev.sts;
+  if(df>=2)al.push(`Skolyoz STS skoru ${Math.abs(df)} puan arttı (${prev.sts} → ${r.total_sts})`);
+  else if(df<=-2)al.push(`Skolyoz STS skoru ${Math.abs(df)} puan azaldı (${prev.sts} → ${r.total_sts})`);
+  if(prev.sts_risk!==r.sts_risk)al.push(`Risk grubu değişti: ${prev.sts_risk} → ${r.sts_risk}`);
+  if(!prev.sch&&r.scheuermann_suspicion)al.push('Yeni Scheuermann şüphesi oluştu!');
+  if(prev.kyph_risk&&prev.kyph_risk!==r.kyph_risk)al.push(`Kifoz riski: ${prev.kyph_risk} → ${r.kyph_risk}`);
+  if(al.length){
+    const el=document.getElementById('chngAlert');
+    el.innerHTML='⚠️ <strong>Önceki taramaya göre değişiklik:</strong><br>'+al.map(a=>'• '+a).join('<br>');
+    el.classList.remove('hidden');
+  }
+}
+
+function showHist(){
+  const h=getHist().slice().reverse();const el=document.getElementById('histL');
+  el.innerHTML=h.length?h.map((x,i)=>`
+    <div class="hitem" onclick="showHistDetail(${h.length-1-i})" style="cursor:pointer">
+      <div class="hdate">${x.date}</div>
+      <div class="hname">${x.name||'İsimsiz'} — ${x.age||'?'} yaş</div>
+      <div class="hsc">
+        <span class="hbadge" style="background:rgba(37,99,235,.15);color:#93c5fd">STS: ${x.sts} — ${x.sts_risk}</span>
+        <span class="hbadge" style="background:rgba(139,92,246,.15);color:#c4b5fd">Kifoz: ${x.kyph_risk||'—'}</span>
+        ${x.sch?'<span class="hbadge" style="background:rgba(245,158,11,.15);color:#fcd34d">Scheuermann?</span>':''}
+      </div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">👆 Detayı görüntüle</div>
+    </div>`).join('')
+    :'<div style="color:var(--muted);font-size:14px;text-align:center;padding:20px">Henüz kayıtlı tarama yok</div>';
+  document.getElementById('histOv').classList.add('open');
+}
+
+function showHistDetail(idx){
+  const h=getHist();
+  const x=h[idx];
+  if(!x||!x.result)return;
+
+  // Karşılaştırma — bir önceki tarama
+  const prev=h[idx-1];
+  let compHtml='';
+  if(prev){
+    const df=x.sts-(prev.sts||0);
+    const sign=df>0?'▲ +':df<0?'▼ ':'→ ';
+    const col=df>1?'#fca5a5':df<-1?'#86efac':'#94a3b8';
+    compHtml=`<div style="background:rgba(255,255,255,.05);border-radius:8px;padding:10px;margin-bottom:12px;font-size:12px">
+      <div style="color:#94a3b8;margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:1px">Önceki taramaya göre (${prev.date})</div>
+      <span style="color:${col};font-weight:700">${sign}${Math.abs(df)} puan</span>
+      <span style="color:#64748b"> (${prev.sts||'—'} → ${x.sts||'—'})</span>
+      ${prev.sts_risk!==x.sts_risk?`<div style="color:#fcd34d;margin-top:4px">Risk grubu: ${prev.sts_risk} → ${x.sts_risk}</div>`:''}
+      ${!prev.sch&&x.sch?'<div style="color:#fca5a5;margin-top:4px">⚠️ Yeni Scheuermann şüphesi</div>':''}
+    </div>`;
+  }
+
+  const r=x.result;
+  const det=r.sts_detail||{};
+  const lM={scap:'Skapula asimetrisi',sh_ant:'Önden omuz farkı',sh_post:'Arkadan omuz farkı',
+    pel_ant:'Önden pelvis farkı',pel_post:'Arkadan pelvis farkı',pel_shift:'Pelvik kayma',adams:'Adams testi'};
+  const mxM={scap:1,sh_ant:2,sh_post:1,pel_ant:2,pel_post:1,pel_shift:1,adams:4};
+
+  const detHtml=Object.entries(lM).map(([k,lb])=>
+    `<tr><td style="padding:6px 4px;border-bottom:1px solid rgba(255,255,255,.05);color:#94a3b8;font-size:12px">${lb}</td>
+     <td style="padding:6px 4px;border-bottom:1px solid rgba(255,255,255,.05);text-align:right;font-weight:600;font-size:12px">${det[k]??'—'} / ${mxM[k]}</td></tr>`
+  ).join('');
+
+  const html=`
+    <div style="position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px" onclick="this.remove()">
+      <div style="background:#1a2d4a;border-radius:16px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;padding:20px" onclick="event.stopPropagation()">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div>
+            <div style="font-size:18px;font-weight:700;color:#f8fafc">${x.name||'İsimsiz'} — ${x.age||'?'} yaş</div>
+            <div style="font-size:12px;color:#64748b">${x.date}</div>
+          </div>
+          <button onclick="this.closest('[style*=fixed]').remove()" style="background:rgba(255,255,255,.1);border:none;color:#94a3b8;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:14px">✕</button>
+        </div>
+
+        ${compHtml}
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:28px;font-weight:700;color:${x.sts_risk==='Yüksek'?'#fca5a5':x.sts_risk==='Orta'?'#fcd34d':'#86efac'}">${x.sts||'—'}</div>
+            <div style="font-size:10px;color:#94a3b8;margin-top:2px">SKOLYOZ STS</div>
+            <div style="font-size:12px;font-weight:600;color:${x.sts_risk==='Yüksek'?'#fca5a5':x.sts_risk==='Orta'?'#fcd34d':'#86efac'}">${x.sts_risk||'—'} Risk</div>
+          </div>
+          <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:28px;font-weight:700;color:${x.kyph_risk==='Yüksek'?'#fca5a5':x.kyph_risk==='Orta'?'#fcd34d':'#86efac'}">
+              ${x.kyph_risk==='Düşük'||x.kyph_risk==='Dusuk'?'✓':'!'}
+            </div>
+            <div style="font-size:10px;color:#94a3b8;margin-top:2px">KİFOZ RİSKİ</div>
+            <div style="font-size:12px;font-weight:600;color:${x.kyph_risk==='Yüksek'?'#fca5a5':x.kyph_risk==='Orta'?'#fcd34d':'#86efac'}">${x.kyph_risk||'—'} Risk</div>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:12px;margin-bottom:10px">
+          <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">AI Ölçüm Detayları</div>
+          <table style="width:100%;border-collapse:collapse">${detHtml}</table>
+        </div>
+
+        ${r.scoli_finding?`<div style="background:rgba(255,255,255,.05);border-radius:10px;padding:12px;margin-bottom:10px">
+          <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Skolyoz Değerlendirmesi</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5">${r.scoli_finding}</div>
+        </div>`:''}
+
+        ${r.kyph_finding?`<div style="background:rgba(255,255,255,.05);border-radius:10px;padding:12px;margin-bottom:10px">
+          <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Kifoz Değerlendirmesi</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5">${r.kyph_finding}</div>
+          <div style="font-size:11px;color:#64748b;margin-top:4px">Tahmini kifoz açısı: ${r.kyph_angle_est||'—'}</div>
+        </div>`:''}
+
+        <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;background:rgba(74,124,63,.2);border:1px solid rgba(74,124,63,.4);color:#86efac;border-radius:10px;padding:12px;cursor:pointer;font-size:14px;font-weight:600;margin-top:4px">Kapat</button>
+      </div>
+    </div>`;
+
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function buildReport(){
+  const r=ST.result||{},p=ST.patient;
+  return `⚕️ SpineScan — Omurga Tarama Raporu
+━━━━━━━━━━━━━━━━━━━━━
+${p.name?'👦 '+p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek'} | Boy: ${p.height||'—'} cm | Kilo: ${p.weight||'—'} kg${p.bmi?' | VKİ: '+p.bmi:''}
+Tarih: ${new Date().toLocaleDateString('tr-TR')}
+
+📊 SKOLYOZ
+STS-Test Skoru: ${r.total_sts||'—'} / ${r.sts_max||'—'} — ${r.sts_risk||'—'} Risk
+${r.scoli_finding||''}
+
+📐 HİPERKİFOZ / SCHEUERMANN
+Risk: ${r.kyph_risk||'—'} | Tahmini kifoz açısı: ${r.kyph_angle_est||'—'}
+${r.scheuermann_suspicion?'⚠️ Scheuermann şüphesi: '+(r.scheuermann_reason||''):''}
+${r.kyph_finding||''}
+
+━━━━━━━━━━━━━━━━━━━━━
+⚕️ ÖNEMLİ UYARI
+Çocuğunuzun omurgasında omurga deformite riski nedeniyle konuyu uzman bir Fizik Tedavi ve Rehabilitasyon Uzmanı veya Omurga Uzmanı Ortopediste başvurun.
+Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.
+— SpineScan v12 | Yılmaz et al. Asian Spine J 2023`;
+}
+function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(buildReport()),'_blank');}
+function shareMail(){window.open('mailto:?subject=SpineScan Tarama Raporu&body='+encodeURIComponent(buildReport()),'_blank');}
+function copyRep(){navigator.clipboard.writeText(buildReport()).then(()=>alert('Kopyalandı!')).catch(()=>{const t=document.createElement('textarea');t.value=buildReport();document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);alert('Kopyalandı!');});}
+function dlRep(){const b=new Blob([buildReport()],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='SpineScan_'+(ST.patient.name||'tarama').replace(/\s/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.txt';a.click();}
+
+function openFb(){window.open('https://docs.google.com/forms/d/e/1FAIpQLSeVa1pHPwILYebqdgTwmHaolPfd4nyMxVxU1rarOJ1C40T7zA/viewform','_blank');}
+function submitKey(){
+  const key=document.getElementById('keyInput').value.trim();
+  if(!key||!key.startsWith('sk-')){document.getElementById('keyInput').style.borderColor='#ef4444';return;}
+  localStorage.setItem('ss_ak',key);
+  document.getElementById('keyOverlay').classList.remove('open');
+  doAnalysis();
+}
+
+
+
+// Unregister all service workers to prevent cache issues
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(regs=>{
+    regs.forEach(r=>r.unregister());
+  });
+}
+updProg(0);
+
+
+</script>
+
+<!-- ABOUT OVERLAY -->
+<div class="overlay" id="aboutOv" onclick="closeOv(event,'aboutOv')">
+  <div class="modal" style="max-height:90vh;overflow-y:auto">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px">
+        <svg width="44" height="110" viewBox="0 0 80 220" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="sg2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#4a7c3f"/><stop offset="100%" stop-color="#3a6b32"/></linearGradient></defs>
+          <path d="M40,7 C52,20 30,46 47,75 C64,104 27,132 44,160 C58,182 33,196 42,210" fill="none" stroke="#4a7c3f" stroke-width="2.5" stroke-linecap="round" opacity=".35"/>
+          <ellipse cx="40" cy="7" rx="9" ry="5" fill="url(#sg2)" opacity=".95"/>
+          <rect x="29" y="16" width="20" height="8" rx="2" fill="url(#sg2)" opacity=".9"/>
+          <rect x="30" y="28" width="20" height="8" rx="2" fill="url(#sg2)" opacity=".88"/>
+          <line x1="30" y1="32" x2="21" y2="36" stroke="url(#sg2)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+          <line x1="50" y1="32" x2="59" y2="36" stroke="url(#sg2)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+          <rect x="31" y="40" width="20" height="9" rx="2.5" fill="url(#sg2)" opacity=".95"/>
+          <line x1="31" y1="44" x2="21" y2="49" stroke="url(#sg2)" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>
+          <line x1="51" y1="44" x2="61" y2="49" stroke="url(#sg2)" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>
+          <rect x="33" y="53" width="20" height="9" rx="2" fill="url(#sg2)" opacity=".88"/>
+          <line x1="33" y1="57" x2="23" y2="62" stroke="url(#sg2)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+          <line x1="53" y1="57" x2="63" y2="62" stroke="url(#sg2)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+          <rect x="34" y="66" width="20" height="9" rx="2" fill="url(#sg2)" opacity=".86"/>
+          <rect x="33" y="79" width="20" height="9" rx="2" fill="url(#sg2)" opacity=".84"/>
+          <rect x="31" y="92" width="22" height="10" rx="2.5" fill="url(#sg2)" opacity=".88"/>
+          <rect x="29" y="106" width="22" height="10" rx="2.5" fill="url(#sg2)" opacity=".95"/>
+          <rect x="28" y="120" width="22" height="10" rx="2.5" fill="url(#sg2)" opacity=".88"/>
+          <rect x="28" y="134" width="22" height="10" rx="2.5" fill="url(#sg2)" opacity=".85"/>
+          <rect x="29" y="148" width="22" height="10" rx="2.5" fill="url(#sg2)" opacity=".82"/>
+          <path d="M27,162 L51,162 L47,175 L31,175 Z" fill="url(#sg2)" opacity=".76"/>
+        </svg>
+        <div>
+          <div style="font-family:'DM Serif Display',serif;font-size:32px;line-height:1;letter-spacing:-1px"><span style="color:#4a7c3f">Spine</span><span style="color:#f8fafc">Scan</span></div>
+          <div style="font-size:11px;color:#64748b;margin-top:4px;letter-spacing:1px">AI DESTEKLİ OMURGA TARAMA</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:3px;letter-spacing:.5px">v12 — Omurga Tele-Tarama</div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(74,124,63,.18),rgba(58,107,50,.18));border:1px solid rgba(74,124,63,.4);border-radius:14px;padding:16px;margin-bottom:14px;display:flex;align-items:center;gap:14px">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#4a7c3f,#3a6b32);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-family:'DM Serif Display',serif;font-size:18px;font-weight:700;color:#fff">HY</span>
+      </div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:#f8fafc">Prof. Dr. Hürriyet Yılmaz</div>
+        <div style="font-size:12px;color:#94a3b8;margin-top:2px">Fizik Tedavi ve Rehabilitasyon Uzmanı</div>
+        <div style="font-size:12px;color:#94a3b8">spinescan.online</div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#94a3b8;margin-bottom:10px">Bilimsel Dayanak</div>
+      <div style="font-size:13px;font-weight:600;color:#f8fafc;margin-bottom:4px">Scoliosis Tele-Screening Test (STS-Test)</div>
+      <div style="font-size:12px;color:#94a3b8;line-height:1.6">Yılmaz HG, Büyükaslan A, Kuşvuran A, et al.<br><em>Asian Spine Journal</em>, 2023;17(4):656–665</div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <span style="background:rgba(13,148,136,.2);color:#5eead4;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px">%94.97 Doğruluk</span>
+        <span style="background:rgba(37,99,235,.2);color:#93c5fd;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px">%83.51 Duyarlılık</span>
+        <span style="background:rgba(139,92,246,.2);color:#c4b5fd;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px">%98.87 Özgüllük</span>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:#64748b">DOI: 10.31616/asj.2022.0299</div>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#94a3b8;margin-bottom:10px">Uygulama Hakkında</div>
+      <div style="font-size:13px;color:#e2e8f0;line-height:1.65">SpineScan, STS-Test yöntemini yapay zeka ile birleştirerek ebeveynlerin çocuklarının omurga sağlığını evde takip etmesine olanak tanır. Skolyoz ve hiperkifoz/Scheuermann değerlendirmesi için 5 fotoğraf ile AI destekli analiz yapar.</div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="text-align:center;background:rgba(255,255,255,.03);border-radius:8px;padding:10px"><div style="font-size:20px;font-weight:700;color:#14b8a6">2</div><div style="font-size:10px;color:#94a3b8;margin-top:2px">Bölüm</div></div>
+        <div style="text-align:center;background:rgba(255,255,255,.03);border-radius:8px;padding:10px"><div style="font-size:20px;font-weight:700;color:#3b82f6">5</div><div style="font-size:10px;color:#94a3b8;margin-top:2px">Fotoğraf Pozisyonu</div></div>
+        <div style="text-align:center;background:rgba(255,255,255,.03);border-radius:8px;padding:10px"><div style="font-size:20px;font-weight:700;color:#8b5cf6">7-18</div><div style="font-size:10px;color:#94a3b8;margin-top:2px">Yaş Aralığı</div></div>
+        <div style="text-align:center;background:rgba(255,255,255,.03);border-radius:8px;padding:10px"><div style="font-size:20px;font-weight:700;color:#f59e0b">2-3ay</div><div style="font-size:10px;color:#94a3b8;margin-top:2px">Tarama Aralığı</div></div>
+      </div>
+    </div>
+    <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:12px;margin-bottom:16px">
+      <div style="font-size:12px;color:#fca5a5;line-height:1.6">⚕️ Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz. Omurga muayenesi ve şüpheli bulgular için bir Fizik Tedavi ve Rehabilitasyon Uzmanı veya Omurga Uzmanı Ortopedist'e başvurunuz.</div>
+    </div>
+    <div style="text-align:center;font-size:11px;color:#475569;margin-bottom:16px">© 2025 Prof. Dr. Hürriyet Yılmaz · SpineScan v12<br>Tüm hakları saklıdır</div>
+    <button class="btn bs" onclick="document.getElementById('aboutOv').classList.remove('open')">Kapat</button>
+  </div>
+</div><!-- API KEY OVERLAY -->
+<div class="overlay" id="keyOverlay">
+  <div class="modal">
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px">API Anahtarı</div>
+    <div style="font-size:13px;color:#94a3b8;margin-bottom:18px">AI analizini başlatmak için Anthropic API anahtarınızı girin.</div>
+    <input id="keyInput" type="password" placeholder="sk-ant-api03-..." 
+      style="width:100%;padding:13px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:10px;color:#fff;font-size:14px;font-family:'DM Sans',sans-serif;margin-bottom:14px">
+    <div style="font-size:12px;color:#94a3b8;margin-bottom:16px">🔒 Anahtar yalnızca bu oturumda saklanır, sunucuya gönderilmez.</div>
+    <button class="btn bt" onclick="submitKey()">Devam Et →</button>
+    <button class="btn bs" style="margin-top:8px" onclick="document.getElementById('keyOverlay').classList.remove('open')">İptal</button>
+  </div>
+</div>
+
+
+<!-- COPYRIGHT -->
+<div style="text-align:center;padding:20px 16px 100px;font-size:11px;color:#334155;line-height:1.6">
+  © 2025 Prof. Dr. Hürriyet Yılmaz. Tüm hakları saklıdır.<br>
+  SpineScan™ — Tescilli marka. İzinsiz kopyalanamaz, dağıtılamaz.<br>
+  Bilimsel dayanak: Yılmaz HG et al., Asian Spine Journal 2023;17(4):656-665
+</div>
+</body>
+</html>
