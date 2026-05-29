@@ -570,6 +570,55 @@ async function doAnalysis(){
     document.getElementById('keyOverlay').classList.add('open');
     return;
   }
+  // ── GÖRSEL DOĞRULAMA ──
+  const _chkPhoto = ST.photos['back'] || ST.photos['front'];
+  if(_chkPhoto){
+    try{
+      const _vR = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':existingKey,
+          'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:20,
+          messages:[{role:'user',content:[
+            {type:'image',source:{type:'base64',media_type:'image/jpeg',data:_chkPhoto}},
+            {type:'text',text:'Bu fotoğrafta insan sırtı veya omurgası görülüyor mu? Sadece EVET veya HAYIR yaz.'}
+          ]}]})
+      });
+      const _vD = await _vR.json();
+      const _vT = (_vD.content?.[0]?.text||'').trim().toUpperCase();
+      if(!_vT.startsWith('EVET')){
+        goTo(2);
+        alert('⚠️ Geçersiz görsel.\n\nLütfen sırt/omurga fotoğrafı yükleyin.\nÜzüm, hayvan veya nesne fotoğrafları kabul edilmez.');
+        return;
+      }
+    }catch(e){console.warn('Görsel doğrulama atlandı:',e);}
+  }
+  // ── DOĞRULAMA SONU ──
+  // ── GÖRSEL DOĞRULAMA ──
+  const _chkPhoto = ST.photos['back'] || ST.photos['front'];
+  if(_chkPhoto){
+    try{
+      const _vR = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':existingKey,
+          'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:20,
+          messages:[{role:'user',content:[
+            {type:'image',source:{type:'base64',media_type:'image/jpeg',data:_chkPhoto}},
+            {type:'text',text:'Bu fotoğrafta insan sırtı veya omurgası görülüyor mu? Sadece EVET veya HAYIR yaz.'}
+          ]}]})
+      });
+      const _vD = await _vR.json();
+      const _vT = (_vD.content?.[0]?.text||'').trim().toUpperCase();
+      if(!_vT.startsWith('EVET')){
+        goTo(2);
+        alert('⚠️ Geçersiz görsel.\n\nLütfen sırt/omurga fotoğrafı yükleyin.\nÜzüm, hayvan veya nesne fotoğrafları kabul edilmez.');
+        return;
+      }
+    }catch(e){console.warn('Görsel doğrulama atlandı:',e);}
+  }
+  // ── DOĞRULAMA SONU ──
+  
   ST.obs={a1:document.getElementById('o1').checked,a2:document.getElementById('o2').checked,
     a3:document.getElementById('o3').checked,a4:document.getElementById('o4').checked,
     a5:document.getElementById('o5').checked,a6:document.getElementById('o6').checked,
