@@ -610,8 +610,12 @@ async function doAnalysis(){
   const p=ST.patient,o=ST.obs,base=calcBaseSTS();
   const content=[];
   ['back','front','adams','side','kph','radams'].forEach(k=>{if(ST.photos[k])content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos[k]}});});
-  const prompt=`Sen deneyimli bir pediatrik ortopedi uzmanı ve skolyoz uzmanısın. Aşağıdaki fotoğrafları DETAYLI ve KANTİTATİF olarak analiz et.
-
+  const prompt=const prompt=`KRITIK FOTOGRAF TARAF OKUMA KURALI — ÖNCE OKU, SONRA ANALİZ ET:
+ARKA FOTOGRAF (posterior görünüm): Görüntünün SAĞ tarafı = HASTANIN SAĞ tarafı. Görüntünün SOL tarafı = HASTANIN SOL tarafı.
+ÖN FOTOGRAF (anterior görünüm): Görüntünün SAĞ tarafı = HASTANIN SOL tarafı. Görüntünün SOL tarafı = HASTANIN SAĞ tarafı.
+ADAMS ARKADAN: Görüntünün SAĞ tarafı = HASTANIN SAĞ tarafı.
+ADAMS ÖNDEN: Görüntünün SAĞ tarafı = HASTANIN SOL tarafı.
+BU KURALI UYGULADAN YÖN YAZMA. Tüm sag/sol ifadeleri HASTA anatomisine göredir.
 COCUK BILGILERI:
 Yas: ${p.age||"?"} | Cinsiyet: ${p.gender==="kiz"?"Kiz":"Erkek"} | Boy: ${p.height||"?"} cm | Kilo: ${p.weight||"?"} kg | VKI: ${p.bmi||"?"}
 Ailede skolyoz/kifoz: ${p.family==="yes"?"Var":"Yok"} | Menars: ${p.menarche||"Belirtilmedi"}
