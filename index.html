@@ -610,7 +610,7 @@ async function doAnalysis(){
   const p=ST.patient,o=ST.obs,base=calcBaseSTS();
   const content=[];
   ['back','front','adams','side','kph','radams'].forEach(k=>{if(ST.photos[k])content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos[k]}});});
-  const prompt=const prompt=`KRITIK FOTOGRAF TARAF OKUMA KURALI — ÖNCE OKU, SONRA ANALİZ ET:
+  const prompt=`KRITIK FOTOGRAF TARAF OKUMA KURALI — ÖNCE OKU, SONRA ANALİZ ET:
 ARKA FOTOGRAF (posterior görünüm): Görüntünün SAĞ tarafı = HASTANIN SAĞ tarafı. Görüntünün SOL tarafı = HASTANIN SOL tarafı.
 ÖN FOTOGRAF (anterior görünüm): Görüntünün SAĞ tarafı = HASTANIN SOL tarafı. Görüntünün SOL tarafı = HASTANIN SAĞ tarafı.
 ADAMS ARKADAN: Görüntünün SAĞ tarafı = HASTANIN SAĞ tarafı.
