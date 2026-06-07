@@ -609,7 +609,12 @@ async function doAnalysis(){
   const intv=setInterval(()=>{mi=(mi+1)%msgs.length;ldEl.textContent=msgs[mi];},2200);
   const p=ST.patient,o=ST.obs,base=calcBaseSTS();
   const content=[];
-  ['back','front','adams','side','kph','radams'].forEach(k=>{if(ST.photos[k])content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos[k]}});});
+  if(ST.photos['back']){content.push({type:'text',text:'[FOTOGRAF 1 — ARKADAN DİK DURUŞ: fotografin sagi = hastanin SAGI]'});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos['back']}});}
+if(ST.photos['front']){content.push({type:'text',text:'[FOTOGRAF 2 — ÖNDEN DİK DURUŞ: fotografin sagi = hastanin SOLU]'});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos['front']}});}
+if(ST.photos['adams']){content.push({type:'text',text:'[FOTOGRAF 3 — ADAMS ARKADAN: fotografin sagi = hastanin SAGI]'});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos['adams']}});}
+if(ST.photos['side']){content.push({type:'text',text:'[FOTOGRAF 4 — YANDAN LATERAL: fotografin sagi = hastanin ÖNÜ]'});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos['side']}});}
+if(ST.photos['kph']){content.push({type:'text',text:'[FOTOGRAF 5 — KİFOZ LATERAL]'});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos['kph']}});}
+if(ST.photos['radams']){content.push({type:'text',text:'[FOTOGRAF 6 — ADAMS ÖNDEN: fotografin sagi = hastanin SOLU]'});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos['radams']}});}
   const prompt=`KRITIK FOTOGRAF TARAF OKUMA KURALI — ÖNCE OKU, SONRA ANALİZ ET:
 ARKA FOTOGRAF (posterior görünüm): Görüntünün SAĞ tarafı = HASTANIN SAĞ tarafı. Görüntünün SOL tarafı = HASTANIN SOL tarafı.
 ÖN FOTOGRAF (anterior görünüm): Görüntünün SAĞ tarafı = HASTANIN SOL tarafı. Görüntünün SOL tarafı = HASTANIN SAĞ tarafı.
