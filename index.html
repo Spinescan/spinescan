@@ -1361,6 +1361,7 @@ function saveScan(){
   const rec={id:Date.now(),date:new Date().toLocaleDateString('tr-TR'),ts:Date.now(),
     name:p.name||'İsimsiz',age:p.age,gender:p.gender,
     sts:r.total_sts,sts_risk:r.sts_risk,kyph_risk:r.kyph_risk,sch:r.scheuermann_suspicion,
+adams:r.quantitative?.adams_score,primary_yon:r.quantitative?.primary_direction,kifoz_risk:r.kyph_risk,
     result:rs};
   const h=getHist();h.push(rec);
   if(h.length>50)h.splice(0,h.length-50);
