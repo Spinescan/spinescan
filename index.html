@@ -1420,6 +1420,20 @@ function showHistDetail(idx){
       <span style="color:#64748b"> (${prev.sts||'—'} → ${x.sts||'—'})</span>
       ${prev.sts_risk!==x.sts_risk?`<div style="color:#fcd34d;margin-top:4px">Risk grubu: ${prev.sts_risk} → ${x.sts_risk}</div>`:''}
       ${!prev.sch&&x.sch?'<div style="color:#fca5a5;margin-top:4px">⚠️ Yeni Scheuermann şüphesi</div>':''}
+    ${(()=>{
+      const adDf=(x.adams||0)-(prev.adams||0);
+      const adSign=adDf>0?'▲ +':adDf<0?'▼ ':'→ ';
+      const adCol=adDf>0?'#fca5a5':adDf<0?'#86efac':'#94a3b8';
+      const yonDeg=prev.primary_yon&&x.primary_yon&&prev.primary_yon!==x.primary_yon;
+      const kifDeg=prev.kifoz_risk&&x.kifoz_risk&&prev.kifoz_risk!==x.kifoz_risk;
+      const genel=(adDf<-1||x.sts<(prev.sts||0)-2)?'🟢 Bulgularda iyileşme':(adDf>1||x.sts>(prev.sts||0)+2)?'🔴 Bulgularda kötüleşme — hekim kontrolü önerilir':'🟡 Bulgular stabil';
+      return `
+        ${prev.adams!==undefined?`<div style="margin-top:6px"><span style="color:#94a3b8;font-size:11px">Adams skoru: </span><span style="color:${adCol};font-weight:700">${adSign}${Math.abs(adDf)}</span><span style="color:#64748b"> (${prev.adams||'—'} → ${x.adams||'—'})</span></div>`:''}
+        ${yonDeg?`<div style="color:#fcd34d;margin-top:4px">⚠️ Eğrilik yönü değişti: ${prev.primary_yon} → ${x.primary_yon}</div>`:''}
+        ${kifDeg?`<div style="color:#fcd34d;margin-top:4px">Kifoz riski: ${prev.kifoz_risk} → ${x.kifoz_risk}</div>`:''}
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.1);font-weight:700">${genel}</div>
+      `;
+    })()}
     </div>`;
   }
 
