@@ -969,7 +969,7 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
   try{
     const controller=new AbortController();
     const timeout=setTimeout(()=>controller.abort(),90000); // 90 saniye timeout
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{signal:controller.signal,
+    const resp=await fetch('https://spinescan-api.yilmazhurriyet.workers.dev',{signal:controller.signal,
       method:'POST',
       headers:{
         'Content-Type':'application/json',
