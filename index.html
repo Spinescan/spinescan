@@ -1505,17 +1505,15 @@ ${r.kyph_finding||''}
 Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.
 — SpineScan v13 | Yılmaz et al. Asian Spine J 2023`;
 }
-function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(buildReport()),'_blank');} function inviteWA(){const msg='🔍 *Çocuğunuzun omurgasını ücretsiz taratın!*
+function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(buildReport()),'_blank');} function inviteWA(){var msg='SpineScan ile cocugunuzun omurgasini ucretsiz tara!
 
-SpineScan ile ebeveynler evde 5 dakikada skolyoz ve kifoz riskini değerlendirebiliyor.
+Ebeveynler evde 5 dakikada skolyoz ve kifoz riski degerlendirilebiliyor.
 
-✅ Ücretsiz
-✅ Yapay zeka destekli
-✅ Bilimsel temelli (Asian Spine Journal 2023)
+Ucretsiz - Yapay zeka destekli - Bilimsel temelli
 
-👉 https://spinescan.online
+https://spinescan.online
 
-_Erken tanı, erken tedavi._';window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
+Erken tani, erken tedavi.';window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
   
 function shareMail(){window.open('mailto:?subject=SpineScan Tarama Raporu&body='+encodeURIComponent(buildReport()),'_blank');}
 function copyRep(){navigator.clipboard.writeText(buildReport()).then(()=>alert('Kopyalandı!')).catch(()=>{const t=document.createElement('textarea');t.value=buildReport();document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);alert('Kopyalandı!');});}
