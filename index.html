@@ -565,7 +565,7 @@ function getSTSMax(gender){return gender==='kiz'?15:13;}
 
 async function doAnalysis(){
   // Always ask for key if not set this session
-  const existingKey = localStorage.getItem('ss_ak');
+  const existingKey = 'placeholder';('ss_ak');
   if(!existingKey){
     document.getElementById('keyOverlay').classList.add('open');
     return;
