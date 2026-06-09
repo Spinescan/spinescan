@@ -564,12 +564,7 @@ function getSTSRisk(score,gender){
 function getSTSMax(gender){return gender==='kiz'?15:13;}
 
 async function doAnalysis(){
-  // Always ask for key if not set this session
-  const existingKey = localStorage.getItem('ss_ak');
-  if(!existingKey){
-    document.getElementById('keyOverlay').classList.add('open');
-    return;
-  }
+ const existingKey = 'placeholder';
   // ── GÖRSEL DOĞRULAMA ──
   const _chkPhoto = ST.photos['back'] || ST.photos['front'];
   if(_chkPhoto){
