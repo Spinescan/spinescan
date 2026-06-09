@@ -1508,7 +1508,7 @@ Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yer
 
 function shareMail(){window.open('mailto:?subject=SpineScan Tarama Raporu&body='+encodeURIComponent(buildReport()),'_blank');}
 function copyRep(){navigator.clipboard.writeText(buildReport()).then(()=>alert('Kopyalandı!')).catch(()=>{const t=document.createElement('textarea');t.value=buildReport();document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);alert('Kopyalandı!');});}
-function dlRep(){const b=new Blob([buildReport()],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='SpineScan_'+(ST.patient.name||'tarama').replace(/\s/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.txt';a.click();}
+function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(buildReport()),'_blank');}function inviteWA(){window.open('https://wa.me/?text=SpineScan%20omurga%20tarama%20uygulamasi%20ucretsiz%20deneyin%20https%3A%2F%2Fspinescan.online','_blank');}function dlRep(){const b=new Blob([buildReport()],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='SpineScan_'+(ST.patient.name||'tarama').replace(/\s/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.txt';a.click();}
 
 function openFb(){window.open('https://docs.google.com/forms/d/e/1FAIpQLSeVa1pHPwILYebqdgTwmHaolPfd4nyMxVxU1rarOJ1C40T7zA/viewform','_blank');}
 function submitKey(){
