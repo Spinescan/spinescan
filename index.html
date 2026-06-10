@@ -493,7 +493,10 @@ function calcBMI(){
 }
 function startScan(){
   const ageVal = parseInt(document.getElementById('pA').value);
-  if(ageVal && ageVal < 6){
+  const gender = document.getElementById('pG').value;
+  if(!ageVal){alert('Lütfen çocuğun yaşını girin.');return;}
+  if(!gender){alert('Lütfen cinsiyet seçin.');return;}
+  if(ageVal < 6){
     alert('Bu test 6 yaş ve üzeri çocuklar için uygundur. Daha küçük çocuklarda şüpheli sonuç oluşturabilir.');
     return;
   }
