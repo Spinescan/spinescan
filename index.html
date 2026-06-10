@@ -576,8 +576,7 @@ async function doAnalysis(){
     try{
       const _vR = await fetch('https://spinescan-api.yilmazhurriyet.workers.dev',{
         method:'POST',
-        headers:{'Content-Type':'application/json','x-api-key':existingKey,
-          'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        headers:{'Content-Type':'application/json'},
         body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:20,
           messages:[{role:'user',content:[
             {type:'image',source:{type:'base64',media_type:'image/jpeg',data:_chkPhoto}},
