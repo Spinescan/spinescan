@@ -1101,7 +1101,14 @@ function finishAnalysis(result,base){
   buildConfirm(result.ai_confirms||[]); goTo(5);
 }
 
-function buildConfirm(items){
+function checkConfirm(){
+  const items=document.querySelectorAll('.citem');
+  if(items.length>0){
+    const unanswered=[...items].filter(it=>!it.querySelector('.copt.yes,.copt.no,.copt.unsure'));
+    if(unanswered.length>0){alert('Lütfen tüm sorulara cevap verin.');return;}
+  }
+  showResults();
+}function buildConfirm(items){
   const c=document.getElementById('confItems'); c.innerHTML='';
   const det=items.filter(i=>i.detected);
   if(!det.length){c.innerHTML='<div class="info green">✅ AI fotoğraflarda belirgin asimetri tespit etmedi. Sonuç sayfasını inceleyin.</div>';return;}
