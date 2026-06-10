@@ -1420,7 +1420,7 @@ function showHistDetail(idx){
       <span style="color:${col};font-weight:700">${sign}${Math.abs(df)} puan</span>
       <span style="color:#64748b"> (${prev.sts||'—'} → ${x.sts||'—'})</span>
       ${prev.sts_risk!==x.sts_risk?`<div style="color:#fcd34d;margin-top:4px">Risk grubu: ${prev.sts_risk} → ${x.sts_risk}</div>`:''}
-      ${!prev.sch&&x.sch?'<div style="color:#fca5a5;margin-top:4px">⚠️ Yeni Scheuermann şüphesi</div>':''}
+      ${!prev.sch&&x.sch?'<div style="color:#fca5a5;margin-top:4px">⚠️ Yeni Scheuermann şüphesi</div>':''} ${(()=>{const genel=(x.sts<(prev.sts||0)-2)?'🟢 İyileşme':(x.sts>(prev.sts||0)+2)?'🔴 Kötüleşme':'🟡 Stabil';return `<div style="margin-top:8px;font-weight:700">${genel}</div>`;})()}
     </div>`;
   }
 
