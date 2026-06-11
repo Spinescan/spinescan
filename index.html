@@ -1596,10 +1596,28 @@ function rateStar(n){
   stars.forEach((s,i)=>{s.style.opacity=i<n?'1':'0.35';s.style.color=i<n?'#f59e0b':'inherit';});
 }
 function submitFb(){
+  const stars = ST.fbR || 0;
+  const validation = [...document.querySelectorAll('#fbOv .copt.yes')].map(b=>b.textContent).join(', ');
+  const comment = document.getElementById('fbComment') ? document.getElementById('fbComment').value : '';
+  const r = ST.result || {}, p = ST.patient || {};
+  fetch('https://script.google.com/macros/s/AKfycbyqXFCK5Hojk7Ze1-Xz9erDanPbt0aJge7Fgus_7NA/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      stars: stars,
+      validation: validation,
+      comment: comment,
+      age: p.age || '',
+      gender: p.gender || '',
+      risk: r.sts_risk || '',
+      direction: r.primary_direction || '',
+      kyphosis: r.kyph_risk || ''
+    })
+  });
   document.getElementById('fbOv').classList.remove('open');
   alert('Teşekkürler! Geri bildiriminiz kaydedildi.');
 }
-
 updProg(0);
 
 
