@@ -445,14 +445,13 @@ select.fi option{background:#162d4a}.fr{margin-bottom:12px}.fr2{display:grid;gri
       <span style="font-size:30px;cursor:pointer;opacity:.4;transition:all .15s" onclick="rateStar(4)">★</span>
       <span style="font-size:30px;cursor:pointer;opacity:.4;transition:all .15s" onclick="rateStar(5)">★</span>
     </div>
-    <div style="font-size:14px;font-weight:600;margin-bottom:10px">Uzman tarafından doğrulandı mı?</div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:10px">Taramadan sonra ne yapacaksınız?</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
-      <button class="copt" onclick="this.classList.toggle('yes')">Evet, onaylandı</button>
-      <button class="copt" onclick="this.classList.toggle('yes')">Kısmen doğru</button>
-      <button class="copt" onclick="this.classList.toggle('yes')">Hayır</button>
-      <button class="copt" onclick="this.classList.toggle('yes')">Henüz görülmedi</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Doktora gideceğim</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Bekleyip izleyeceğim</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Emin değilim</button>
     </div>
-    <button class="btn bt" onclick="submitFb()">Gönder</button>
+    <textarea id="fbComment" placeholder="Yorumunuz (isteğe bağlı)..." style="width:100%;min-height:70px;margin-bottom:12px;padding:8px;border-radius:8px;border:1px solid var(--muted);background:var(--card);color:var(--text);font-size:13px;resize:vertical"
   </div>
 </div>
 
