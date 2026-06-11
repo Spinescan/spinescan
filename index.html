@@ -1599,7 +1599,7 @@ function submitFb(){
   const validation = [...document.querySelectorAll('#fbOv .copt.yes')].map(b=>b.textContent).join(', ');
   const comment = document.getElementById('fbComment') ? document.getElementById('fbComment').value : '';
   const r = ST.result || {}, p = ST.patient || {};
-  fetch('https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwiV34gqKwOelS3ZdnBgNm--RXh2aMBezAXrYDuLzZAQqKwm5NHTdNQ5IYNwURsa557/exec-Xz9erDanPbt0aJge7Fgus_7NA/exec', {
+  fetch('https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwiV34gqKwOelS3ZdnBgNm--RXh2aMBezAXrYDuLzZAQqKwm5NHTdNQ5IYNwURsa557/exec, {
     method: 'POST',
     mode: 'no-cors',
     headers: {'Content-Type': 'application/json'},
