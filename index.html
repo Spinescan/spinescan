@@ -410,7 +410,7 @@ select.fi option{background:#162d4a}.fr{margin-bottom:12px}.fr2{display:grid;gri
     <div style="font-size:26px">📅</div>
     <div><div class="nsd" id="nscD">—</div><div class="nsl">Önerilen sonraki tarama tarihi</div></div>
   </div>
-  <button class="btn bs mt12" onclick="document.getElementById('fbOv').classList.add('open')">💬 Geri Bildirim Ver</button>
+  <button class="btn bs mt12" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSeVa1pHPwILYebqdgTwmHaolPfd4nyMxVxU1rarOJ1C40T7zA/viewform','_blank')">💬 Geri Bildirim Ver</button>
   <button class="btn bp mt8" onclick="newScan()" style="margin-top:8px">Yeni Tarama Başlat</button>
   <button class="btn bs mt8" onclick="exportValidation()" style="margin-top:8px;font-size:13px;border-color:#4a7c3f;color:#86efac">📊 Validasyon Verisi İndir (CSV)</button>
 </div>
@@ -445,13 +445,14 @@ select.fi option{background:#162d4a}.fr{margin-bottom:12px}.fr2{display:grid;gri
       <span style="font-size:30px;cursor:pointer;opacity:.4;transition:all .15s" onclick="rateStar(4)">★</span>
       <span style="font-size:30px;cursor:pointer;opacity:.4;transition:all .15s" onclick="rateStar(5)">★</span>
     </div>
-    <div style="font-size:14px;font-weight:600;margin-bottom:10px">Taramadan sonra ne yapacaksınız?</div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:10px">Uzman tarafından doğrulandı mı?</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
-      <button class="copt" onclick="this.classList.toggle('yes')">Doktora gideceğim</button>
-      <button class="copt" onclick="this.classList.toggle('yes')">Bekleyip izleyeceğim</button>
-      <button class="copt" onclick="this.classList.toggle('yes')">Emin değilim</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Evet, onaylandı</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Kısmen doğru</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Hayır</button>
+      <button class="copt" onclick="this.classList.toggle('yes')">Henüz görülmedi</button>
     </div>
-    <textarea id="fbComment" placeholder="Yorumunuz (isteğe bağlı)..." style="width:100%;min-height:70px;margin-bottom:12px;padding:8px;border-radius:8px;border:1px solid var(--muted);background:var(--card);color:var(--text);font-size:13px;resize:vertical"
+    <button class="btn bt" onclick="submitFb()">Gönder</button>
   </div>
 </div>
 
@@ -1531,12 +1532,17 @@ ${r.kyph_finding||''}
 Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.
 — SpineScan v13 | Yılmaz et al. Asian Spine J 2023`;
 }
-function shareWA(){location.href='whatsapp://send?text='+encodeURIComponent(buildReport());}
+function shareWA(){   const r=ST.result||{},p=ST.patient;   const txt=`⚕️ SpineScan Tarama Raporu
+${p.name?p.name+' | ':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek'}
+Skolyoz: ${r.primary_direction||'—'} ${r.primary_location||'—'} | Risk: ${r.sts_risk||'—'}
+Kifoz: ${r.kyph_risk||'—'}
+
+spinescan.online`;   location.href='https://wa.me/?text='+encodeURIComponent(txt); }
 function shareMail(){window.open('mailto:?subject=SpineScan Tarama Raporu&body='+encodeURIComponent(buildReport()),'_blank');}
 function copyRep(){navigator.clipboard.writeText(buildReport()).then(()=>alert('Kopyalandı!')).catch(()=>{const t=document.createElement('textarea');t.value=buildReport();document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);alert('Kopyalandı!');});}
-function inviteWA(){var msg='SpineScan - Omurga Tarama%0A%0ACocugunuzun omurgasini kontrol edin!%0A%0ASpineScan ile ebeveynler evde 5 dakikada skolyoz ve kifoz riskini degerlendirilebiliyor.%0A%0AYapay zeka destekli%0ABilimsel temelli%0A%0Ahttps://spinescan.online%0A%0AErken tani, erken tedavi.';location.href='whatsapp://send?text='+msg;} function dlRep(){const b=new Blob([buildReport()],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='SpineScan_rapor.txt';document.body.appendChild(a);a.click();document.body.removeChild(a);}
+function inviteWA(){var msg='SpineScan - Omurga Tarama%0A%0ACocugunuzun omurgasini kontrol edin!%0A%0ASpineScan ile ebeveynler evde 5 dakikada skolyoz ve kifoz riskini degerlendirilebiliyor.%0A%0AYapay zeka destekli%0ABilimsel temelli%0A%0Ahttps://spinescan.online%0A%0AErken tani, erken tedavi.';window.open('https://wa.me/?text='+msg,'_blank');} function dlRep(){const b=new Blob([buildReport()],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='SpineScan_'+(ST.patient.name||'tarama').replace(/\s/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.txt';a.click();}
 
-function openFb(){document.getElementById('fbOv').classList.add('open');}
+function openFb(){window.open('https://docs.google.com/forms/d/e/1FAIpQLSeVa1pHPwILYebqdgTwmHaolPfd4nyMxVxU1rarOJ1C40T7zA/viewform','_blank');}
 function submitKey(){
   const key=document.getElementById('keyInput').value.trim();
   if(!key||!key.startsWith('sk-')){document.getElementById('keyInput').style.borderColor='#ef4444';return;}
@@ -1594,8 +1600,11 @@ function rateStar(n){
   const stars=document.getElementById('stW').querySelectorAll('span');
   stars.forEach((s,i)=>{s.style.opacity=i<n?'1':'0.35';s.style.color=i<n?'#f59e0b':'inherit';});
 }
-function submitFb(){const stars=ST.fbR||0;const validation=[...document.querySelectorAll('#fbOv .copt.yes')].map(b=>b.textContent).join(', ');const comment=document.getElementById('fbComment')?document.getElementById('fbComment').value:'';const r=ST.result||{},p=ST.patient||{};fetch('https://script.google.com/macros/s/AKfycbwiV34gqKwOelS3ZdnBgNm--RXh2aMBezAXrYDuLzZAQqKwm5NHTdNQ5IYNwURsa557/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({stars:stars,validation:validation,comment:comment,age:p.age||'',gender:p.gender||'',risk:r.sts_risk||'',direction:r.primary_direction||'',kyphosis:r.kyph_risk||''})});document.getElementById('fbOv').classList.remove('open');alert('Te\u015fekk\u00FCrler! Geri bildiriminiz kaydedildi.');}
+function submitFb(){
+  document.getElementById('fbOv').classList.remove('open');
+  alert('Teşekkürler! Geri bildiriminiz kaydedildi.');
 }
+
 updProg(0);
 
 
