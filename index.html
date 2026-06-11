@@ -1532,7 +1532,7 @@ ${r.kyph_finding||''}
 Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.
 — SpineScan v13 | Yılmaz et al. Asian Spine J 2023`;
 }
-function shareWA(){location.href='whatsapp://send?text='+encodeURIComponent(buildReport());}
+function shareWA(){const txt=encodeURIComponent(buildReport());const url=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)?'whatsapp://send?text='+txt:'https://wa.me/?text='+txt;window.open(url,'_blank');}
 function shareMail(){window.open('mailto:?subject=SpineScan Tarama Raporu&body='+encodeURIComponent(buildReport()),'_blank');}
 function copyRep(){navigator.clipboard.writeText(buildReport()).then(()=>alert('Kopyalandı!')).catch(()=>{const t=document.createElement('textarea');t.value=buildReport();document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);alert('Kopyalandı!');});}
 function inviteWA(){var msg='SpineScan - Omurga Tarama%0A%0ACocugunuzun omurgasini kontrol edin!%0A%0ASpineScan ile ebeveynler evde 5 dakikada skolyoz ve kifoz riskini degerlendirilebiliyor.%0A%0AYapay zeka destekli%0ABilimsel temelli%0A%0Ahttps://spinescan.online%0A%0AErken tani, erken tedavi.';location.href='whatsapp://send?text='+msg;} function dlRep(){const b=new Blob([buildReport()],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='SpineScan_'+(ST.patient.name||'tarama').replace(/\s/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.txt';document.body.appendChild(a);a.click();document.body.removeChild(a);}
