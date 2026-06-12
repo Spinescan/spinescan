@@ -1011,7 +1011,7 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
       },
       body:JSON.stringify({
         model:'claude-sonnet-4-5',
-        max_tokens:6000,
+        max_tokens:10000,
         temperature:0,
         messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]
       })});
