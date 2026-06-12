@@ -1527,7 +1527,8 @@ function showHistDetail(idx){
   document.body.insertAdjacentHTML('beforeend', html);
 }
 
-if(r.photo_mismatch){
+function buildReport(){
+  const r=ST.result||{},p=ST.patient;if(r.photo_mismatch){
     return `SpineScan — Omurga Tarama Raporu
 ━━━━━━━━━━━━━━━━━━━━━
 ${p.name?p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek'} | Boy: ${p.height||'—'} cm | Kilo: ${p.weight||'—'} kg
