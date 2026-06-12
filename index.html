@@ -1528,7 +1528,9 @@ function showHistDetail(idx){
 }
 
 function buildReport(){
-  const r=ST.result||{},p=ST.patient;if(r.photo_mismatch){
+  const r=ST.result||{},p=ST.patient;if(r.photo_mismatch){ const dm = r.dm_suspicion_level && r.dm_suspicion_level !== 'Yok';
+  const sc2 = r.second_curve && r.second_curve.detected;
+  return `SpineScan — Omurga Tarama Raporu
     return `SpineScan — Omurga Tarama Raporu
 ━━━━━━━━━━━━━━━━━━━━━
 ${p.name?p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek'} | Boy: ${p.height||'—'} cm | Kilo: ${p.weight||'—'} kg
