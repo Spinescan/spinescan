@@ -1511,20 +1511,19 @@ function buildReport(){
   const r=ST.result||{},p=ST.patient;
   const dm = r.dm_suspicion_level && r.dm_suspicion_level !== 'Yok';
   const sc2 = r.second_curve && r.second_curve.detected;
-  return `⚕️ SpineScan — Omurga Tarama Raporu
+  return `SpineScan — Omurga Tarama Raporu
 ━━━━━━━━━━━━━━━━━━━━━
-${p.name?'👦 '+p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek'} | Boy: ${p.height||'—'} cm | Kilo: ${p.weight||'—'} kg${p.bmi?' | VKİ: '+p.bmi:''}
+${p.name?p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek'} | Boy: ${p.height||'—'} cm | Kilo: ${p.weight||'—'} kg${p.bmi?' | VKİ: '+p.bmi:''}
 Tarih: ${new Date().toLocaleDateString('tr-TR')}
-
-📊 SKOLYOZ
-STS-Test Skoru: ${r.total_sts||'—'} / ${r.sts_max||'—'} — ${r.sts_risk||'—'} Risk
+SKOLYOZ
+STS-Test Skoru: ${r.total_sts ?? '—'} / ${r.sts_max ?? '—'} — ${r.sts_risk||'—'} Risk
 ${dm?'⚠️ Çift Major (DM) Eğrilik Şüphesi: '+r.dm_suspicion_level+'\n':''}${r.scoli_finding||''}
-${sc2?'\n📌 İkinci Eğrilik (Minör):\n'+(r.second_curve.adams_finding||r.second_curve.direction+' '+r.second_curve.location):''}
-
-📐 HİPERKİFOZ / SCHEUERMANN
+${sc2?'\nİkinci Eğrilik (Minör):\n'+(r.second_curve.adams_finding||r.second_curve.direction+' '+r.second_curve.location):''}
+HİPERKİFOZ / SCHEUERMANN
 Risk: ${r.kyph_risk||'—'} | Tahmini kifoz açısı: ${r.kyph_angle_est||'—'}
 ${r.scheuermann_suspicion?'⚠️ Scheuermann şüphesi: '+(r.scheuermann_reason||''):''}
-${r.kyph_finding||''}
+${r.kyph_finding||''}`;
+}
 
 ━━━━━━━━━━━━━━━━━━━━━
 ⚕️ ÖNEMLİ UYARI
