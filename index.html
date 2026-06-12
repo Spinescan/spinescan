@@ -1522,15 +1522,13 @@ ${sc2?'\nİkinci Eğrilik (Minör):\n'+(r.second_curve.adams_finding||r.second_c
 HİPERKİFOZ / SCHEUERMANN
 Risk: ${r.kyph_risk||'—'} | Tahmini kifoz açısı: ${r.kyph_angle_est||'—'}
 ${r.scheuermann_suspicion?'⚠️ Scheuermann şüphesi: '+(r.scheuermann_reason||''):''}
-${r.kyph_finding||''}`;
-}
-
+${r.kyph_finding||''}
 ━━━━━━━━━━━━━━━━━━━━━
-⚕️ ÖNEMLİ UYARI
-Omurga deformitesi şüphesi veya riski taşıyan olgularda uzman başvurusu geciktirilmemelidir. Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz. 
+ÖNEMLİ UYARI
+Omurga deformitesi şüphesi veya riski taşıyan olgularda uzman başvurusu geciktirilmemelidir. Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.
 Fizik Tedavi ve Rehabilitasyon Uzmanı veya Omurga Uzmanı Ortopediste başvurmanızı öneririz.
 — SpineScan v13 | Yılmaz et al. Asian Spine J 2023`;
-}
+
 function shareWA(){const txt=encodeURIComponent(buildReport());const url=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)?'whatsapp://send?text='+txt:'https://wa.me/?text='+txt;window.open(url,'_blank');}
 function shareMail(){window.open('mailto:?subject=SpineScan Tarama Raporu&body='+encodeURIComponent(buildReport()),'_blank');}
 function copyRep(){navigator.clipboard.writeText(buildReport()).then(()=>alert('Kopyalandı!')).catch(()=>{const t=document.createElement('textarea');t.value=buildReport();document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);alert('Kopyalandı!');});}
