@@ -662,7 +662,25 @@ Analiz etmeden once elimdeki fotograflari listele:
   • Ters Adams (onden one egilme) fotografı var mi?
 Her fotografi kisa bir cumlede tanimla (ne goruyorsun).
 Sonra asagidaki analize gec.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADIM 0b — FOTOGRAF-ETIKET TUTARLILIK KONTROLU
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Her fotograf icin etiketle (ARKADAN DİK DURUŞ / ÖNDEN DİK DURUŞ / ADAMS ARKADAN / LATERAL / KİFOZ LATERAL) 
+icerigin gercekten uyustugunu dogrula:
+- ARKADAN/ADAMS ARKADAN etiketli fotografta: sirt, sacin arkasi, skapula gorunmeli. Yuz, gogus, 
+  karin gorunuyorsa bu ONDEN cekilmis bir fotografdir — UYUMSUZ.
+- ONDEN etiketli fotografta: yuz, gogus, karin gorunmeli. Sirt/skapula gorunuyorsa UYUMSUZ.
+- LATERAL/KIFOZ LATERAL etiketli fotografta: profilden tek omuz/kulak gorunmeli. Tam onden veya 
+  tam arkadan govde gorunuyorsa UYUMSUZ.
+- ADAMS etiketli fotograflarda hasta one egilmis olmali. Dik duruyorsa UYUMSUZ.
 
+Herhangi bir uyumsuzluk varsa, analizi TAMAMLAMA. Bunun yerine sadece su JSON'u dondur:
+{
+  "photo_mismatch": true,
+  "mismatch_details": "[Hangi slotta hangi tur fotograf bekleniyordu, hangisi yuklendi - kisa aciklama]"
+}
+Tum fotograflar etiketleriyle uyumluysa, "photo_mismatch": false ile normal analize devam et 
+ve tum alanlari doldur.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 KRITIK KURAL — TARAF BELIRLEME
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
