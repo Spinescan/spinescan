@@ -1527,11 +1527,17 @@ function showHistDetail(idx){
   document.body.insertAdjacentHTML('beforeend', html);
 }
 
-function buildReport(){
-  const r=ST.result||{},p=ST.patient;
-  const dm = r.dm_suspicion_level && r.dm_suspicion_level !== 'Yok';
-  const sc2 = r.second_curve && r.second_curve.detected;
-  return `SpineScan — Omurga Tarama Raporu
+if(r.photo_mismatch){
+    return `SpineScan — Omurga Tarama Raporu
+━━━━━━━━━━━━━━━━━━━━━
+${p.name?p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek'} | Boy: ${p.height||'—'} cm | Kilo: ${p.weight||'—'} kg
+
+⚠️ FOTOĞRAF UYUMSUZLUĞU TESPİT EDİLDİ
+${r.mismatch_details||'Yüklenen fotoğraflardan biri istenen açıyla (önden/arkadan/yan) uyuşmuyor görünüyor.'}
+
+Lütfen ilgili fotoğrafı doğru açıdan (örnek görsellerdeki pozisyona uygun şekilde) tekrar çekip yükleyin ve taramayı tekrarlayın.
+━━━━━━━━━━━━━━━━━━━━━`;
+  }
 ━━━━━━━━━━━━━━━━━━━━━
 ${p.name?p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek'} | Boy: ${p.height||'—'} cm | Kilo: ${p.weight||'—'} kg${p.bmi?' | VKİ: '+p.bmi:''}
 Tarih: ${new Date().toLocaleDateString('tr-TR')}
