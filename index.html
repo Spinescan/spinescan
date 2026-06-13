@@ -1083,7 +1083,50 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
         }catch(e3){ console.error('All parse attempts failed:', e3); }
       }
     }
-    if(!result) throw new Error('parse fail');
+   if(!result) throw new Error('parse fail');
+
+    // ── KONSENSÜS KONTROLÜ — yüksek riskli sonuçlarda 2. çalıştırma ──
+    const needsConsensus = result.kyph_risk==='Yüksek' || result.scheuermann_suspicion===true ||
+      (result.dm_suspicion_level && result.dm_suspicion_level!=='Yok') ||
+      (result.sts_risk==='Yüksek');
+    if(needsConsensus){
+      if(ldEl) ldEl.textContent='Sonuç doğrulanıyor (2. değerlendirme)...';
+      try{
+        const controller2=new AbortController();
+        const timeout2=setTimeout(()=>controller2.abort(),240000);
+        const resp2=await fetch('https://api.anthropic.com/v1/messages',{signal:controller2.signal,
+          method:'POST',
+          headers:{'Content-Type':'application/json','x-api-key': localStorage.getItem('ss_ak') || '',
+            'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+          body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:10000,temperature:0,
+            messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]})});
+        clearTimeout(timeout2);
+        if(resp2.ok){
+          const data2=await resp2.json();
+          const txt2=(data2.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+          let result2=null;
+          for(const a of [txt2, txt2.replace(/```json|```/g,'').trim(), (txt2.match(/\{[\s\S]*\}/)||['{}'])[0]]){
+            try{const p=JSON.parse(a); if(p.sts_aesthetic_score!==undefined){result2=p;break;}}catch(e){}
+          }
+          if(result2){
+            const dir1=(result.primary_curve?.direction||'')+(result.primary_curve?.location||'');
+            const dir2=(result2.primary_curve?.direction||'')+(result2.primary_curve?.location||'');
+            const mismatch = dir1!==dir2 || result.kyph_risk!==result2.kyph_risk ||
+              (!!result.scheuermann_suspicion)!==(!!result2.scheuermann_suspicion);
+            if(mismatch){
+              result.consensus_warning=true;
+              result.consensus_note='İki bağımsız değerlendirme arasında farklılık tespit edildi: '
+                +'1. değerlendirme — '+(dir1||'Belirsiz')+', Kifoz: '+(result.kyph_risk||'—')+(result.scheuermann_suspicion?', Scheuermann şüphesi':'')
+                +' | 2. değerlendirme — '+(dir2||'Belirsiz')+', Kifoz: '+(result2.kyph_risk||'—')+(result2.scheuermann_suspicion?', Scheuermann şüphesi':'')
+                +'. Bu durum yapay zeka değerlendirmesinin bu vakada belirsiz olduğunu gösterir; lütfen mutlaka uzman muayenesine başvurun.';
+            } else {
+              result.consensus_warning=false;
+            }
+          }
+        }
+      }catch(e2){ console.warn('Konsensüs kontrolü atlandı:', e2); }
+    }
+
     finishAnalysis(result,base);
   }catch(err){
     clearInterval(intv);
