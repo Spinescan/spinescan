@@ -1583,7 +1583,7 @@ Lütfen ilgili fotoğrafı doğru açıdan (örnek görsellerdeki pozisyona uygu
 ━━━━━━━━━━━━━━━━━━━━━`;
   } let consensusBlock = '';
   if(r.consensus_warning){
-    consensusBlock = '\n⚠️⚠️ TUTARLILIK UYARISI ⚠️⚠️\n'+r.consensus_note+'\n';
+    consensusBlock = '\n TUTARLILIK UYARISI \n'+r.consensus_note+'\n';
   }
   const dm = r.dm_suspicion_level && r.dm_suspicion_level !== 'Yok';
   const sc2 = r.second_curve && r.second_curve.detected;
