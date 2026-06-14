@@ -670,9 +670,11 @@ SOMUT KONTROL KRITERLERI:
 - ADAMS (ARKADAN/ONDEN): Hasta belden ONE EGILMIS, sirt/ense yatay duzlemde.
   Hasta DIK DURUYORSA = UYUMSUZ.
 
-Herhangi bir UYUMSUZ tespit edersen, analizi durdur ve SADECE su JSON'u dondur:
-{"photo_mismatch": true, "mismatch_details": "[Fotograf N icin: beklenen [etiket],
-ama gordugum [gercek icerik] - bu [dogru etiket tahmini] gibi gorunuyor"}
+Herhangi bir UYUMSUZ tespit edersen, baska hicbir metin/aciklama/baslik yazmadan
+(ornegin "DURDUR" gibi ifadeler KULLANMA), DOGRUDAN ve TEK CIKTI olarak,
+tek satirda, kisa ve TAM su JSON'u yaz ve hemen bitir:
+{"photo_mismatch": true, "mismatch_details": "Fotograf N: beklenen [etiket], gordugum [gercek icerik]"}
+mismatch_details EN FAZLA 15 KELIME OLSUN.
 
 TUMU UYUMLUYSA, normal analize devam et ve tum alanlari doldur (photo_mismatch: false).
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
