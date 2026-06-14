@@ -1567,21 +1567,16 @@ function showHistDetail(idx){
 
   document.body.insertAdjacentHTML('beforeend', html);
 }
-function buildReport(){
+
+  function buildReport(){
   const r=ST.result||{},p=ST.patient;
+  let mismatchBlock = '';
   if(r.photo_mismatch){
-    return `SpineScan — Omurga Tarama Raporu
-━━━━━━━━━━━━━━━━━━━━━
-${p.name?p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek'} | Boy: ${p.height||'—'} cm | Kilo: ${p.weight||'—'} kg
-
-⚠️ FOTOĞRAF UYUMSUZLUĞU TESPİT EDİLDİ
-${r.mismatch_details||'Yüklenen fotoğraflardan biri istenen açıyla (önden/arkadan/yan) uyuşmuyor görünüyor.'}
-
-Lütfen ilgili fotoğrafı doğru açıdan (örnek görsellerdeki pozisyona uygun şekilde) tekrar çekip yükleyin ve taramayı tekrarlayın.
-━━━━━━━━━━━━━━━━━━━━━`;
-  } let consensusBlock = '';
+    mismatchBlock = '\n=== FOTOĞRAF UYARISI ===\n'+(r.mismatch_details||'Fotoğraflardan biri beklenen pozisyon/açıyla uyuşmuyor olabilir.')+' Lütfen fotoğrafları kontrol edip yeniden taramayı deneyin — aşağıdaki analiz bu uyumsuzluktan etkilenmiş olabilir.\n';
+  }
+  let consensusBlock = '';
   if(r.consensus_warning){
-    consensusBlock = '\n TUTARLILIK UYARISI \n'+r.consensus_note+'\n';
+    consensusBlock = '\n=== TUTARLILIK UYARISI ===\n'+r.consensus_note+'\n';
   }
   const dm = r.dm_suspicion_level && r.dm_suspicion_level !== 'Yok';
   const sc2 = r.second_curve && r.second_curve.detected;
