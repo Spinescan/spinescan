@@ -652,35 +652,29 @@ Adams pozitif: ${o.a5?"EVET":"Hayir"} | Kifoz gorunumu: ${o.a6?"EVET":"Hayir"}
 Rijid kifoz: ${o.a7?"EVET":"Hayir"} | Sirt agrisi: ${o.a8?"EVET":"Hayir"}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ADIM 0 — FOTOGRAF ENVANTERI (her zaman yap)
+ADIM 0 — FOTOGRAF ENVANTERI VE DOGRULAMA (her zaman yap, ZORUNLU)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Analiz etmeden once elimdeki fotograflari listele:
-  • Arkadan dik duruş fotografı var mi?
-  • Onden dik duruş fotografı var mi?
-  • Adams (arkadan one egilme) fotografı var mi?
-  • Lateral (yandan) fotografı var mi?
-  • Ters Adams (onden one egilme) fotografı var mi?
-Her fotografi kisa bir cumlede tanimla (ne goruyorsun).
-Sonra asagidaki analize gec.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ADIM 0b — FOTOGRAF-ETIKET TUTARLILIK KONTROLU
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Her fotograf icin etiketle (ARKADAN DİK DURUŞ / ÖNDEN DİK DURUŞ / ADAMS ARKADAN / LATERAL / KİFOZ LATERAL) 
-icerigin gercekten uyustugunu dogrula:
-- ARKADAN/ADAMS ARKADAN etiketli fotografta: sirt, sacin arkasi, skapula gorunmeli. Yuz, gogus, 
-  karin gorunuyorsa bu ONDEN cekilmis bir fotografdir — UYUMSUZ.
-- ONDEN etiketli fotografta: yuz, gogus, karin gorunmeli. Sirt/skapula gorunuyorsa UYUMSUZ.
-- LATERAL/KIFOZ LATERAL etiketli fotografta: profilden tek omuz/kulak gorunmeli. Tam onden veya 
-  tam arkadan govde gorunuyorsa UYUMSUZ.
-- ADAMS etiketli fotograflarda hasta one egilmis olmali. Dik duruyorsa UYUMSUZ.
+Her fotograf icin, etiketi GORMEDEN ONCE once ne gordugunu tanimla, sonra etiketle karsilastir:
 
-Herhangi bir uyumsuzluk varsa, analizi TAMAMLAMA. Bunun yerine sadece su JSON'u dondur:
-{
-  "photo_mismatch": true,
-  "mismatch_details": "[Hangi slotta hangi tur fotograf bekleniyordu, hangisi yuklendi - kisa aciklama]"
-}
-Tum fotograflar etiketleriyle uyumluysa, "photo_mismatch": false ile normal analize devam et 
-ve tum alanlari doldur.
+[FOTOGRAF N] icin:
+1. Bu fotografta ne goruyorsun? (Yuz mu sirt mi profil mi govde mi? Hasta dik mi egilmis mi?)
+2. Beklenen etiket: [...]. Gordugun ile etiket UYUSUYOR MU?
+
+SOMUT KONTROL KRITERLERI:
+- ARKADAN DIK DURUS / ADAMS ARKADAN: Sacin arkasi, ENSE, sirt, skapulalar gorunur.
+  GOZ, BURUN, AGIZ, GOGUS GORUNUYORSA = UYUMSUZ (bu ONDEN fotograf).
+- ONDEN DIK DURUS: YUZ (goz, burun, agiz), gogus, karin gorunur.
+  ENSE, sirt, skapula gorunuyorsa = UYUMSUZ (bu ARKADAN fotograf).
+- LATERAL / KIFOZ LATERAL: SADECE BIR YANAK/KULAK gorunur, govde yandan,
+  TEK omuz gorunur. Iki omuz/iki kulak/tam yuz veya tam sirt gorunuyorsa = UYUMSUZ.
+- ADAMS (ARKADAN/ONDEN): Hasta belden ONE EGILMIS, sirt/ense yatay duzlemde.
+  Hasta DIK DURUYORSA = UYUMSUZ.
+
+Herhangi bir UYUMSUZ tespit edersen, analizi durdur ve SADECE su JSON'u dondur:
+{"photo_mismatch": true, "mismatch_details": "[Fotograf N icin: beklenen [etiket],
+ama gordugum [gercek icerik] - bu [dogru etiket tahmini] gibi gorunuyor"}
+
+TUMU UYUMLUYSA, normal analize devam et ve tum alanlari doldur (photo_mismatch: false).
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 KRITIK KURAL — TARAF BELIRLEME
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
