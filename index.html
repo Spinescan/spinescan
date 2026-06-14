@@ -670,13 +670,14 @@ SOMUT KONTROL KRITERLERI:
 - ADAMS (ARKADAN/ONDEN): Hasta belden ONE EGILMIS, sirt/ense yatay duzlemde.
   Hasta DIK DURUYORSA = UYUMSUZ.
 
-Herhangi bir UYUMSUZ tespit edersen, baska hicbir metin/aciklama/baslik yazmadan
-(ornegin "DURDUR" gibi ifadeler KULLANMA), DOGRUDAN ve TEK CIKTI olarak,
-tek satirda, kisa ve TAM su JSON'u yaz ve hemen bitir:
-{"photo_mismatch": true, "mismatch_details": "Fotograf N: beklenen [etiket], gordugum [gercek icerik]"}
-mismatch_details EN FAZLA 15 KELIME OLSUN.
+TUMU UYUMLUYSA, normal analize devam et ve tum alanlari doldur (photo_mismatch: false,
+mismatch_details: "").
 
-TUMU UYUMLUYSA, normal analize devam et ve tum alanlari doldur (photo_mismatch: false).
+HERHANGI BIR UYUMSUZLUK VARSA: analizi durdurma, normal analize ve JSON formatina
+DEVAM ET. Ancak JSON'da photo_mismatch: true yap ve mismatch_details alanina hangi
+fotografta hangi uyumsuzlugun oldugunu KISA (max 15 kelime) yaz. Diger tum alanlari
+(skolyoz, kifoz, vb.) normal sekilde doldurmaya devam et — mismatch olsa da analiz
+tamamlanmali, JSON'un sonuna kadar yaz.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 KRITIK KURAL — TARAF BELIRLEME
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
