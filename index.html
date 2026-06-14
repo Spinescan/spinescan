@@ -1016,6 +1016,7 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
     const txt=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
     console.log('=== API YANITI ===', txt.substring(0,500));
     console.log('=== TOPLAM UZUNLUK ===', txt.length);
+    console.log('=== STOP REASON ===', data.stop_reason);
     let result=null;
     // Try multiple parse strategies
     const attempts = [
