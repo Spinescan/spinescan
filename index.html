@@ -1130,7 +1130,7 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
         }
       }catch(e2){ console.warn('Konsensüs kontrolü atlandı:', e2); }
     }
-
+if(typeof gtag==='function') gtag('event', 'scan_completed', {is_fallback: !!result.is_fallback});
     finishAnalysis(result,base);
   }catch(err){
     clearInterval(intv);
