@@ -1139,7 +1139,7 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
 function buildFallback(base){
   const o=ST.obs;let aes=0;
   if(o.a1)aes+=2;if(o.a2)aes+=1;if(o.a3)aes+=1;if(o.a4)aes+=2;if(o.a5)aes+=4;
-  return{sts_aesthetic_score:aes,
+  return{is_fallback:true,sts_aesthetic_score:aes,
     sts_detail:{scap:o.a3?1:0,sh_ant:o.a1?2:0,sh_post:o.a2?1:0,pel_ant:o.a4?2:0,pel_post:0,pel_shift:0,adams:o.a5?4:0},
     kyph_angle_est:o.a6?(o.a7?'55-65° (tahmini)':'45-55° (tahmini)'):'Normal sınırda (<40°)',
     kyph_risk:o.a6?(o.a7?'Yüksek':'Orta'):'Düşük',
