@@ -1135,9 +1135,10 @@ if(typeof gtag==='function') gtag('event', 'scan_completed', {is_fallback: !!res
   }catch(err){
     clearInterval(intv);
     console.error('=== HATA ===', err.message, err.stack);
-    // Show error to user briefly
+   // Show error to user briefly
     const ldMsg = document.getElementById('ldT');
     if(ldMsg) ldMsg.textContent='Hata: '+err.message.substring(0,60);
+    if(typeof gtag==='function') gtag('event', 'scan_completed', {is_fallback: true});
     setTimeout(()=>finishAnalysis(buildFallback(base),base), 1500);
   }
 }
