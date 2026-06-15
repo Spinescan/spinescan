@@ -612,6 +612,12 @@ async function doAnalysis(){
   localStorage.setItem('ss_usage', usageCount);
   console.log('SpineScan kullanım sayısı:', usageCount);
   goTo(4);
+if(typeof gtag==='function') gtag('event', 'scan_started');
+  const msgs=['Fotoğraflar analiz ediliyor… (bu işlem ~1 dakika sürebilir)','Omurga asimetrisi değerlendiriliyor…','Kifoz açısı hesaplanıyor…','Risk skoru oluşturuluyor…'];
+  let mi=0; const ldEl=document.getElementById('ldT');
+  const intv=setInterval(()=>{mi=(mi+1)%msgs.length;ldEl.textContent=msgs[mi];},2200);
+  const p=ST.patient,o=ST.obs,base=calcBaseSTS();
+  const content=[];
   const msgs=['Fotoğraflar analiz ediliyor… (bu işlem ~1 dakika sürebilir)','Omurga asimetrisi değerlendiriliyor…','Kifoz açısı hesaplanıyor…','Risk skoru oluşturuluyor…'];
   let mi=0; const ldEl=document.getElementById('ldT');
   const intv=setInterval(()=>{mi=(mi+1)%msgs.length;ldEl.textContent=msgs[mi];},2200);
