@@ -1000,14 +1000,16 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
   try{
     const controller=new AbortController();
     const timeout=setTimeout(()=>controller.abort(),240000); // 240 saniye timeout
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{signal:controller.signal,
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': localStorage.getItem('ss_ak') || '',
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
+    const apiKey = localStorage.getItem('ss_ak');
+const apiEndpoint = apiKey 
+  ? 'https://api.anthropic.com/v1/messages' 
+  : 'https://spinescan-api.yilmazhurriyet.workers.dev';
+const resp=await fetch(apiEndpoint,{signal:controller.signal,
+  method:'POST',
+  headers:{
+    'Content-Type':'application/json',
+    ...(apiKey ? {'x-api-key': apiKey, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true'} : {})
+  },
       body:JSON.stringify({
         model:'claude-sonnet-4-5',
         max_tokens:10000,
