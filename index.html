@@ -1096,10 +1096,12 @@ const resp=await fetch(apiEndpoint,{signal:controller.signal,
       try{
         const controller2=new AbortController();
         const timeout2=setTimeout(()=>controller2.abort(),240000);
-        const resp2=await fetch('https://api.anthropic.com/v1/messages',{signal:controller2.signal,
+        const resp2=await fetch(apiEndpoint,{signal:controller2.signal,
           method:'POST',
-          headers:{'Content-Type':'application/json','x-api-key': localStorage.getItem('ss_ak') || '',
-            'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+          headers:{
+            'Content-Type':'application/json',
+            ...(apiKey ? {'x-api-key': apiKey, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true'} : {})
+          },
           body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:10000,temperature:0,
             messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]})});
         clearTimeout(timeout2);
