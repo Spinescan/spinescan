@@ -1303,11 +1303,22 @@ function exportValidation(){
   }
 
   const content = BOM + rows.join(NL);
-  const blob=new Blob([content],{type:'text/tab-separated-values;charset=utf-8;'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='SpineScan_'+taramaNo+'_'+(p.name||'vaka').replace(/\s/g,'_')+'.tsv';
-  a.click();
+  const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const fn='SpineScan_'+taramaNo+'_'+(p.name||'vaka').replace(/\s/g,'_')+'.tsv';
+  if(isIOS){
+    const a=document.createElement('a');
+    a.href='data:text/tab-separated-values;charset=utf-8,'+encodeURIComponent(content);
+    a.download=fn;a.target='_blank';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+  }else{
+    const blob=new Blob([content],{type:'text/tab-separated-values;charset=utf-8;'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=fn;
+    document.body.appendChild(a);a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
 }
 
 function showResults(){
