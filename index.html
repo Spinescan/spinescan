@@ -1303,24 +1303,16 @@ function exportValidation(){
   }
 
   const content = BOM + rows.join(NL);
-  const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
   const fn='SpineScan_'+taramaNo+'_'+(p.name||'vaka').replace(/\s/g,'_')+'.tsv';
-  if(isIOS){
-    const a=document.createElement('a');
-    a.href='data:text/tab-separated-values;charset=utf-8,'+encodeURIComponent(content);
-    a.download=fn;a.target='_blank';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
-  }else{
-    const blob=new Blob([content],{type:'text/tab-separated-values;charset=utf-8;'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;a.download=fn;
-    document.body.appendChild(a);a.click();
-    document.body.removeChild(a);
-    setTimeout(()=>URL.revokeObjectURL(url),1000);
-  }
+  if(navigator.share){const file=new File([content],fn,{type:'text/tab-separated-values'});if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'SpineScan Validasyon'}).catch(()=>{});return;}}
+  const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(isIOS){alert('Validasyon verisini bilgisayardan indirin.');return;}
+  const blob=new Blob([content],{type:'text/tab-separated-values;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=fn;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-
 function showResults(){
   const r=ST.result,p=ST.patient;
   // dmLevel en başta tanımla — aşağıda her yerde kullanılıyor
