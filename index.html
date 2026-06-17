@@ -1665,7 +1665,7 @@ function rateStar(n){
   const stars=document.getElementById('stW').querySelectorAll('span');
   stars.forEach((s,i)=>{s.style.opacity=i<n?'1':'0.35';s.style.color=i<n?'#f59e0b':'inherit';});
 }
-function submitFb(){const stars=_starRating||ST.fbR||0;;const validation=[...document.querySelectorAll('#fbOv .copt.yes')].map(b=>b.textContent).join(', ');const comment=document.getElementById('fbComment')?document.getElementById('fbComment').value:'';const r=ST.result||{},p=ST.patient||{};fetch('https://script.google.com/macros/s/AKfycbwiV34gqKwOelS3ZdnBgNm--RXh2aMBezAXrYDuLzZAQqKwm5NHTdNQ5IYNwURsa557/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({stars:stars,validation:validation,comment:comment,age:p.age||'',gender:p.gender||'',risk:r.sts_risk||'',direction:r.primary_direction||'',kyphosis:r.kyph_risk||''})});document.getElementById('fbOv').classList.remove('open');alert('Teşekkürler!');}
+function submitFb(){const stars=_starRating||ST.fbR||0;;const validation=[...document.querySelectorAll('#fbOv .copt.yes')].map(b=>b.textContent).join(', ');const comment=document.getElementById('fbComment')?document.getElementById('fbComment').value:'';const r=ST.result||{},p=ST.patient||{};fetch('https://script.google.com/macros/s/AKfycbwiV34gqKwOelS3ZdnBgNm--RXh2aMBezAXrYDuLzZAQqKwm5NHTdNQ5IYNwURsa557/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({stars:stars,validation:validation,comment:comment,age:p.age||'',gender:p.gender||'',risk:r.sts_risk||'',direction:r.primary_curve?.direction||'',kyphosis:r.kyph_risk||''})});document.getElementById('fbOv').classList.remove('open');alert('Teşekkürler!');}
 
 
 updProg(0);
