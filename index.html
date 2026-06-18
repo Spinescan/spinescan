@@ -1302,11 +1302,10 @@ function exportValidation(){
     });
   }
 
-  const content = BOM + rows.join(NL);
+ const content = BOM + rows.join(NL);
   const fn='SpineScan_'+taramaNo+'_'+(p.name||'vaka').replace(/\s/g,'_')+'.tsv';
-  if(navigator.share){const file=new File([content],fn,{type:'text/tab-separated-values'});if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'SpineScan Validasyon'}).catch(()=>{});return;}}
-  const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if(isIOS){alert('Validasyon verisini bilgisayardan indirin.');return;}
+  const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if(isMobile&&navigator.share){const file=new File([content],fn,{type:'text/tab-separated-values'});if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'SpineScan Validasyon'}).catch(()=>{});return;}}
   const blob=new Blob([content],{type:'text/tab-separated-values;charset=utf-8;'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download=fn;
