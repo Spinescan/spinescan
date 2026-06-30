@@ -1132,7 +1132,7 @@ if(typeof gtag==='function') gtag('event', 'scan_completed', {'send_to': 'G-CDRL
    // Show error to user briefly
     const ldMsg = document.getElementById('ldT');
     if(ldMsg) ldMsg.textContent='Hata: '+err.message.substring(0,60);
-    if(typeof gtag==='function') gtag('event', 'scan_completed', {is_fallback: true});
+   if(typeof gtag==='function') gtag('event', 'scan_completed', {'send_to': 'G-CDRL49NQDZ', 'is_fallback': true});
     setTimeout(()=>finishAnalysis(buildFallback(base),base), 1500);
   }
 }
