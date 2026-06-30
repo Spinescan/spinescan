@@ -1124,7 +1124,7 @@ const resp=await fetch(apiEndpoint,{signal:controller.signal,
         }
       }catch(e2){ console.warn('Konsensüs kontrolü atlandı:', e2); }
     }
-if(typeof gtag==='function') gtag('event', 'scan_completed', {is_fallback: !!result.is_fallback});
+if(typeof gtag==='function') gtag('event', 'scan_completed', {'send_to': 'G-CDRL49NQDZ', 'is_fallback': !!result.is_fallback});
     finishAnalysis(result,base);
   }catch(err){
     clearInterval(intv);
