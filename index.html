@@ -1372,17 +1372,8 @@ function showResults(){
   }
 
   // DM banner ve ikinci eğrilik kartı
-  const dmBanner = document.getElementById('dmBanner');
   const sc2Card = document.getElementById('secondCurveCard');
-  const sc2Txt = document.getElementById('scFnd2');
-  if(dmLevel === 'Olasi' || dmLevel === 'Kuvvetli'){
-    dmBanner.classList.remove('hidden');
-    if(dmLevel === 'Kuvvetli') dmBanner.style.borderColor = 'rgba(239,68,68,.5)';
-    if(r.second_curve && r.second_curve.detected){
-      sc2Card.classList.remove('hidden');
-      const sc2 = r.second_curve;
-      sc2Txt.textContent = sc2.adams_finding || ('İkinci eğrilik: ' + (sc2.direction||'?') + ' ' + (sc2.location||'?') + (sc2.note?' — '+sc2.note:''));
-    }
+  if(sc2Card) sc2Card.classList.add('hidden');
   } else {
     dmBanner.classList.add('hidden');
     sc2Card.classList.add('hidden');
