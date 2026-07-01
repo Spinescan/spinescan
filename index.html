@@ -940,25 +940,11 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
     "scap_asymmetry_est": "ornek: sag inferior skapula 1cm yuksek, kanat skapula var",
     "pelvis_diff_est": "ornek: sol ASIS 0.8cm yuksek veya esit",
     "trunk_shift": "ornek: govde saga 2cm kaymis veya orta hatta",
-    "adams_side": "primary egrilik icin paraspinal yukseklik taraf ve seviye — HASTANIN anatomisine gore yaz (aynalama sonrasi). Ornek: sag torasik / sol TL / sol lomber / negatif / belirsiz", "adams_score": "0-4 siddet puani — 0=simetrik asimetri yok, 1=minimal <5mm gorsel fark suphelı, 2=hafif 5-10mm rib hump veya paraspinal belirginlik, 3=orta 10-20mm net pozitif, 4=belirgin >20mm kesin pozitif",
-    "weight_shift": "HASTANIN anatomisine gore: saga / sola / dengeli. DM'de genellikle dengeli.",
-    "grid_used": true
-  },
-  "dm_suspicion_level": "Yok|Olasi|Kuvvetli",
-  "primary_curve": {
-    "direction": "Sag|Sol|Belirsiz",
-    "location": "Torasik|TL|Lomber",
-    "adams_finding": "rib hump / paraspinal yukseklik aciklamasi — rib hump yoksa paraspinal belirginligi yaz",
-    "severity": "hafif|orta|belirgin"
-  },
-  "second_curve": {
-    "detected": false,
-    "direction": "Sag|Sol|Belirsiz|null",
-    "location": "Torasik|TL|Lomber|null",
-    "adams_finding": "aciklama veya null",
-    "severity": "hafif|orta|belirgin|null",
-    "note": "neden DM suphe edildi veya neden yok — kisa aciklama"
-  },
+   "primary_curve": {
+    "adams_finding": "asimetri var-belirgin | asimetri var-hafif | asimetri yok-simetrik",
+    "severity": "hafif|orta|belirgin|yok"
+},
+  
   "kyph_angle_est": "ornek: 48-55 derece (artmis hiperkifoz) VEYA Normal (32-42 derece) VEYA Hipokifoz/Duz Sirt (<25 derece)",
   "kyph_apex_shape": "yuvarlak|angular",
   "kyph_apex_level": "ust_torasik|alt_torasik|torakolomber",
