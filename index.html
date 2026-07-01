@@ -1370,15 +1370,10 @@ function showResults(){
       ${q.grid_used?"<div style='font-size:11px;color:#5eead4;margin-top:6px'>✓ Izgara referansı kullanıldı</div>":''}`;
     document.getElementById('measT').insertAdjacentElement('afterend', qDiv);
   }
-
-  // DM banner ve ikinci eğrilik kartı
+// DM banner ve ikinci eğrilik kartı
   const sc2Card = document.getElementById('secondCurveCard');
   if(sc2Card) sc2Card.classList.add('hidden');
-  } else {
-    dmBanner.classList.add('hidden');
-    sc2Card.classList.add('hidden');
-  }
-
+  
   // Show recommended action
   if(r.recommended_action) {
     const recEl = document.getElementById('scFnd');
