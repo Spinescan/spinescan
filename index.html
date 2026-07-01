@@ -625,12 +625,7 @@ if(ST.photos['radams']){content.push({type:'text',text:'[FOTOGRAF 6 — ADAMS Ö
 3. Aynalanma gerekiyor mu? (Arkadan=HAYIR, Onden=EVET)
 4. Sonuc: Hastanin hangi tarafi yuksek?
 Bu 4 soruyu yanitlamadan yon karari VERME.
-KRITIK FOTOGRAF TARAF OKUMA KURALI
-ARKA FOTOGRAF (posterior görünüm): Görüntünün SAĞ tarafı = HASTANIN SAĞ tarafı. Görüntünün SOL tarafı = HASTANIN SOL tarafı.
-ÖN FOTOGRAF (anterior görünüm): Görüntünün SAĞ tarafı = HASTANIN SOL tarafı. Görüntünün SOL tarafı = HASTANIN SAĞ tarafı.
-ADAMS ARKADAN: Görüntünün SAĞ tarafı = HASTANIN SAĞ tarafı.
-ADAMS ÖNDEN: Görüntünün SAĞ tarafı = HASTANIN SOL tarafı.
-BU KURALI UYGULADAN YÖN YAZMA. Tüm sag/sol ifadeleri HASTA anatomisine göredir.
+
 COCUK BILGILERI:
 Yas: ${p.age||"?"} | Cinsiyet: ${p.gender==="kiz"?"Kiz":"Erkek"} | Boy: ${p.height||"?"} cm | Kilo: ${p.weight||"?"} kg | VKI: ${p.bmi||"?"}
 Ailede skolyoz/kifoz: ${p.family==="yes"?"Var":"Yok"} | Menars: ${p.menarche||"Belirtilmedi"}
@@ -973,14 +968,7 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
   "kyph_risk": "Hipokifoz|Dusuk|Orta|Yuksek",
   "scheuermann_suspicion": true,
   "scheuermann_reason": "aciklama veya null",
-  "YON_KURALI": "KRITIK — Fotograf taraf okuma: (1) ARKA fotograf: goruntunun SAG=HASTANIN SAG, goruntunun SOL=HASTANIN SOL. (2) ON fotograf: goruntunun SAG=HASTANIN SOL, goruntunun SOL=HASTANIN SAG. (3) Adams ARKADAN: goruntunun SAG=HASTANIN SAG. (4) Adams ONDEN: goruntunun SAG=HASTANIN SOL. Tum taraf tespitlerini bu kurala gore yap.",
-  "ai_confirms": [
-    {"id":"sh","label":"Omuz yukseklik asimetrisi","detected":true,"severity":"hafif|orta|belirgin","note":"hangi taraf (HASTA anatomisi), tahmini fark"},
-    {"id":"sc","label":"Skapula asimetrisi","detected":true,"severity":"hafif|orta|belirgin","note":"hangi taraf, kanat skapula var mi"},
-    {"id":"pl","label":"Pelvis asimetrisi","detected":true,"severity":"hafif|orta|belirgin","note":"hangi taraf yuksek (HASTA anatomisi)"},
-    {"id":"ad","label":"Adams - rib hump veya paraspinal asimetri","detected":true,"severity":"hafif|orta|belirgin","note":"hangi taraf (HASTA anatomisi), torasik/TL/lomber — KRITIK: Torakal skolyozda rib hump kaburga rotasyonundan olusur, paraspinal degil. Bir taraf kaburga kafesi veya skapula cevresi belirgin yukseKse bu rib hump sayilir. Skapula asimetrisi tespit edildiyse Adams pozitif yaz. Paraspinal varsa rib hump olmasa bile yaz."},
-    {"id":"ky","label":"Gorsel kifoz artisi VEYA hipokifoz/duz sirt","detected":true,"severity":"hafif|orta|belirgin","note":"aci tahmini, rijidite, hiperkifoz mu hipokifoz mu"}
-  ],
+  
   "scoli_finding": "Adams skoru 0 olsa veya hiçbir asimetri tespit edilmese bile bu alanı ASLA jenerik/şablon cümleyle ('Ebeveyn gözlemleri ve fotoğraflar değerlendirildi. Uzman muayenesi önerilmektedir.' vb.) doldurma — aşağıdaki ZORUNLU FORMAT'ı bulgu 'yok/simetrik' olarak doldur. ZORUNLU FORMAT (4 madde): (1) Adams fotografinda HASTA [sag/sol/belirgin asimetri yok-simetrik] [kaburga kafesi yuksekligi / paraspinal yukseklik / skapula cevresi yuksekligi / bulgu yok] goruldu — lokalizasyon: [torasik/TL/lomber/yok]. TORAKAL: kaburga rotasyonu dominant. TL/LOMBER: paraspinal kas dominant. LOKALİZASYON KURALI: Skapula alt kenarı hizasında veya üzerindeki gibbus = TORASİK (T4-T10). Skapula alt kenarı ile bel arası = TL (T10-L2). Belin altı = LOMBER. Adams fotografinda gibbus en yüksek noktasinin omurga seviyesini belirle, paraspinal kasın en şişkin yerine göre degil. (2) Bel cizgisi [sag/sol/her iki tarafta esit-simetrik] silinmis. (3) Cocuk agirligini [sag/sol/dengeli] bacagina veriyor. (4) Bu bulgular [sag/sol/belirgin egrilik yok] [torasik/TL/lomber] egriligi gosteriyor. DM suphe varsa: iki ayri bolgede asimetri ve dengeli durus belirt — ikinci egrilik icin 5. madde ekle.",
   "kyph_finding": "Kifoz normal/düz sırt olsa bile bu alanı ASLA jenerik/şablon cümleyle ('Kifoz artışı gözlemlendi. Lateral grafik ve uzman değerlendirmesi önerilmektedir.' vb.) doldurma — aşağıdaki ZORUNLU FORMAT'ı 'normal/düz' bulgularıyla doldur. ZORUNLU FORMAT: (1) Lateral fotografta sirt profili: [belirgin yuvarlak C profili / hafif yuvarlak / duz / icbukey]. (2) Apex sekli: [yuvarlak-akici / angular-sivri / koseli / belirgin apex yok]. (3) Forward head: [var-belirgin / var-hafif / yok]. (4) One egilmede apex: [keskinlesti=yapisal / ayni kaldi / yumusadi=postural / degisim yok]. (5) Sonuc: [Hiperkifoz-Yuksek / Orta / Dusuk / Hipokifoz / Normal]. DUZ SIRT goruluyorsa Hiperkifoz/Scheuermann YAZMA.",
   "clinical_suspicion": "Dusuk|Orta|Yuksek|Cok Yuksek",
