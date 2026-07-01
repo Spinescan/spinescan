@@ -372,7 +372,7 @@ select.fi option{background:#162d4a}.fr{margin-bottom:12px}.fr2{display:grid;gri
   </div>
   <div class="card">
     <div class="ct">Skolyoz Değerlendirmesi</div>
-    <div id="dmBanner" class="hidden" style="background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(239,68,68,.12));border:1px solid rgba(245,158,11,.4);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:13px;font-weight:600;color:#fcd34d">⚠️ Çift Major (DM) Eğrilik Şüphesi — İki ayrı eğrilik bölgesi tespit edildi</div>
+    
     <div class="fb" id="scFnd">—</div>
     <div id="secondCurveCard" class="hidden" style="margin-top:10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:11px 13px">
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#f59e0b;margin-bottom:6px">İkinci Eğrilik (Minör)</div>
@@ -1338,7 +1338,7 @@ function showResults(){
   if(r.scheuermann_suspicion)autoT.push({t:'Scheuermann Şüphesi',c:'tw'});
   if(r.kyph_apex_shape==='angular')autoT.push({t:'Angular Kifoz Apeksi',c:'tw'});
   if(r.kyph_scoliosis_combo)autoT.push({t:'Kifoz+Skolyoz Birlikteliği',c:'tw'});
-  if(dmLevel==='Olasi'||dmLevel==='Kuvvetli')autoT.push({t:'Çift Major Şüphesi',c:'tw'});
+  
   if(r.sts_risk==='Düşük'&&kR==='Düşük')autoT.push({t:'Düşük Risk',c:'tok'});
   [...autoT,...(r.tags||[]).map(t=>({t,c:'ti'}))].forEach(({t,c})=>{
     const s=document.createElement('span');s.className='tag '+c;s.textContent=t;tw.appendChild(s);
@@ -1580,7 +1580,7 @@ ${p.name?p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek
 Tarih: ${new Date().toLocaleDateString('tr-TR')}
 SKOLYOZ
 STS-Test Skoru: ${r.total_sts ?? '—'} / ${r.sts_max ?? '—'} — ${r.sts_risk||'—'} Risk
-${dm?'⚠️ Çift Major (DM) Eğrilik Şüphesi: '+r.dm_suspicion_level+'\n':''}${r.scoli_finding||''}
+${dm?'⚠️ Çift Major (DM) Eğrilik Şüphesi: ${r.scoli_finding||''}
 ${sc2?'\nİkinci Eğrilik (Minör):\n'+(r.second_curve.adams_finding||r.second_curve.direction+' '+r.second_curve.location):''}
 HİPERKİFOZ / SCHEUERMANN
 Risk: ${r.kyph_risk||'—'} | Tahmini kifoz açısı: ${r.kyph_angle_est||'—'}
