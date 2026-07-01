@@ -1338,7 +1338,7 @@ function showResults(){
   if(r.scheuermann_suspicion)autoT.push({t:'Scheuermann Şüphesi',c:'tw'});
   if(r.kyph_apex_shape==='angular')autoT.push({t:'Angular Kifoz Apeksi',c:'tw'});
   if(r.kyph_scoliosis_combo)autoT.push({t:'Kifoz+Skolyoz Birlikteliği',c:'tw'});
-  if(dmLevel==='Olasi'||dmLevel==='Kuvvetli')autoT.push({t:'Çift Major Şüphesi',c:'tw'});
+  
   if(r.sts_risk==='Düşük'&&kR==='Düşük')autoT.push({t:'Düşük Risk',c:'tok'});
   [...autoT,...(r.tags||[]).map(t=>({t,c:'ti'}))].forEach(({t,c})=>{
     const s=document.createElement('span');s.className='tag '+c;s.textContent=t;tw.appendChild(s);
