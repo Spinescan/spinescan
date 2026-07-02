@@ -1390,17 +1390,7 @@ function showResults(){
   }
 
 
-  // Disclaimer
-  const hiR=r.sts_risk==='Yüksek'||kR==='Yüksek';
-  const miR=r.sts_risk==='Orta'||kR==='Orta';
-  const age=parseInt(ST.patient.age)||0;
-  const menarche=ST.patient.menarche||'';
-  const buyumeDonemi = age>=9 && age<=13 && (menarche==='no'||menarche==='3m-1y'||menarche==='1-2y');
-  let dTxt='';
-  if(hiR)dTxt="⚠️ Çocuğunuzun omurgasında omurga deformite riski saptandı. Konuyu <strong>en kısa sürede</strong> uzman bir <strong>Fizik Tedavi ve Rehabilitasyon Uzmanı</strong> veya <strong>Omurga Uzmanı Ortopedist</strong>'e iletmenizi önemle tavsiye ederiz. Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.";
-  else if(miR)dTxt="Orta düzey bulgular saptandı. Çocuğunuzu <strong>1–2 ay içinde</strong> bir <strong>Fizik Tedavi ve Rehabilitasyon Uzmanı</strong> veya <strong>Omurga Uzmanı Ortopedist</strong>'e götürmenizi öneririz. Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.";
-  else if(buyumeDonemi) dTxt="Şu anki bulgular düşük risk grubunda. Ancak çocuğunuz <strong>aktif büyüme döneminde</strong> — bu dönemde omurga eğrilikleri hızla artabilir. Hafif veya belirsiz bulgular bile ilerleyebilir. <strong>3 ayda bir düzenli tarama yapın.</strong> Duruşta değişiklik, omuz veya bel asimetrisi fark ederseniz beklemeden <strong>Fizik Tedavi ve Rehabilitasyon Uzmanı</strong> veya <strong>Omurga Uzmanı Ortopedist</strong>'e başvurun. Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz.";
-  else dTxt="Bulgular düşük risk grubunda. Omurga gelişimini takip etmek için <strong>2–3 ayda bir</strong> taramayı tekrarlayın. Büyüme döneminde herhangi bir şüphede <strong>Fizik Tedavi ve Rehabilitasyon Uzmanı</strong> veya <strong>Omurga Uzmanı Ortopedist</strong>'e başvurun.";
+ let dTxt="Bu uygulama bir tarama testidir. Tıbbi teşhis koymaz ve hekim muayenesinin yerini tutmaz. Omurga deformitesi şüphesi veya riski taşıyan olgularda <strong>Fizik Tedavi ve Rehabilitasyon Uzmanı</strong> veya <strong>Omurga Uzmanı Ortopedist</strong>'e başvurunuzu geciktirmeyiniz.";
   document.getElementById('discT').innerHTML=dTxt;
 
   // Next scan — büyüme döneminde düşük risk = 3 ay zorla
