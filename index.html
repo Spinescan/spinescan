@@ -1366,7 +1366,7 @@ function showResults(){
         <tr><td style="padding:5px 4px;color:#94a3b8;border-bottom:1px solid rgba(255,255,255,.05)">Skapula asimetrisi</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0;border-bottom:1px solid rgba(255,255,255,.05)">${q.scap_asymmetry_est||'—'}</td></tr>
         <tr><td style="padding:5px 4px;color:#94a3b8;border-bottom:1px solid rgba(255,255,255,.05)">Pelvis farkı</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0;border-bottom:1px solid rgba(255,255,255,.05)">${q.pelvis_diff_est||'—'}</td></tr>
         <tr><td style="padding:5px 4px;color:#94a3b8;border-bottom:1px solid rgba(255,255,255,.05)">Gövde kayması</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0;border-bottom:1px solid rgba(255,255,255,.05)">${q.trunk_shift||'—'}</td></tr>
-        <tr><td style="padding:5px 4px;color:#94a3b8">Adams — hangi taraf</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0">${q.adams_side||'—'}</td></tr>
+        <tr><td style="padding:5px 4px;color:#94a3b8">Öne eğilme bulgusu</td><td style="padding:5px 4px;text-align:right;font-weight:600;color:#e2e8f0">${q.adams_side||'—'}</td></tr>
       </table>
       ${q.grid_used?"<div style='font-size:11px;color:#5eead4;margin-top:6px'>✓ Izgara referansı kullanıldı</div>":''}`;
     document.getElementById('measT').insertAdjacentElement('afterend', qDiv);
