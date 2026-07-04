@@ -1432,20 +1432,17 @@ function checkChanges(){
   if(!prev)return;
   const al=[];
   
-  // Estetik deformite skorunu ayrı karşılaştır (asıl klinik anlamlı değişim)
-  const prevAesthetic = prev.sts_aesthetic_score ?? (prev.sts - (prev.risk_base ?? 0));
+  const prevAesthetic = prev.sts_aesthetic ?? prev.sts;
   const currAesthetic = r.sts_aesthetic_score;
   const dfAesthetic = currAesthetic - prevAesthetic;
-  
-  if(dfAesthetic>=2)al.push(`Fiziksel asimetri bulguları (estetik deformite) ${Math.abs(dfAesthetic)} puan arttı (${prevAesthetic} → ${currAesthetic}) — klinik olarak anlamlı bir kötüleşme olabilir`);
-  else if(dfAesthetic<=-2)al.push(`Fiziksel asimetri bulguları (estetik deformite) ${Math.abs(dfAesthetic)} puan azaldı (${prevAesthetic} → ${currAesthetic}) — klinik olarak anlamlı bir iyileşme olabilir`);
-  
-  // Toplam skor değişimi varsa ama estetik değişmemişse, bunun risk faktöründen geldiğini belirt
   const df=r.total_sts-prev.sts;
-  if(Math.abs(df)>=1 && dfAesthetic===0){
-    al.push(`Toplam STS skorunda değişim (${prev.sts} → ${r.total_sts}) yaş/gelişim evresine bağlı risk faktöründen kaynaklanıyor, fiziksel bulgularda değişiklik yok`);
-  }
   
+  if(dfAesthetic>=2)al.push(`Fiziksel asimetri bulguları ${Math.abs(dfAesthetic)} puan arttı (${prevAesthetic} → ${currAesthetic}) — klinik olarak anlamlı olabilir`);
+  else if(dfAesthetic<=-2)al.push(`Fiziksel asimetri bulguları ${Math.abs(dfAesthetic)} puan azaldı (${prevAesthetic} → ${currAesthetic}) — klinik olarak anlamlı bir iyileşme olabilir`);
+  else if(Math.abs(df)>=1)al.push(`Toplam STS skorunda değişim (${prev.sts} → ${r.total_sts}) yaş/gelişim evresine bağlı risk faktöründen kaynaklanıyor, fiziksel bulgularda anlamlı değişiklik yok`);
+  
+  if(prev.sts_risk!==r.sts_risk)al.push(`Risk grubu değişti: ${prev.sts_risk} → ${r.sts_risk}`);
+  ...
   if(prev.sts_risk!==r.sts_risk)al.push(`Risk grubu değişti: ${prev.sts_risk} → ${r.sts_risk}`);
   if(!prev.sch&&r.scheuermann_suspicion)al.push('Yeni Scheuermann şüphesi oluştu!');
   if(prev.kyph_risk&&prev.kyph_risk!==r.kyph_risk)al.push(`Kifoz riski: ${prev.kyph_risk} → ${r.kyph_risk}`);
