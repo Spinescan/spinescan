@@ -1429,9 +1429,22 @@ function checkChanges(){
   const h=getHist();const r=ST.result;const p=ST.patient;
   const prev=h.filter(x=>!p.name||x.name===p.name||x.name==='İsimsiz').slice(-2,-1)[0];
   if(!prev)return;
-  const al=[];const df=r.total_sts-prev.sts;
-  if(df>=2)al.push(`Skolyoz STS skoru ${Math.abs(df)} puan arttı (${prev.sts} → ${r.total_sts})`);
-  else if(df<=-2)al.push(`Skolyoz STS skoru ${Math.abs(df)} puan azaldı (${prev.sts} → ${r.total_sts})`);
+  const al=[];
+  
+  // Estetik deformite skorunu ayrı karşılaştır (asıl klinik anlamlı değişim)
+  const prevAesthetic = prev.sts_aesthetic_score ?? (prev.sts - (prev.risk_base ?? 0));
+  const currAesthetic = r.sts_aesthetic_score;
+  const dfAesthetic = currAesthetic - prevAesthetic;
+  
+  if(dfAesthetic>=2)al.push(`Fiziksel asimetri bulguları (estetik deformite) ${Math.abs(dfAesthetic)} puan arttı (${prevAesthetic} → ${currAesthetic}) — klinik olarak anlamlı bir kötüleşme olabilir`);
+  else if(dfAesthetic<=-2)al.push(`Fiziksel asimetri bulguları (estetik deformite) ${Math.abs(dfAesthetic)} puan azaldı (${prevAesthetic} → ${currAesthetic}) — klinik olarak anlamlı bir iyileşme olabilir`);
+  
+  // Toplam skor değişimi varsa ama estetik değişmemişse, bunun risk faktöründen geldiğini belirt
+  const df=r.total_sts-prev.sts;
+  if(Math.abs(df)>=1 && dfAesthetic===0){
+    al.push(`Toplam STS skorunda değişim (${prev.sts} → ${r.total_sts}) yaş/gelişim evresine bağlı risk faktöründen kaynaklanıyor, fiziksel bulgularda değişiklik yok`);
+  }
+  
   if(prev.sts_risk!==r.sts_risk)al.push(`Risk grubu değişti: ${prev.sts_risk} → ${r.sts_risk}`);
   if(!prev.sch&&r.scheuermann_suspicion)al.push('Yeni Scheuermann şüphesi oluştu!');
   if(prev.kyph_risk&&prev.kyph_risk!==r.kyph_risk)al.push(`Kifoz riski: ${prev.kyph_risk} → ${r.kyph_risk}`);
