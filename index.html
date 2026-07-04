@@ -1417,7 +1417,7 @@ function saveScan(){
  const rec={id:Date.now(),date:new Date().toLocaleDateString('tr-TR'),ts:Date.now(),
     name:p.name||'İsimsiz',age:p.age,gender:p.gender,
     sts:r.total_sts,sts_risk:r.sts_risk,kyph_risk:r.kyph_risk,sch:r.scheuermann_suspicion,
-    sts_aesthetic:r.sts_aesthetic_score,sts_risk_base:base,
+   sts_aesthetic:r.sts_aesthetic_score,sts_risk_base:(r.total_sts-(r.sts_aesthetic_score||0)),
     adams:r.quantitative?.adams_score,primary_yon:r.quantitative?.primary_direction,kifoz_risk:r.kyph_risk,
     result:rs};
   const h=getHist();h.push(rec);
