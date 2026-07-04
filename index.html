@@ -1414,9 +1414,10 @@ function saveScan(){
     scoli_finding:r.scoli_finding,kyph_finding:r.kyph_finding,
     clinical_suspicion:r.clinical_suspicion,recommended_action:r.recommended_action,
     quantitative:r.quantitative,tags:r.tags,next_scan_months:r.next_scan_months};
-  const rec={id:Date.now(),date:new Date().toLocaleDateString('tr-TR'),ts:Date.now(),
+ const rec={id:Date.now(),date:new Date().toLocaleDateString('tr-TR'),ts:Date.now(),
     name:p.name||'İsimsiz',age:p.age,gender:p.gender,
     sts:r.total_sts,sts_risk:r.sts_risk,kyph_risk:r.kyph_risk,sch:r.scheuermann_suspicion,
+    sts_aesthetic:r.sts_aesthetic_score,sts_risk_base:base,
     adams:r.quantitative?.adams_score,primary_yon:r.quantitative?.primary_direction,kifoz_risk:r.kyph_risk,
     result:rs};
   const h=getHist();h.push(rec);
