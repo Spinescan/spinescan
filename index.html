@@ -1155,7 +1155,7 @@ function finishAnalysis(result,base){
   // Geriye dönük uyumluluk: primary_curve yoksa scoli_finding'den türet
   if(!result.primary_curve && result.scoli_finding){
     result.primary_curve = {
-      direction: 'Belirsiz',
+   direction: result.quantitative?.primary_direction || 'Belirsiz',
       location: result.quantitative?.adams_side?.includes('torasik')?'Torasik':
                 result.quantitative?.adams_side?.includes('TL')?'TL':
                 result.quantitative?.adams_side?.includes('lomber')?'Lomber':'Belirsiz',
