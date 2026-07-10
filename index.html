@@ -1116,7 +1116,8 @@ const resp=await fetch(apiEndpoint,{signal:controller.signal,
         }
       }catch(e2){ console.warn('Konsensüs kontrolü atlandı:', e2); }
     }
-if(typeof gtag==='function') gtag('event', 'scan_completed', {'send_to': 'G-CDRL49NQDZ', 'is_fallback': !!result.is_fallback});
+if(typeof gtag==='function') gtag('event', 'scan_completed', {'send_to': 'G-CDRL49NQDZ', 'is_fallback': !!result.is_fallback}); 
+    try{fetch('https://script.google.com/macros/s/AKfycbwiV34gqKwOelS3ZdnBgNm--RXh2aMBezAXrYDuLzZAQqKwm5NHTdNQ5IYNwURsa557/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'scan_completed_log',ts:Date.now(),date:new Date().toLocaleString('tr-TR')})});}catch(e){}
     finishAnalysis(result,base);
   }catch(err){
     clearInterval(intv);
