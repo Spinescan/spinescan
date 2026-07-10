@@ -1125,7 +1125,8 @@ if(typeof gtag==='function') gtag('event', 'scan_completed', {'send_to': 'G-CDRL
    // Show error to user briefly
     const ldMsg = document.getElementById('ldT');
     if(ldMsg) ldMsg.textContent='Hata: '+err.message.substring(0,60);
-   if(typeof gtag==='function') gtag('event', 'scan_completed', {'send_to': 'G-CDRL49NQDZ', 'is_fallback': true});
+  if(typeof gtag==='function') gtag('event', 'scan_completed', {'send_to': 'G-CDRL49NQDZ', 'is_fallback': true});
+    try{fetch('https://script.google.com/macros/s/AKfycbwiV34gqKwOelS3ZdnBgNm--RXh2aMBezAXrYDuLzZAQqKwm5NHTdNQ5IYNwURsa557/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({stars:0,validation:'',comment:'[OTOMATİK LOG - Hata sonrası fallback tamamlandı]',age:p.age||'',gender:p.gender||'',risk:'',direction:'',kyphosis:''})});}catch(e){}
     setTimeout(()=>finishAnalysis(buildFallback(base),base), 1500);
   }
 }
