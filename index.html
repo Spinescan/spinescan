@@ -588,9 +588,10 @@ function getSTSRisk(score,gender){
 function getSTSMax(gender){return gender==='kiz'?15:13;}
 
 async function doAnalysis(){
-  // ── GÖRSEL DOĞRULAMA ──
-  const _chkPhoto = ST.photos['back'] || ST.photos['front'];
-  if(_chkPhoto){
+ // ── GÖRSEL DOĞRULAMA (tüm fotoğraflar tek tek kontrol edilir) ──
+  for(const _key of ['back','front','adams','lateral']){
+    const _chkPhoto = ST.photos[_key];
+    if(!_chkPhoto) continue;
     try{
       const _vR = await fetch('https://spinescan-api.yilmazhurriyet.workers.dev',{
         method:'POST',
@@ -598,14 +599,14 @@ async function doAnalysis(){
         body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:20,
           messages:[{role:'user',content:[
             {type:'image',source:{type:'base64',media_type:'image/jpeg',data:_chkPhoto}},
-            {type:'text',text:'Bu fotoğrafta insan sırtı veya omurgası görülüyor mu? Sadece EVET veya HAYIR yaz.'}
+            {type:'text',text:'Bu görsel gerçek bir DIJITAL FOTOĞRAF mı ve normal bir kamerayla çekilmiş, çıplak gözle görülebilen bir insan sırtı/gövdesi mi gösteriyor? Röntgen, MR, BT, radyolojik görüntü, çizim, diyagram, ölçüm şeması, ekran görüntüsü veya taranmış belge ise HAYIR yaz. Sadece EVET veya HAYIR yaz.'}
           ]}]})
       });
       const _vD = await _vR.json();
       const _vT = (_vD.content?.[0]?.text||'').trim().toUpperCase();
       if(!_vT.startsWith('EVET')){
         goTo(2);
-        alert('⚠️ Geçersiz görsel.\n\nLütfen sırt/omurga fotoğrafı yükleyin.\nÜzüm, hayvan veya nesne fotoğrafları kabul edilmez.');
+        alert('⚠️ Geçersiz görsel.\n\nLütfen normal bir kamerayla çekilmiş sırt/omurga fotoğrafı yükleyin.\nRöntgen, MR, çizim, diyagram, üzüm, hayvan veya nesne fotoğrafları kabul edilmez.');
         return;
       }
     }catch(e){console.warn('Görsel doğrulama atlandı:',e);}
