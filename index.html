@@ -1171,10 +1171,8 @@ function buildFallback(base){
 }
 function finishAnalysis(result,base){
   if(result.photo_mismatch){
-    clearInterval(intv);
     const ldEl=document.getElementById('ldT');
     if(ldEl) ldEl.textContent='';
-    const stepArea = document.querySelector('.sn') ? document.querySelector('.sn').closest('div').parentElement : null;
     alert('⚠️ FOTOĞRAF UYARISI\n\n'+(result.mismatch_details||'Fotoğraflardan biri beklenen pozisyon/açıyla uyuşmuyor.')+'\n\nLütfen fotoğrafları kontrol edip yeniden yükleyin.');
     goTo(3);
     return;
