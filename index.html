@@ -599,7 +599,7 @@ async function doAnalysis(){
         body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:20,
           messages:[{role:'user',content:[
             {type:'image',source:{type:'base64',media_type:'image/jpeg',data:_chkPhoto}},
-            {type:'text',text:'Bu görsel gerçek bir DIJITAL FOTOĞRAF mı ve normal bir kamerayla çekilmiş, çıplak gözle görülebilen bir insan sırtı/gövdesi mi gösteriyor? Röntgen, MR, BT, radyolojik görüntü, çizim, diyagram, ölçüm şeması, ekran görüntüsü veya taranmış belge ise HAYIR yaz. Sadece EVET veya HAYIR yaz.'}
+            {type:'text',text:'Bu görselde bir insan vücudu (sırt, gövde, omuz, yüz veya benzeri) görülüyor mu? Gizlilik için yüzün maske, bulanıklaştırma, emoji veya başka bir yöntemle kapatılmış/örtülmüş olması tamamen normaldir ve bu durum EVET cevabını ETKİLEMEZ. Sadece şu durumlarda HAYIR yaz: röntgen/MR/BT gibi radyolojik görüntü, çizim/illüstrasyon, ölçüm şeması/diyagram, ekran görüntüsü, taranmış belge, ya da insan içermeyen bir nesne/hayvan/manzara fotoğrafı. Sadece EVET veya HAYIR yaz.'}
           ]}]})
       });
       const _vD = await _vR.json();
