@@ -200,13 +200,30 @@
     <h2>Klinisyen tarafından,<br>ebeveynler için</h2>
     <p class="section-sub" style="margin: 0 auto;">SpineScan, 20 yıllık skolyoz klinik deneyimini dijital tarama teknolojisiyle birleştiren bir hekim tarafından geliştirilmiştir.</p>
     <div class="author-box" style="margin: 32px auto 0;">
-      <div class="author-avatar">HY</div>
+     <div class="author-box" onclick="document.getElementById('drCvModal').style.display='flex'" style="margin: 32px auto 0;cursor:pointer">
+  <div class="author-avatar" style="overflow:hidden;padding:0">
+    <img src="dr-h-logo.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+  </div>
+  <div>
+    <div class="author-name">Prof. Dr. Hürriyet Yılmaz</div>
+    <div class="author-title">Fizik Tedavi ve Rehabilitasyon Uzmanı<br>STS-Test Geliştirici — Asian Spine Journal 2023</div>
+  </div>
+</div>
+
+<div id="drCvModal" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#132540;border-radius:16px;max-width:420px;width:100%;padding:28px;position:relative;max-height:85vh;overflow-y:auto;text-align:left">
+    <button onclick="document.getElementById('drCvModal').style.display='none'" style="position:absolute;top:14px;right:14px;background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer;line-height:1">×</button>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <img src="dr-h-logo.png" style="width:56px;height:56px;border-radius:50%;object-fit:cover">
       <div>
-        <div class="author-name">Prof. Dr. Hürriyet Yılmaz</div>
-        <div class="author-title">Fizik Tedavi ve Rehabilitasyon Uzmanı<br>STS-Test Geliştirici — Asian Spine Journal 2023</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:18px;color:#fff">Prof. Dr. Hürriyet Yılmaz</div>
+        <div style="font-size:13px;color:#94a3b8">Fizik Tedavi ve Rehabilitasyon Uzmanı</div>
       </div>
     </div>
+    <p style="font-size:14px;color:#cbd5e1;line-height:1.7">1983 İstanbul Tıp Fakültesi mezunu olan Prof. Dr. Hürriyet Yılmaz, 30 yılı aşkın klinik deneyime sahip bir Fizik Tedavi ve Rehabilitasyon uzmanıdır. Akademik kariyeri boyunca skolyoz alanında yoğunlaşmış; <strong>Türkiye'deki Adolesan idiyopatik skolyoz prevalansını</strong> belirleyen ilk kapsamlı epidemiyolojik çalışmayı yürütmüştür (Spine Journal, 2020). Ailelerin evde uygulayabileceği Skolyoz Tele-Tarama Testi'nin (STS-Test) geliştiricisidir (Asian Spine Journal, 2023) — SpineScan'in bilimsel temeli bu çalışmaya dayanır.</p>
+    <p style="font-size:14px;color:#cbd5e1;line-height:1.7;margin-top:12px">SOSORT (Skolyozda Konservatif Tedavi Uluslararası Derneği) üyesi olan Dr. Yılmaz, 71 bilimsel makale ve 12 kitap bölümüne imza atmıştır.</p>
   </div>
+</div>
 <section class="cta-bottom">
   <div class="section-label">Hemen Başlayın</div>
   <h2>Çocuğunuzun omurgası<br>5 dakikanızı hak ediyor</h2>
