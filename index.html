@@ -1586,7 +1586,7 @@ ${p.name?p.name+'\n':''}Yaş: ${p.age||'—'} | ${p.gender==='kiz'?'Kız':'Erkek
 Tarih: ${new Date().toLocaleDateString('tr-TR')}
 SKOLYOZ
 STS-Test Skoru: ${r.total_sts ?? '—'} / ${r.sts_max ?? '—'} — ${r.sts_risk||'—'} Risk
-  → Risk Faktörleri: ${base} / 3 (yaş/gelişime bağlı, sabit — aile öyküsü, cinsiyet, menarş)
+  → Risk Faktörleri: ${r.total_sts-(r.sts_aesthetic_score||0)} / 3 (yaş/gelişime bağlı, sabit — aile öyküsü, cinsiyet, menarş)
   → Estetik Deformite: ${r.sts_aesthetic_score ?? '—'} / 12 (fiziksel bulgu, klinik takipte asıl izlenmesi gereken değer)
 ${r.scoli_finding||''}
 
