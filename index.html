@@ -1169,10 +1169,19 @@ function buildFallback(base){
     kyph_finding:o.a6?'Kifoz artışı gözlemlendi. Lateral grafik ve uzman değerlendirmesi önerilmektedir.':'Kifoz değerlendirmesi normal sınırda görünmektedir.',
     tags:[],next_scan_months:o.a5||o.a1&&o.a2?1:2};
 }
-
 function finishAnalysis(result,base){
+  if(result.photo_mismatch){
+    clearInterval(intv);
+    const ldEl=document.getElementById('ldT');
+    if(ldEl) ldEl.textContent='';
+    const stepArea = document.querySelector('.sn') ? document.querySelector('.sn').closest('div').parentElement : null;
+    alert('⚠️ FOTOĞRAF UYARISI\n\n'+(result.mismatch_details||'Fotoğraflardan biri beklenen pozisyon/açıyla uyuşmuyor.')+'\n\nLütfen fotoğrafları kontrol edip yeniden yükleyin.');
+    goTo(3);
+    return;
+  }
   const total=base+(result.sts_aesthetic_score||0);
   const g=ST.patient.gender;
+
   // Geriye dönük uyumluluk: primary_curve yoksa scoli_finding'den türet
   if(!result.primary_curve && result.scoli_finding){
     result.primary_curve = {
