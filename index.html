@@ -604,6 +604,7 @@ async function doAnalysis(){
       });
       const _vD = await _vR.json();
       const _vT = (_vD.content?.[0]?.text||'').trim().toUpperCase();
+     console.log('=== GORSEL DOGRULAMA ===', _key, '→', _vT);
       if(!_vT.startsWith('EVET')){
         goTo(2);
         alert('⚠️ Geçersiz görsel.\n\nLütfen normal bir kamerayla çekilmiş sırt/omurga fotoğrafı yükleyin.\nRöntgen, MR, çizim, diyagram, üzüm, hayvan veya nesne fotoğrafları kabul edilmez.');
