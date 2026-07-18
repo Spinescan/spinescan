@@ -1028,7 +1028,7 @@ const resp=await fetch(apiEndpoint,{signal:controller.signal,
     if(!resp.ok){const errData=await resp.json().catch(()=>({}));throw new Error('API hata: '+(errData.error?.message||resp.status));}
     const data=await resp.json();
     const txt=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
-    console.log('=== API YANITI ===', txt.substring(0,500));
+    console.log('=== API YANITI (TAM) ===', txt);
     console.log('=== TOPLAM UZUNLUK ===', txt.length);
     console.log('=== STOP REASON ===', data.stop_reason);
     let result=null;
