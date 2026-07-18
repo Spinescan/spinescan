@@ -565,14 +565,52 @@ function checkBtns(){
     } else { warnEl.style.display='none'; }
   }
 }
-function compImg(file,cb){
+function getExifOrientation(file,cb){
   const r=new FileReader();
-  r.onload=e=>{const img=new Image();img.onload=()=>{
-    const c=document.createElement('canvas'),MAX=1000;let[w,h]=[img.width,img.height];
-    if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
-    c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
-    const src=c.toDataURL('image/jpeg',.55);cb(src,src.split(',')[1]);
-  };img.src=e.target.result;};r.readAsDataURL(file);
+  r.onload=e=>{
+    const view=new DataView(e.target.result);
+    if(view.getUint16(0,false)!==0xFFD8){cb(1);return;}
+    let offset=2,marker;
+    while(offset<view.byteLength){
+      marker=view.getUint16(offset,false);offset+=2;
+      if(marker===0xFFE1){
+        if(view.getUint32(offset+=2,false)!==0x45786966){cb(1);return;}
+        const little=view.getUint16(offset+=6,false)===0x4949;
+        offset+=view.getUint32(offset+4,little);
+        const tags=view.getUint16(offset,little);offset+=2;
+        for(let i=0;i<tags;i++){
+          if(view.getUint16(offset+(i*12),little)===0x0112){
+            cb(view.getUint16(offset+(i*12)+8,little));return;
+          }
+        }
+      }else if((marker&0xFF00)!==0xFF00){break;}else{offset+=view.getUint16(offset,false);}
+    }
+    cb(1);
+  };
+  r.readAsArrayBuffer(file.slice(0,131072));
+}
+function compImg(file,cb){
+  getExifOrientation(file,orientation=>{
+    const r=new FileReader();
+    r.onload=e=>{const img=new Image();img.onload=()=>{
+      const c=document.createElement('canvas'),MAX=1000;let[w,h]=[img.width,img.height];
+      if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+      const swap=orientation>=5&&orientation<=8;
+      c.width=swap?h:w;c.height=swap?w:h;
+      const ctx=c.getContext('2d');
+      switch(orientation){
+        case 2:ctx.transform(-1,0,0,1,c.width,0);break;
+        case 3:ctx.transform(-1,0,0,-1,c.width,c.height);break;
+        case 4:ctx.transform(1,0,0,-1,0,c.height);break;
+        case 5:ctx.transform(0,1,1,0,0,0);break;
+        case 6:ctx.transform(0,1,-1,0,c.width,0);break;
+        case 7:ctx.transform(0,-1,-1,0,c.width,c.height);break;
+        case 8:ctx.transform(0,-1,1,0,0,c.height);break;
+      }
+      ctx.drawImage(img,0,0,w,h);
+      const src=c.toDataURL('image/jpeg',.55);cb(src,src.split(',')[1]);
+    };img.src=e.target.result;};r.readAsDataURL(file);
+  });
 }
 function calcBaseSTS(){
   const p=ST.patient; let s=0;
