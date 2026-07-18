@@ -591,6 +591,7 @@ function getExifOrientation(file,cb){
 }
 function compImg(file,cb){
   getExifOrientation(file,orientation=>{
+    console.log('=== EXIF ORIENTATION ===', orientation);
     const r=new FileReader();
     r.onload=e=>{const img=new Image();img.onload=()=>{
       const c=document.createElement('canvas'),MAX=1000;let[w,h]=[img.width,img.height];
