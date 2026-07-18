@@ -604,9 +604,9 @@ function compImg(file,cb){
         case 3:ctx.transform(-1,0,0,-1,c.width,c.height);break;
         case 4:ctx.transform(1,0,0,-1,0,c.height);break;
         case 5:ctx.transform(0,1,1,0,0,0);break;
-        case 6:ctx.transform(0,1,-1,0,h,0);break;
+        case 6:ctx.transform(0,-1,1,0,0,w);break;
         case 7:ctx.transform(0,-1,-1,0,h,w);break;
-        case 8:ctx.transform(0,-1,1,0,0,w);break;
+        case 8:ctx.transform(0,1,-1,0,h,0);break;
       }
       ctx.drawImage(img,0,0,w,h);
       const src=c.toDataURL('image/jpeg',.55);cb(src,src.split(',')[1]);
