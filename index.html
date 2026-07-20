@@ -614,6 +614,8 @@ function getSTSRisk(score,gender){
 function getSTSMax(gender){return gender==='kiz'?15:13;}
 
 async function doAnalysis(){
+  if(ST.analyzing) return;
+  ST.analyzing = true;
  // ── GÖRSEL DOĞRULAMA (tüm fotoğraflar tek tek kontrol edilir) ──
   for(const _key of ['back','front','adams','lateral']){
     const _chkPhoto = ST.photos[_key];
