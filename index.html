@@ -903,11 +903,33 @@ KIFOZ + SKOLYOZ BIRLIKTELIGI (kyph_scoliosis_combo):
   • Bel cizgisi hafifce asimetrik mi?
   • Bu bolgede hafif lateral egrilik eşlik edebilir
   → Varsa: kyph_scoliosis_combo = true, bunu scoli_finding'e ekle
-
 DUZ SIRT KURALI (sadece bu durumda gecerli):
   Torasik bolge HICBIR yuvarlaklik gostermiyorsa → kyph_risk="Hipokifoz"
   Hafif bile yuvarlaklik varsa "Hipokifoz" YAZMA — en az "Dusuk" yaz.
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KLINIK SUPHE DUZEYI — PATERN TUTARLILIGI KURALI (IKI YONLU)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Bu kural clinical_suspicion alanini belirlerken kullanilir.
+
+YUKARI CEKME: STS toplam puani dusuk ciksa bile, ADIM 1 (arkadan bulgular:
+omuz+skapula+bel-dirsek+kalca+agirlik) ve Adams bulgusu birbirini net destekliyorsa
+(ayni taraf, ayni paterne uyuyor, birden fazla bulgu tutarli), bu tutarliligin kendisi
+klinik supheyi artiran bir kanittir. Boyle durumlarda Klinik Supge Duzeyi'ni puan
+toplaminin isaret ettiginden bir kademe yukari cekebilirsin (orn. Dusuk yerine Orta),
+gerekcesini scoli_finding metninde acikca belirt.
+
+ASAGI TUTMA: Tersine, sadece TEK bir izole hafif bulgu varsa (orn. sadece Adams=1,
+baska HICBIR destekleyici bulgu yok — omuz/skapula/kalca/agirlik hepsi simetrik/normal),
+bunu "muhtemelen postural/gecici, dusuk oncelikli takip" olarak degerlendir, supheyi
+gereksiz yere yukseltme. Amac: saglikli cocuklarda gereksiz alarm olusturmamak.
+
+NOT: Puan yuksek ama bulgular tutarsiz/celiskili ise puani dusurme, sadece belirsizlik
+notu ekle — bu kural sadece "dusuk puan + tutarli bulgu" ve "tek izole zayif bulgu"
+durumlari icin, tersi durumlarda dokunma.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GENEL UYARILAR
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 GENEL UYARILAR
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
