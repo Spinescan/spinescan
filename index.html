@@ -1167,6 +1167,9 @@ function buildFallback(base){
     tags:[],next_scan_months:o.a5||o.a1&&o.a2?1:2};
 }
 function finishAnalysis(result,base){
+  if(result.is_fallback){
+    alert('⚠️ AI ANALİZİ TAMAMLANAMADI\n\nTeknik bir sorun nedeniyle yapay zeka fotoğraf analizi yapılamadı. Aşağıdaki sonuç SADECE sizin işaretlediğiniz gözlemlere dayanmaktadır, fotoğraflar AI tarafından analiz edilmemiştir. Lütfen tekrar deneyin veya doğrudan uzman muayenesine başvurun.');
+  }
   if(result.photo_mismatch){
     const ldEl=document.getElementById('ldT');
     if(ldEl) ldEl.textContent='';
