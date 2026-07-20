@@ -767,7 +767,6 @@ enstrümanın resmi ölçeği, oraya dokunma. Bu kural sadece serbest metin aç�
 ("not", "finding" alanları) mm/derece ifadeleri içindir.
 
 1. OMUZ YUKSEKLIK ASIMETRISI:
-1. OMUZ YUKSEKLIK ASIMETRISI:
    - Onden VE Arkadan AYRI AYRI degerlendir
    - Her iki akromion yuksekligini karsilastir, kulak-omuz mesafesi esit mi?
    - Hafif (<1cm), Orta (1-2cm), Belirgin (>2cm) sinifla
@@ -800,7 +799,45 @@ enstrümanın resmi ölçeği, oraya dokunma. Bu kural sadece serbest metin aç�
    DIK DURUŞ SIMETRISI ADAMS BULGUSUNU GECERSIZ KILMAZ.
    Adams fotografindaki paraspinal / rib hump bulgusu her zaman kazanir.
 
-5. YON BELIRLEME — ADIM ADIM ZORUNLU PROTOKOL:━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. YON BELIRLEME — ADIM ADIM ZORUNLU PROTOKOL:
+5. YON VE LOKALIZASYON BELIRLEME — TEK PROTOKOL
+
+ADIM 1 — ARKADAN BAKIS (her vakada, bu sirayla):
+1. Omuz yukseklik farki var mi, ne derece?
+2. Skapula: yukseklik farki var mi VE/VEYA alata/winging var mi? Ikisi ayri bulgular, karistirma.
+3. Kol-bel mesafesi: sagda mi solda mi daralmis?
+4. Kalca: ortada mi, hangi yone shift?
+5. Govde (C7'den kalcaya cizilen hat, CSL'e gore): sagda mi solda mi, yoksa ortada mi?
+6. Agirlik hangi bacakta?
+
+ILK CIKARIM (agirliktan):
+- Agirlik sagda → major egrilik SAG
+- Agirlik solda → major egrilik SOL
+- Agirlik ortada → egrilik yok VEYA dengeli double major
+
+ADIM 2 — LOKALIZASYON PATERNINI TANI:
+- TORASIK paterni: Omuz belirgin. Skapula: yukseklik farki VE/VEYA alata, AYNI tarafta.
+  → Lokalizasyon: "ust sirt (torasik)"
+- ALT SEGMENT paterni (torakolomber/lomber — TEK kategori):
+  Omuz VE skapula hafif/minimal. Bel-dirsek mesafesi major tarafta daralmis olabilir.
+  Adams'ta gibus veya sadece paravertebral (PV) belirginlik olabilir — ikisi de bu kategoriye girer.
+  → Lokalizasyon: "bel-alt sirt (torakolomber/lomber)"
+- Hepsi belirsiz/celiskiliyse → Lokalizasyon: "belirsiz"
+
+ADIM 3 — CAPRAZ DOGRULAMA:
+Adim 1 ve Adams bulgusu ayni yonu/paterni gosteriyorsa → kesin, yaz.
+Celisiyorsa → onden fotograf ve ters Adams ile teyit et, hala netlesmezse "belirsiz" yaz.
+
+CIKTI FORMATI — ONEMLI: bu protokolun sonucunu scoli_finding metnine YAZMA
+(scoli_finding kendi semasinda "yon/lokalizasyon belirtme" diyor, oraya dokunma).
+Bunun yerine JSON ciktisinda su iki alani BU PROTOKOLE GORE doldur:
+  primary_curve.direction → "sag" | "sol" | "belirgin asimetri yok"
+  primary_curve.location  → "ust sirt(torasik)" | "bel-alt sirt(torakolomber/lomber)" | "belirsiz"
+
+YANLIS KALIPLAR — KESINLIKLE YAPMA:
+X "Sol omuz yuksek → sag torasik egrilik" — istatistiksel kalip, yanlis olabilir
+X Adams paraspinalini gorduk, bel cizgisine bakmadik — EKSIK, mutlaka capraz dogrula
+X Yonu net belirleyemiyorsan: "belirsiz" yaz, tahmin etme.━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 BOLUM B — CIFT MAJOR (DM) EGRILIK TARAMASI
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 DM taramasini HER vakada yap — tek egrilik bulduktan sonra dur degil, devam et.
