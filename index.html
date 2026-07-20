@@ -599,6 +599,8 @@ function compImg(file,cb){
       const swap=orientation>=5&&orientation<=8;
       c.width=swap?h:w;c.height=swap?w:h;
       const ctx=c.getContext('2d');
+      console.log('=== ROTASYON ATLANDI (TEST) ===');
+      /* GEÇİCİ TEST — switch devre dışı
       switch(orientation){
         case 2:ctx.transform(-1,0,0,1,c.width,0);break;
         case 3:ctx.transform(-1,0,0,-1,c.width,c.height);break;
