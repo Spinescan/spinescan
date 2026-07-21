@@ -845,9 +845,29 @@ ADIM 2 — LOKALIZASYON PATERNINI TANI:
   → Lokalizasyon: "bel-alt sirt (torakolomber/lomber)"
 - Hepsi belirsiz/celiskiliyse → Lokalizasyon: "belirsiz"
 
-ADIM 3 — CAPRAZ DOGRULAMA:
+ADIM 3 — CAPRAZ DOGRULAMA VE SINIRDA-DURUM KONTROLU:
+
+Once SERTLIK KONTROLU yap: Adim 1'deki bulgularin (omuz, skapula, bel-dirsek,
+kalca, govde) KACI "hafif" seviyede, kaci "orta/belirgin" seviyede? Eger
+bulgularin COGUNLUGU (3+ tanesi) sadece "hafif" seviyedeyse VE Adams skoru
+2'nin altindaysa, bu vaka SINIRDA/BELIRSIZ kabul edilir — asagidaki normal
+capraz dogrulamaya gecmeden once bunu isaretle.
+
+SINIRDA VAKA ise: yine de bir yon tahmini yap (asagidaki capraz dogrulamayla),
+ANCAK bu tahmini "kesin" degil "on-yorum, dusuk guven" olarak isaretle —
+primary_curve icine confidence:"dusuk" alanini ekle (yoksa ekleme, sadece
+scoli_finding metninde "bulgular hafif duzeyde, yon tayini dusuk guvenle
+yapilmistir" ifadesini kullan).
+
+NET VAKA ise (bulgularin cogu orta/belirgin VEYA Adams 3+): normal capraz
+dogrulamaya devam et:
 Adim 1 ve Adams bulgusu ayni yonu/paterni gosteriyorsa → kesin, yaz.
-Celisiyorsa → onden fotograf ve ters Adams ile teyit et, hala netlesmezse "belirsiz" yaz.
+Celisiyorsa → onden fotograf ve ters Adams ile teyit et, hala netlesmezse
+"belirsiz" yaz — TAHMIN ETME, zorlama.
+
+ONEMLI: Hafif/sinirda bulgularda kesin ve iddiali bir yon yazmak, tutarsiz
+sonuclara yol acar. Boyle durumlarda supheyi ve dusuk guven duzeyini acikca
+belirtmek, yanlis kesinlikten HER ZAMAN daha dogrudur.
 
 CIKTI FORMATI — ONEMLI: bu protokolun sonucunu scoli_finding metnine YAZMA
 (scoli_finding kendi semasinda "yon/lokalizasyon belirtme" diyor, oraya dokunma).
