@@ -665,7 +665,18 @@ if(ST.photos['adams']){content.push({type:'text',text:'[FOTOGRAF 3 — ADAMS ARK
 if(ST.photos['side']){content.push({type:'text',text:'[FOTOGRAF 4 — YANDAN LATERAL: fotografin sagi = hastanin ÖNÜ]'});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos['side']}});}
 if(ST.photos['kph']){content.push({type:'text',text:'[FOTOGRAF 5 — KİFOZ LATERAL]'});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos['kph']}});}
 if(ST.photos['radams']){content.push({type:'text',text:'[FOTOGRAF 6 — ADAMS ÖNDEN: fotografin sagi = hastanin SOLU]'});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ST.photos['radams']}});}
-  const prompt=`SELF-CHECK — HER ANALIZDEN ONCE BU SORULARI YANITLA:
+  const prompt=`ZORUNLU CIKTI KURALI — ASLA ATLAMA:
+Bu promptun sonundaki JSON'u yazmadan ONCE, MUTLAKA su sirayla yazili
+muhakemeni goster: ADIM 0 (fotograf envanteri/dogrulama) → SELF-CHECK
+(4 soru) → BOLUM A (1-5, omuz/skapula/pelvis/Adams/yon belirleme adimlari
+tek tek) → BOLUM B (DM taramasi) → BOLUM C (lokalizasyon) → BOLUM D
+(kifoz). Bu adimlari YAZMADAN dogrudan JSON'a gecmek KESINLIKLE YASAK —
+boyle yaparsan yon/taraf hatasi yapma riskin cok artar. Kisa/ozet gecmek
+bile YASAK, her adimda gercek gozlemini yaz (hangi taraf, ne kadar,
+hangi fotografta). JSON, SADECE bu yazili muhakemenin EN SONUNDA, ayri
+bir blok olarak gelir.
+
+SELF-CHECK — HER ANALIZDEN ONCE BU SORULARI YANITLA:
 1. Adams fotografinda yuksek taraf fotografin SAG mi SOL mu tarafinda?
 2. Bu fotograf ARKADAN mi ONDEN mi cekildi?
 3. Aynalanma gerekiyor mu? (Arkadan=HAYIR, Onden=EVET)
