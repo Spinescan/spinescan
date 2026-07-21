@@ -694,15 +694,18 @@ Rijid kifoz: ${o.a7?"EVET":"Hayir"} | Sirt agrisi: ${o.a8?"EVET":"Hayir"}
 
 ADIM 0 — FOTOGRAF ENVANTERI VE DOGRULAMA (her zaman yap, ZORUNLU)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ONCELIKLE — AYDINLATMA KONTROLU (her fotograf icin ayrı ayrı yap):
-Fotograf yeterince aydinlik mi? Deri tonu, kas hatlari, kemik cikintilari
-(skapula, omurga hatti, paraspinal kaslar) net secilebiliyor mu, yoksa
-golge/karanlik nedeniyle detaylar kayboluyor mu? Eger fotograf ASIRI
-KARANLIKSA (govde siluet gibi gorunuyor, ic detaylar secilmiyor):
-bu fotograf icin lighting_adequate=false yap ve o fotografa dayali
-bulgulari normal guvenle yazma — bulguyu yine de yaz ama "sinirli
-gorunurlukte" ifadesini notuna ekle. Hafif karanlik ama detaylar YINE DE
-secilebiliyorsa lighting_adequate=true yaz, normal analize devam et.
+ONCELIKLE — AYDINLATMA KONTROLU (her fotograf icin ayrı ayrı yap, SIKI UYGULA):
+Fotografa bakmadan ONCE kendine sor: "Bu fotografta cildin renk tonu dogru
+mu goruyorum, yoksa genel olarak koyu/gri/kahverengiye mi kacmis?" "Paraspinal
+kas golgeleri ile fotografin genel karanligini birbirinden ayirt edebiliyor
+muyum, yoksa hepsi ayni koyulukta mi?" Eger bu ikinci soruya "hepsi ayni
+koyulukta, ayirt edemiyorum" cevabini veriyorsan, fotograf YETERSIZ AYDINLATILMIS
+demektir — bu durumda lighting_adequate=false yaz, KUSKUDA KALDIGINDA
+DAIMA false SEC (true varsayilan degil, ispat yukü aydinlatmanin yeterli
+oldugunu gostermekte). Sadece govde net, parlak/gun isigi benzeri aydinlatmayla
+cekilmis, golgeler ile kas/kemik hatlari acikca birbirinden ayrilabiliyorsa
+lighting_adequate=true yaz. "Idare eder", "yeterince goruluyor gibi" gibi
+sinirda degerlendirmelerde HER ZAMAN false'a yuvarla.
 
 ONCELIKLE — ORYANTASYON KONTROLU (her fotograf icin ayrı ayrı yap):
 Fotografta insan vucudu DIKEY mi (bas yukarida, ayaklar asagida) yoksa
