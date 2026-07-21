@@ -1230,6 +1230,8 @@ const resp=await fetch(apiEndpoint,{signal:controller.signal,
 } else {
   result.consensus_warning=false;
 }; 
+            }
+          }
       }catch(e2){ console.warn('Konsensüs kontrolü atlandı:', e2); }
     }
 if(typeof gtag==='function') gtag('event', 'scan_completed', {'send_to': 'G-CDRL49NQDZ', 'is_fallback': !!result.is_fallback}); 
