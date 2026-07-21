@@ -1212,11 +1212,24 @@ const resp=await fetch(apiEndpoint,{signal:controller.signal,
             const mismatch = dir1!==dir2 || result.kyph_risk!==result2.kyph_risk ||
               (!!result.scheuermann_suspicion)!==(!!result2.scheuermann_suspicion);
             if(mismatch){
-              result.consensus_warning=true;
-              result.consensus_note='İki bağımsız değerlendirme arasında farklılık tespit edildi: '
-                +'1. değerlendirme — '+(dir1||'Belirsiz')+', Kifoz: '+(result.kyph_risk||'—')+(result.scheuermann_suspicion?', Scheuermann şüphesi':'')
-                +' | 2. değerlendirme — '+(dir2||'Belirsiz')+', Kifoz: '+(result2.kyph_risk||'—')+(result2.scheuermann_suspicion?', Scheuermann şüphesi':'')
-                +'. Bu durum yapay zeka değerlendirmesinin bu vakada belirsiz olduğunu gösterir; lütfen mutlaka uzman muayenesine başvurun.';
+  result.consensus_warning=true;
+  result.consensus_note='İki bağımsız değerlendirme arasında farklılık tespit edildi: '
+    +'1. değerlendirme — '+(dir1||'Belirsiz')+', Kifoz: '+(result.kyph_risk||'—')+(result.scheuermann_suspicion?', Scheuermann şüphesi':'')
+    +' | 2. değerlendirme — '+(dir2||'Belirsiz')+', Kifoz: '+(result2.kyph_risk||'—')+(result2.scheuermann_suspicion?', Scheuermann şüphesi':'')
+    +'. Bu durum yapay zeka değerlendirmesinin bu vakada belirsiz olduğunu gösterir; lütfen mutlaka uzman muayenesine başvurun.';
+  // Yon/lokalizasyon konusunda iki degerlendirme celisiyorsa, kesin sonuc yerine
+  // "Belirsiz" goster — yanlis kesinlik vermek, tekrar tarama onermekten daha riskli.
+  if(dir1!==dir2){
+    if(result.primary_curve){
+      result.primary_curve.direction='Belirsiz';
+      result.primary_curve.location='Belirsiz';
+    }
+    result.scoli_finding=(result.scoli_finding||'')+' NOT: Yapay zeka iki bagimsiz degerlendirmede farkli yon/lokalizasyon sonucuna vardi, bu nedenle kesin taraf/lokalizasyon belirtilememektedir.';
+    result.recommended_action='Yapay zeka taraf/lokalizasyon konusunda kararsiz kaldi (iki degerlendirme celisti) — taramayi tekrarlamak yerine dogrudan ortopedi/FTR uzmanina basvurun, ayakta on-arka omurga grafisi ile kesin degerlendirme yapilmalidir.';
+  }
+} else {
+  result.consensus_warning=false;
+}; lütfen mutlaka uzman muayenesine başvurun.';
             } else {
               result.consensus_warning=false;
             }
