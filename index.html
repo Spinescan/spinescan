@@ -1182,9 +1182,9 @@ const resp=await fetch(apiEndpoint,{signal:controller.signal,
    if(!result) throw new Error('parse fail');
 
     // ── KONSENSÜS KONTROLÜ — yüksek riskli sonuçlarda 2. çalıştırma ──
-    const needsConsensus = result.kyph_risk==='Yüksek' || result.scheuermann_suspicion===true ||
-      (result.dm_suspicion_level && result.dm_suspicion_level!=='Yok') ||
-      (result.sts_risk==='Yüksek');
+   const needsConsensus = result.kyph_risk==='Yüksek' || result.scheuermann_suspicion===true ||
+  (result.dm_suspicion_level && result.dm_suspicion_level!=='Yok') ||
+  (result.clinical_suspicion==='Yuksek' || result.clinical_suspicion==='Cok Yuksek');
     if(needsConsensus){
       if(ldEl) ldEl.textContent='Sonuç doğrulanıyor (2. değerlendirme)...';
       try{
