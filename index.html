@@ -1271,7 +1271,7 @@ function buildFallback(base){
 function finishAnalysis(result,base){
   ST.analyzing = false;
   if(result.is_fallback){
-    alert('⚠️ AI ANALİZİ TAMAMLANAMADI...');
+    alert('⚠️ AI ANALİZİ TAMAMLANAMADI\n\nTeknik bir sorun (muhtemelen zayıf internet bağlantısı veya sayfadan ayrılma) nedeniyle yapay zeka fotoğraf analizi yapılamadı. Aşağıdaki sonuç SADECE sizin işaretlediğiniz gözlemlere dayanmaktadır, fotoğraflar AI tarafından analiz EDİLMEMİŞTİR.\n\nLütfen güçlü bir WiFi veya mobil veri bağlantısı olan bir yerde, analiz sırasında sayfadan ayrılmadan tekrar deneyin. Sorun devam ederse doğrudan uzman muayenesine başvurun.');
   }
   if(result.photo_mismatch){
     const ldEl=document.getElementById('ldT');
