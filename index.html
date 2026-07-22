@@ -653,7 +653,7 @@ async function doAnalysis(){
   console.log('SpineScan kullanım sayısı:', usageCount);
 goTo(4);
 if(typeof gtag==='function') gtag('event', 'scan_started', {'send_to': 'G-CDRL49NQDZ'});
-  const msgs=['Fotoğraflar analiz ediliyor… (1-4 dakika sürebilir, lütfen ekranı kapatmayın)','Omurga asimetrisi değerlendiriliyor… (lütfen bekleyin, sayfadan çıkmayın)','Kifoz açısı hesaplanıyor… (analiz sürüyor, ekranı açık tutun)','Risk skoru oluşturuluyor… (birkaç saniye kaldı)'];
+  const msgs=['Fotoğraflar analiz ediliyor… (1-4 dakika sürebilir, ekranı kapatmayın, başka sekme/uygulamaya geçmeyin)','Omurga asimetrisi değerlendiriliyor… (lütfen bekleyin, bu sayfada kalın)','Kifoz açısı hesaplanıyor… (analiz sürüyor, telefonu kilitlemeyin, başka yere gitmeyin)','Risk skoru oluşturuluyor… (birkaç saniye kaldı, lütfen bu ekranda kalın)'];
   let mi=0; const ldEl=document.getElementById('ldT');
   const intv=setInterval(()=>{mi=(mi+1)%msgs.length;ldEl.textContent=msgs[mi];},2200);
   const p=ST.patient,o=ST.obs,base=calcBaseSTS();
