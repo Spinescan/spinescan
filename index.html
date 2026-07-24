@@ -1204,9 +1204,10 @@ const needsConsensus = result.kyph_risk==='Yüksek' || result.scheuermann_suspic
           body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:10000,temperature:0,
             messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]})});
         clearTimeout(timeout2);
-        if(resp2.ok){
+       if(resp2.ok){
           const data2=await resp2.json();
           const txt2=(data2.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+          console.log('=== KONSENSUS (2. DEGERLENDIRME) API YANITI (TAM) ===', txt2);
           let result2=null;
           for(const a of [txt2, txt2.replace(/```json|```/g,'').trim(), (txt2.match(/\{[\s\S]*\}/)||['{}'])[0]]){
             try{const p=JSON.parse(a); if(p.sts_aesthetic_score!==undefined){result2=p;break;}}catch(e){}
