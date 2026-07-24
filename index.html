@@ -1183,9 +1183,13 @@ const resp=await fetch(apiEndpoint,{signal:controller.signal,
    if(!result) throw new Error('parse fail');
 
     // ── KONSENSÜS KONTROLÜ — yüksek riskli sonuçlarda 2. çalıştırma ──
-   const needsConsensus = result.kyph_risk==='Yüksek' || result.scheuermann_suspicion===true ||
+  const isBorderlineScoli = result.primary_curve && result.primary_curve.severity==='hafif' &&
+  result.primary_curve.direction && result.primary_curve.direction!=='Belirsiz' &&
+  result.primary_curve.direction!=='belirgin asimetri yok';
+const needsConsensus = result.kyph_risk==='Yüksek' || result.scheuermann_suspicion===true ||
   (result.dm_suspicion_level && result.dm_suspicion_level!=='Yok') ||
-  (result.clinical_suspicion==='Yuksek' || result.clinical_suspicion==='Cok Yuksek');
+  (result.clinical_suspicion==='Yuksek' || result.clinical_suspicion==='Cok Yuksek') ||
+  isBorderlineScoli;
     if(needsConsensus){
       if(ldEl) ldEl.textContent='Sonuç doğrulanıyor (2. değerlendirme)...';
       try{
