@@ -1092,14 +1092,17 @@ Sadece asagidaki JSON formatinda yanit ver, baska hicbir metin ekleme, ek acikla
   "lighting_details": "Hangi fotograf(lar) karanlik/sinirli gorunurlukte oldugunu KISA (max 15 kelime) belirt, hepsi yeterliyse bos birak."
 }`;
 
-  try{
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),240000); // 240 saniye timeout
+ try{
     const apiKey = localStorage.getItem('ss_ak');
 const apiEndpoint = apiKey 
   ? 'https://api.anthropic.com/v1/messages' 
   : 'https://spinescan-api.yilmazhurriyet.workers.dev';
-const resp=await fetch(apiEndpoint,{signal:controller.signal,
+    let resp;
+    const MAX_DENEME = 3;
+    for(let deneme=1; deneme<=MAX_DENEME; deneme++){
+      const controller=new AbortController();
+      const timeout=setTimeout(()=>controller.abort(),240000); // 240 saniye timeout
+      resp=await fetch(apiEndpoint,{signal:controller.signal,
   method:'POST',
   headers:{
     'Content-Type':'application/json',
@@ -1111,10 +1114,19 @@ const resp=await fetch(apiEndpoint,{signal:controller.signal,
         temperature:0,
         messages:[{role:'user',content:[...content,{type:'text',text:prompt}]}]
       })});
-    clearTimeout(timeout);
+      clearTimeout(timeout);
+      if(resp.ok) break;
+      const errCheck = await resp.clone().json().catch(()=>null);
+      const isUpstreamTimeout = errCheck && errCheck.error && errCheck.error.type==='upstream_error';
+      if(isUpstreamTimeout && deneme<MAX_DENEME){
+        if(ldEl) ldEl.textContent='AI servisi yavaş yanıt verdi, tekrar deneniyor ('+deneme+'/'+MAX_DENEME+')...';
+        await new Promise(r=>setTimeout(r,2000));
+        continue;
+      }
+      break;
+    }
     clearInterval(intv);
     if(!resp.ok){const errData=await resp.json().catch(()=>({}));throw new Error('API hata: '+(errData.error?.message||resp.status));}
-    const data=await resp.json();
     const txt=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
     console.log('=== API YANITI (TAM) ===', txt);
     console.log('=== TOPLAM UZUNLUK ===', txt.length);
